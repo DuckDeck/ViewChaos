@@ -71,6 +71,7 @@ class ViewChaos: UIView {
         windowInfo = UIWindow(frame: CGRect(x: 0, y: 0, width: ScreenWidth, height: 50))
         windowInfo.backgroundColor = UIColor(red: 0.0, green: 0.898, blue: 0.836, alpha: 0.7)
         windowInfo.hidden = true
+        windowInfo.name = "windowInfo"
         windowInfo.windowLevel = UIWindowLevelAlert
         lblInfo = UILabel(frame: windowInfo.bounds)
         lblInfo.numberOfLines = 2
@@ -88,7 +89,7 @@ class ViewChaos: UIView {
         let lbl = UILabel(frame: self.bounds)
         lbl.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleHeight]
         lbl.textAlignment = NSTextAlignment.Center
-        lbl.text = "T"
+        lbl.text = "V"
         lbl.backgroundColor = UIColor(red: 0.253, green: 0.917, blue: 0.476, alpha: 1.0)
         self.addSubview(lbl)
         self.layer.masksToBounds = true
@@ -219,8 +220,7 @@ class ViewChaos: UIView {
     
     
     func  tapInfo(tapGesture:UITapGestureRecognizer){
-        //if () write it later
-        if viewChaosInfo?.superview != nil{
+        if viewChaosInfo?.superview != nil{  //如果没有移除就不继续
             return
         }
         viewChaosInfo = ViewChaosInfo()

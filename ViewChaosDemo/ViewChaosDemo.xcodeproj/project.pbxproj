@@ -11,11 +11,11 @@
 		A2E6F01C1BEAFF7D0042FC43 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E6F01B1BEAFF7D0042FC43 /* ViewController.swift */; };
 		A2E6F0211BEAFF7D0042FC43 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2E6F0201BEAFF7D0042FC43 /* Assets.xcassets */; };
 		A2E6F0241BEAFF7D0042FC43 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2E6F0221BEAFF7D0042FC43 /* LaunchScreen.storyboard */; };
-		A2E6F0351BEB022F0042FC43 /* Stuff.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E6F0321BEB022F0042FC43 /* Stuff.swift */; };
-		A2E6F0361BEB022F0042FC43 /* ViewChaos.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E6F0331BEB022F0042FC43 /* ViewChaos.swift */; };
-		A2E6F0371BEB022F0042FC43 /* ViewChaosInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E6F0341BEB022F0042FC43 /* ViewChaosInfo.swift */; };
 		A2E6F0391BEB08680042FC43 /* NextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E6F0381BEB08680042FC43 /* NextViewController.swift */; };
 		A2E6F03B1BEB08770042FC43 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2E6F03A1BEB08770042FC43 /* Main.storyboard */; };
+		A2E6F0451BEB41A70042FC43 /* Stuff.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E6F0421BEB41A70042FC43 /* Stuff.swift */; };
+		A2E6F0461BEB41A70042FC43 /* ViewChaos.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E6F0431BEB41A70042FC43 /* ViewChaos.swift */; };
+		A2E6F0471BEB41A70042FC43 /* ViewChaosInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E6F0441BEB41A70042FC43 /* ViewChaosInfo.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,11 +25,11 @@
 		A2E6F0201BEAFF7D0042FC43 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A2E6F0231BEAFF7D0042FC43 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A2E6F0251BEAFF7D0042FC43 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A2E6F0321BEB022F0042FC43 /* Stuff.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Stuff.swift; path = ../../ViewChaos/Stuff.swift; sourceTree = "<group>"; };
-		A2E6F0331BEB022F0042FC43 /* ViewChaos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewChaos.swift; path = ../../ViewChaos/ViewChaos.swift; sourceTree = "<group>"; };
-		A2E6F0341BEB022F0042FC43 /* ViewChaosInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewChaosInfo.swift; path = ../../ViewChaos/ViewChaosInfo.swift; sourceTree = "<group>"; };
 		A2E6F0381BEB08680042FC43 /* NextViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NextViewController.swift; sourceTree = "<group>"; };
 		A2E6F03A1BEB08770042FC43 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		A2E6F0421BEB41A70042FC43 /* Stuff.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Stuff.swift; path = ../../ViewChaos/Stuff.swift; sourceTree = "<group>"; };
+		A2E6F0431BEB41A70042FC43 /* ViewChaos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewChaos.swift; path = ../../ViewChaos/ViewChaos.swift; sourceTree = "<group>"; };
+		A2E6F0441BEB41A70042FC43 /* ViewChaosInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewChaosInfo.swift; path = ../../ViewChaos/ViewChaosInfo.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,9 +77,9 @@
 		A2E6F02B1BEAFF890042FC43 /* ViewChaos */ = {
 			isa = PBXGroup;
 			children = (
-				A2E6F0321BEB022F0042FC43 /* Stuff.swift */,
-				A2E6F0331BEB022F0042FC43 /* ViewChaos.swift */,
-				A2E6F0341BEB022F0042FC43 /* ViewChaosInfo.swift */,
+				A2E6F0421BEB41A70042FC43 /* Stuff.swift */,
+				A2E6F0431BEB41A70042FC43 /* ViewChaos.swift */,
+				A2E6F0441BEB41A70042FC43 /* ViewChaosInfo.swift */,
 			);
 			path = ViewChaos;
 			sourceTree = "<group>";
@@ -155,12 +155,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A2E6F0351BEB022F0042FC43 /* Stuff.swift in Sources */,
 				A2E6F0391BEB08680042FC43 /* NextViewController.swift in Sources */,
-				A2E6F0371BEB022F0042FC43 /* ViewChaosInfo.swift in Sources */,
+				A2E6F0461BEB41A70042FC43 /* ViewChaos.swift in Sources */,
 				A2E6F01C1BEAFF7D0042FC43 /* ViewController.swift in Sources */,
+				A2E6F0451BEB41A70042FC43 /* Stuff.swift in Sources */,
 				A2E6F01A1BEAFF7D0042FC43 /* AppDelegate.swift in Sources */,
-				A2E6F0361BEB022F0042FC43 /* ViewChaos.swift in Sources */,
+				A2E6F0471BEB41A70042FC43 /* ViewChaosInfo.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -304,6 +304,7 @@
 				A2E6F02A1BEAFF7D0042FC43 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

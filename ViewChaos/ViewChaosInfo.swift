@@ -63,7 +63,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         btnClose.setTitleColor(UIColor.orangeColor(), forState: UIControlState.Normal)
         btnClose.addTarget(self, action: "close:", forControlEvents: UIControlEvents.TouchUpInside)
         addSubview(btnClose)
-        btnBack.frame = CGRect(x: self.frame.size.width - btnClose.frame.size.width - 100, y: 5, width: 45, height: 22)
+        btnBack.frame = CGRect(x: self.frame.size.width - btnClose.frame.size.width - 60, y: 5, width: 45, height: 22)
         btnBack.setTitle("Back", forState: UIControlState.Normal)
         btnBack.titleLabel?.font = UIFont.systemFontOfSize(12)
         btnBack.setTitleColor(UIColor.orangeColor(), forState: UIControlState.Normal)
@@ -114,7 +114,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             arrLeft = ["General","SuperView","SubView","Constrains","Trace","About"]
             arrStackView = [ViewChaosObject]()
             arrGeneral = [String]()
-            arrAbout = ["这是随便写的","大家好,我来看看写多长比较好大家好,我来看看写多长比较好大家好,我来看看写多长比较好大家好,我来看看写多长比较好大家好,我来看看写多长比较好大家好,我来看看写多长比较好大家好,我来看看写多长比较好大家好,我来看看写多长比较好大家好,我来看看写多长比较好大家好,我来看看写多长比较好大家好,我来看看写多长比较好大家好,我来看看写多长比较好大家好,我来看看写多长比较好大家好,我来看看写多长比较好大家好,我来看看写多长比较好大家好,我来看看写多长比较好大家好,我来看看写多长比较好大家好,我来看看写多长比较好大家好,我来看看写多长比较好大家好,我来看看写多长比较好大家好,我来看看写多长比较好大家好,我来看看写多长比较好大家好,我来看看写多长比较好大家好,我来看看写多长比较好大家好,我来看看写多长比较好大家好,我来看看写多长比较好大家好,我来看看写多长比较好"]
+            arrAbout = ["这是一个测试UI的工具",",这个工具是RunTrace的Swift版本.希望大家用得开心"]
             initView(viewHit!, back: false)
             NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleRemoveView:", name: handleTraceRemoveView, object: nil)
             NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleRemoveSubView:", name: handleTraceRemoveSubView, object: nil)
@@ -201,8 +201,13 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
     func initView(view:UIView,back:Bool){
         stopTrace()
         viewHit = view
+        if let name = viewHit?.name{
+            lblCurrentView.text = "\(viewHit!.dynamicType) name:\(name) (\(viewHit!.description))"
+        }
+        else{
+            lblCurrentView.text = "\(viewHit!.dynamicType)(\(viewHit!.description))"
+        }
         
-        lblCurrentView.text = "\(viewHit!.dynamicType)(\(viewHit!.debugDescription))"
         if !back {
             arrStackView?.append(ViewChaosObject.objectWithWeak(view) as! ViewChaosObject)
             if arrStackView?.count >= 2{
