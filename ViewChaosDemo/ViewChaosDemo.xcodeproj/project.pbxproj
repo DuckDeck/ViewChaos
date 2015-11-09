@@ -7,17 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A211FED11BF02A83004A0A29 /* ViewChaos.swift in Sources */ = {isa = PBXBuildFile; fileRef = A211FECF1BF02A83004A0A29 /* ViewChaos.swift */; };
+		A211FED21BF02A83004A0A29 /* ViewChaosInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A211FED01BF02A83004A0A29 /* ViewChaosInfo.swift */; };
+		A211FED41BF03D0C004A0A29 /* ViewNeat.swift in Sources */ = {isa = PBXBuildFile; fileRef = A211FED31BF03D0C004A0A29 /* ViewNeat.swift */; };
 		A2E6F01A1BEAFF7D0042FC43 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E6F0191BEAFF7D0042FC43 /* AppDelegate.swift */; };
 		A2E6F01C1BEAFF7D0042FC43 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E6F01B1BEAFF7D0042FC43 /* ViewController.swift */; };
 		A2E6F0211BEAFF7D0042FC43 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2E6F0201BEAFF7D0042FC43 /* Assets.xcassets */; };
 		A2E6F0241BEAFF7D0042FC43 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2E6F0221BEAFF7D0042FC43 /* LaunchScreen.storyboard */; };
 		A2E6F0391BEB08680042FC43 /* NextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E6F0381BEB08680042FC43 /* NextViewController.swift */; };
 		A2E6F03B1BEB08770042FC43 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2E6F03A1BEB08770042FC43 /* Main.storyboard */; };
-		A2E6F0461BEB41A70042FC43 /* ViewChaos.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E6F0431BEB41A70042FC43 /* ViewChaos.swift */; };
-		A2E6F0471BEB41A70042FC43 /* ViewChaosInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E6F0441BEB41A70042FC43 /* ViewChaosInfo.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A211FECF1BF02A83004A0A29 /* ViewChaos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewChaos.swift; path = /Users/Tyrant/Desktop/ViewChaos/ViewChaos/ViewChaos.swift; sourceTree = "<absolute>"; };
+		A211FED01BF02A83004A0A29 /* ViewChaosInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewChaosInfo.swift; path = /Users/Tyrant/Desktop/ViewChaos/ViewChaos/ViewChaosInfo.swift; sourceTree = "<absolute>"; };
+		A211FED31BF03D0C004A0A29 /* ViewNeat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewNeat.swift; path = /Users/Tyrant/Desktop/ViewChaos/ViewChaos/ViewNeat.swift; sourceTree = "<absolute>"; };
 		A2E6F0161BEAFF7D0042FC43 /* ViewChaosDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ViewChaosDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2E6F0191BEAFF7D0042FC43 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A2E6F01B1BEAFF7D0042FC43 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -26,8 +30,6 @@
 		A2E6F0251BEAFF7D0042FC43 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A2E6F0381BEB08680042FC43 /* NextViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NextViewController.swift; sourceTree = "<group>"; };
 		A2E6F03A1BEB08770042FC43 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		A2E6F0431BEB41A70042FC43 /* ViewChaos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewChaos.swift; path = ../../ViewChaos/ViewChaos.swift; sourceTree = "<group>"; };
-		A2E6F0441BEB41A70042FC43 /* ViewChaosInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewChaosInfo.swift; path = ../../ViewChaos/ViewChaosInfo.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,8 +77,9 @@
 		A2E6F02B1BEAFF890042FC43 /* ViewChaos */ = {
 			isa = PBXGroup;
 			children = (
-				A2E6F0431BEB41A70042FC43 /* ViewChaos.swift */,
-				A2E6F0441BEB41A70042FC43 /* ViewChaosInfo.swift */,
+				A211FECF1BF02A83004A0A29 /* ViewChaos.swift */,
+				A211FED01BF02A83004A0A29 /* ViewChaosInfo.swift */,
+				A211FED31BF03D0C004A0A29 /* ViewNeat.swift */,
 			);
 			path = ViewChaos;
 			sourceTree = "<group>";
@@ -153,10 +156,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				A2E6F0391BEB08680042FC43 /* NextViewController.swift in Sources */,
-				A2E6F0461BEB41A70042FC43 /* ViewChaos.swift in Sources */,
+				A211FED11BF02A83004A0A29 /* ViewChaos.swift in Sources */,
 				A2E6F01C1BEAFF7D0042FC43 /* ViewController.swift in Sources */,
 				A2E6F01A1BEAFF7D0042FC43 /* AppDelegate.swift in Sources */,
-				A2E6F0471BEB41A70042FC43 /* ViewChaosInfo.swift in Sources */,
+				A211FED41BF03D0C004A0A29 /* ViewNeat.swift in Sources */,
+				A211FED21BF02A83004A0A29 /* ViewChaosInfo.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

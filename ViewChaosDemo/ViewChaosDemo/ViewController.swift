@@ -20,7 +20,6 @@ class ViewController: UIViewController {
         btn.name = "btn"
         btn.addTarget(self, action: "click:", forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(btn)
-        UIScreen.mainScreen().bounds.width
     }
 
     func click(sender:UIButton)

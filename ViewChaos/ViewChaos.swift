@@ -58,8 +58,8 @@ class ViewChaos: UIView {
     var windowInfo:UIWindow
     var lblInfo:UILabel
     var viewChaosInfo:ViewChaosInfo?
+    var viewNeat:ViewNeat?
     var arrViewHit:[UIView]
-    
     init() {
         isTouch = false
         arrViewHit = [UIView]()
@@ -68,7 +68,7 @@ class ViewChaos: UIView {
         viewBound.layer.borderWidth = 3
         viewBound.layer.borderColor = UIColor.blackColor().CGColor //View的边界黑色,这个应该可以切换
         viewBound.layer.zPosition = CGFloat(FLT_MAX)
-        windowInfo = UIWindow(frame: CGRect(x: 0, y: 0, width: ScreenWidth, height: 50))
+        windowInfo = UIWindow(frame: CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.width, height: 50))
         windowInfo.backgroundColor = UIColor(red: 0.0, green: 0.898, blue: 0.836, alpha: 0.7)
         windowInfo.hidden = true
         windowInfo.name = "windowInfo"
@@ -84,7 +84,7 @@ class ViewChaos: UIView {
         
         
         super.init(frame: CGRectZero)
-        self.frame = CGRect(x: ScreenWidth-35, y: 100, width: 30, height: 30)
+        self.frame = CGRect(x: UIScreen.mainScreen().bounds.width-35, y: 100, width: 30, height: 30)
         self.layer.zPosition = CGFloat(FLT_MAX)
         let lbl = UILabel(frame: self.bounds)
         lbl.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleHeight]
@@ -111,11 +111,10 @@ class ViewChaos: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func handleTraceShow(notif:NSNotification){
+    func handleTraceShow(notif:NSNotification){ //如果关了ViewChaosInfo,就会显示出来
         self.hidden = false
     }
-    func handleTraceView(notif:NSNotification){
-        
+    func handleTraceView(notif:NSNotification){// 显示选中的View
         let view = notif.object as! UIView
         self.window?.addSubview(viewBound)
         let p = self.window?.convertRect(view.bounds, fromView: view)
@@ -126,7 +125,12 @@ class ViewChaos: UIView {
             }) { (finished) -> Void in
                 self.viewBound.removeFromSuperview()
                 self.viewBound.alpha = 1
+                self.viewNeat = ViewNeat()
+                self.viewNeat?.viewControl = view;
+                self.viewNeat?.layer.zPosition = CGFloat(FLT_MAX)
+                self.window?.addSubview(self.viewNeat!);
         }
+        
     }
     
     
@@ -224,7 +228,7 @@ class ViewChaos: UIView {
             return
         }
         viewChaosInfo = ViewChaosInfo()
-        viewChaosInfo?.bounds = CGRect(x: 0, y: 0, width: ScreenWidth - 20, height: viewChaosInfo!.bounds.size.height)
+        viewChaosInfo?.bounds = CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.width - 20, height: viewChaosInfo!.bounds.size.height)
         viewChaosInfo?.layer.zPosition = CGFloat(FLT_MAX)
         viewChaosInfo?.viewHit = viewTouch
         self.window?.addSubview(viewChaosInfo!)
@@ -249,7 +253,7 @@ class ViewChaos: UIView {
             viewTouch = view
             viewBound.frame = fm!
             self.window?.addSubview(viewBound)
-            lblInfo.text = "\(view.dynamicType)l:\(view.frame.origin.x.format(".1f"))t:\(view.frame.origin.y.format(".1f"))w:\(view.frame.size.width.format(".1f"))h:\(view.frame.size.height.format(".1f"))"
+            lblInfo.text = "\(view.dynamicType) l:\(view.frame.origin.x.format(".1f"))t:\(view.frame.origin.y.format(".1f"))w:\(view.frame.size.width.format(".1f"))h:\(view.frame.size.height.format(".1f"))"
         }
     }
     
@@ -261,13 +265,13 @@ class ViewChaos: UIView {
         
         let touch = touches.first
         let point = touch?.locationInView(self.window)
-        self.frame = CGRect(x: point!.x - CGFloat(left), y: point!.y - CGFloat(top), width: self.frame.size.width, height: self.frame.size.height)
+        self.frame = CGRect(x: point!.x - CGFloat(left), y: point!.y - CGFloat(top), width: self.frame.size.width, height: self.frame.size.height)//这是为了精准定位.,要处理当前点到top和left的位移
         if  let view = topView(self.window!, point: point!)
         {
             let fm = self.window?.convertRect(view.bounds, fromView: view)
             viewTouch = view
             viewBound.frame = fm!
-            lblInfo.text = "\(view.dynamicType)l:\(view.frame.origin.x.format(".1f"))t:\(view.frame.origin.y.format(".1f"))w:\(view.frame.size.width.format(".1f"))h:\(view.frame.size.height.format(".1f"))"
+            lblInfo.text = "\(view.dynamicType) l:\(view.frame.origin.x.format(".1f"))t:\(view.frame.origin.y.format(".1f"))w:\(view.frame.size.width.format(".1f"))h:\(view.frame.size.height.format(".1f"))"
             windowInfo.alpha = 1
             windowInfo.hidden = false
         }
@@ -276,7 +280,7 @@ class ViewChaos: UIView {
     override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
         isTouch = false
         viewBound.removeFromSuperview()
-        delay(1.5) { () -> () in
+        Chaos.delay(1.5) { () -> () in
             UIView.animateWithDuration(0.5, animations: { () -> Void in
                 self.windowInfo.alpha = 0
                 }, completion: { (finished) -> Void in
@@ -288,7 +292,7 @@ class ViewChaos: UIView {
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         isTouch = false
         viewBound.removeFromSuperview()
-        delay(1.5) { () -> () in
+        Chaos.delay(1.5) { () -> () in
             UIView.animateWithDuration(0.5, animations: { () -> Void in
                 self.windowInfo.alpha = 0
                 }, completion: { (finished) -> Void in
@@ -331,19 +335,22 @@ class ViewChaos: UIView {
             point.x += (view as! UIScrollView).contentOffset.x
             point.y += (view as! UIScrollView).contentOffset.y
         }
-        if view.pointInside(point, withEvent: nil) && !view.hidden && view.alpha > 0.01 && view != viewBound && !view.isDescendantOfView(self){
+        if view.pointInside(point, withEvent: nil) && !view.hidden && view.alpha > 0.01 && view != viewBound && !view.isDescendantOfView(self){//这里的判断很重要.
             arrViewHit.append(view)
             for subView in view.subviews{
                 let subPoint = CGPoint(x: point.x - subView.frame.origin.x , y: point.y - subView.frame.origin.y)
                 hitTest(subView, point: subPoint)
             }
-        }
+        }//四个条件,当前触摸的点一定要在要抓的View里面,View不能是隐藏的或者透明的,View不是我们用于定位的边界View,同时也不是我们用于定位的View.也就是说isDescendantOfView
     }
     
     func topView(view:UIView,point:CGPoint)->UIView?{
         arrViewHit .removeAll()
         hitTest(view, point: point)
         let viewTop = arrViewHit.last
+//        for v in arrViewHit{
+//            Chaos.Log("\(v.dynamicType)")
+//        }
         arrViewHit.removeAll()
         return viewTop
     }

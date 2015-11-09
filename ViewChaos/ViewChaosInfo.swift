@@ -51,7 +51,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         lblCurrentView = UILabel()
         btnHit = UIButton()
         btnMinimize = UIButton()
-        super.init(frame: CGRect(x: 10, y: 80, width: ScreenWidth-20, height: ScreenHeight-160))
+        super.init(frame: CGRect(x: 10, y: 80, width: UIScreen.mainScreen().bounds.width-20, height: UIScreen.mainScreen().bounds.height-160))
         backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
         tbLeft.frame = CGRect(x: 0, y: 50, width: self.frame.size.width / 3, height: self.frame.size.height - 50)
         tbRight.frame = CGRect(x: tbLeft.frame.size.width, y: 50, width: self.frame.size.width - tbLeft.frame.size.width, height: self.frame.size.height - 50)
@@ -136,7 +136,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             view = notif.userInfo!["subview" as NSObject] as! UIView
             var dict:[String:AnyObject] = [String:AnyObject]()
             dict["key"] = "Add Subview"
-            dict["Time"] = currentDate(nil)
+            dict["Time"] = Chaos.currentDate(nil)
             dict["OldValue"] = "\(view.dynamicType)l:\(view.frame.origin.x.format(".1f"))t:\(view.frame.origin.y.format(".1f"))w:\(view.frame.size.width.format(".1f"))h:\(view.frame.size.height.format(".1f"))"
             dict["NewValue"] = "nil"
             arrTrace?.append(dict)
@@ -155,7 +155,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             view = notif.userInfo!["subview" as NSObject] as! UIView
             var dict:[String:AnyObject] = [String:AnyObject]()
             dict["key"] = "Add Subview"
-            dict["Time"] = currentDate(nil)
+            dict["Time"] = Chaos.currentDate(nil)
             dict["OldValue"] = "nil"
             dict["NewValue"] = "\(view.dynamicType)l:\(view.frame.origin.x.format(".1f"))t:\(view.frame.origin.y.format(".1f"))w:\(view.frame.size.width.format(".1f"))h:\(view.frame.size.height.format(".1f"))"
             arrTrace?.append(dict)
@@ -176,7 +176,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             viewHit?.layer.borderWidth = viewTrackBorderWith!
             var dict:[String:AnyObject] = [String:AnyObject]()
             dict["key"] = "RemoveFromSuperview"
-            dict["Time"] = currentDate(nil)
+            dict["Time"] = Chaos.currentDate(nil)
             dict["OldValue"] = "\(view.dynamicType)l:\(view.frame.origin.x.format(".1f"))t:\(view.frame.origin.y.format(".1f"))w:\(view.frame.size.width.format(".1f"))h:\(view.frame.size.height.format(".1f"))"
             dict["NewValue"] = "nil"
             arrTrace?.append(dict)
@@ -412,7 +412,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                         var dict = [String:AnyObject]()
                         dict["Type"] = "Top"
                         dict["Value"] = con.description
-                        Log(con.description)
+                        Chaos.Log(con.description)
                         dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
                         dict["Constant"] = con.constant
                         dict["Multiplier"] = con.multiplier
@@ -747,7 +747,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
     
     func minimize(){
         originFrame = self.frame
-        let fm = CGRect(x: ScreenWidth - 20, y: ScreenHeight / 2 - 20, width: 20, height: 40)
+        let fm = CGRect(x: UIScreen.mainScreen().bounds.width - 20, y: UIScreen.mainScreen().bounds.height / 2 - 20, width: 20, height: 40)
         UIView.animateWithDuration(0.2, animations: { () -> Void in
             self.frame = fm
             }) { (finished) -> Void in
@@ -796,7 +796,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             }
             var dict = [String:AnyObject]()
             dict["Key"] = "Frame Change"
-            dict["Time"] = currentDate(nil)
+            dict["Time"] = Chaos.currentDate(nil)
             dict["OldValue"] = "l:\(oldFrame.origin.x.format(".1f")) t:\(oldFrame.origin.y.format(".1f")) w:\(oldFrame.origin.x.format(".1f")) :h\(oldFrame.origin.x.format(".1f"))"
             dict["NewValue"] = "l:\(newFrame.origin.x.format(".1f")) t:\(newFrame.origin.y.format(".1f")) w:\(newFrame.origin.x.format(".1f")) h:\(newFrame.origin.x.format(".1f"))"
             arrTrace?.append(dict)
@@ -810,7 +810,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             }
             var dict = [String:AnyObject]()
             dict["Key"] = "Center Change"
-            dict["Time"] = currentDate(nil)
+            dict["Time"] = Chaos.currentDate(nil)
             dict["OldValue"] = "l:\(oldCenter.x.format(".1f")) t:\(oldCenter.y.format(".1f"))"
             dict["NewValue"] = "l:\(newCenter.x.format(".1f")) t:\(newCenter.y.format(".1f"))"
             arrTrace?.append(dict)
@@ -824,7 +824,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             }
             var dict = [String:AnyObject]()
             dict["Key"] = "Superview Frame Change"
-            dict["Time"] = currentDate(nil)
+            dict["Time"] = Chaos.currentDate(nil)
             dict["OldValue"] = "l:\(oldFrame.origin.x.format(".1f")) t:\(oldFrame.origin.y.format(".1f")) w:\(oldFrame.origin.x.format(".1f")) :h\(oldFrame.origin.x.format(".1f"))"
             dict["NewValue"] = "l:\(newFrame.origin.x.format(".1f")) t:\(newFrame.origin.y.format(".1f")) w:\(newFrame.origin.x.format(".1f")) h:\(newFrame.origin.x.format(".1f"))"
             dict["SuperView"] = "\((object! as! UIView).superview.dynamicType)"
@@ -835,7 +835,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             let newValue = change![NSKeyValueChangeNewKey]!.integerValue
             var dict = [String:AnyObject]()
             dict["Key"] = "Tag Change"
-            dict["Time"] = currentDate(nil)
+            dict["Time"] = Chaos.currentDate(nil)
             dict["OldValue"] = "\(oldValue)"
             dict["NewValue"] = "\(newValue)"
             arrTrace?.append(dict)
@@ -845,7 +845,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             let newValue = change![NSKeyValueChangeNewKey]!.boolValue
             var dict = [String:AnyObject]()
             dict["Key"] = "UserInteractionEnabled Change"
-            dict["Time"] = currentDate(nil)
+            dict["Time"] = Chaos.currentDate(nil)
             dict["OldValue"] = "\(oldValue! ? "Yes" : "No")"
             dict["NewValue"] = "\(newValue! ? "Yes" : "No")"
             arrTrace?.append(dict)
@@ -855,7 +855,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             let newValue = change![NSKeyValueChangeNewKey]!.boolValue
             var dict = [String:AnyObject]()
             dict["Key"] = "Hidden Change"
-            dict["Time"] = currentDate(nil)
+            dict["Time"] = Chaos.currentDate(nil)
             dict["OldValue"] = "\(oldValue! ? "Yes" : "No")"
             dict["NewValue"] = "\(newValue! ? "Yes" : "No")"
             arrTrace?.append(dict)
@@ -869,7 +869,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             }
             var dict = [String:AnyObject]()
             dict["Key"] = "Bounds Change"
-            dict["Time"] = currentDate(nil)
+            dict["Time"] = Chaos.currentDate(nil)
             dict["OldValue"] = "l:\(oldFrame.origin.x.format(".1f")) t:\(oldFrame.origin.y.format(".1f")) w:\(oldFrame.origin.x.format(".1f")) :h\(oldFrame.origin.x.format(".1f"))"
             dict["NewValue"] = "l:\(newFrame.origin.x.format(".1f")) t:\(newFrame.origin.y.format(".1f")) w:\(newFrame.origin.x.format(".1f")) h:\(newFrame.origin.x.format(".1f"))"
             arrTrace?.append(dict)
@@ -883,7 +883,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             }
             var dict = [String:AnyObject]()
             dict["Key"] = "ContentSize Change"
-            dict["Time"] = currentDate(nil)
+            dict["Time"] = Chaos.currentDate(nil)
             dict["OldValue"] = "w:\(oldSize.width.format(".1f")) h:\(oldSize.height.format(".1f"))"
             dict["NewValue"] = "w:\(newSize.width.format(".1f")) h:\(newSize.height.format(".1f"))"
             arrTrace?.append(dict)
@@ -897,7 +897,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             }
             var dict = [String:AnyObject]()
             dict["Key"] = "ContentOffset Change"
-            dict["Time"] = currentDate(nil)
+            dict["Time"] = Chaos.currentDate(nil)
             dict["OldValue"] = "l:\(oldOffset.x.format(".1f")) t:\(oldOffset.y.format(".1f"))"
             dict["NewValue"] = "l:\(newOffset.x.format(".1f")) t:\(newOffset.y.format(".1f"))"
             arrTrace?.append(dict)
@@ -910,7 +910,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             }
             var dict = [String:AnyObject]()
             dict["Key"] = "ContentInset Change"
-            dict["Time"] = currentDate(nil)
+            dict["Time"] = Chaos.currentDate(nil)
             dict["OldValue"] = "l:\(oldEdge.left.format(".1f")) t:\(oldEdge.top.format(".1f")) r:\(oldEdge.right.format(".1f")) b:\(oldEdge.bottom.format(".1f"))"
             dict["NewValue"] = "l:\(newEdge.left.format(".1f")) t:\(newEdge.top.format(".1f")) r:\(newEdge.right.format(".1f")) :b\(newEdge.bottom.format(".1f"))"
             arrTrace?.append(dict)
@@ -1027,31 +1027,25 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         else{
             switch type{
             case .superview: let view = arrSuperView![indexPath.row].obj as? UIView
-            if view != nil{
-                NSNotificationCenter.defaultCenter().postNotificationName(handleTraceView, object: view!)
-                initView(view!, back: false)
-            }
-            else{
-                return
+                if view != nil{
+                    NSNotificationCenter.defaultCenter().postNotificationName(handleTraceView, object: view!)
+                    initView(view!, back: false)
                 }
             case .subview: let view = arrSubview![indexPath.row].obj as? UIView
-            if view != nil{
-                NSNotificationCenter.defaultCenter().postNotificationName(handleTraceView, object: view!)
-                initView(view!, back: false)
-            }
-            else{
-                return
+                if view != nil{
+                    NSNotificationCenter.defaultCenter().postNotificationName(handleTraceView, object: view!)
+                    initView(view!, back: false)
                 }
             case .constrain: let strType = arrConstrains![indexPath.row]["Type"] as! String
-            if strType == "IntrinsicContent Width" || strType == "IntrinsicContent Height" || strType == "BaseLine" {
-                return
-            }
-            if viewHit == nil{
-                return;
-            }
-            var dict = arrConstrains![indexPath.row]
-            dict["View"] = viewHit!
-            NSNotificationCenter.defaultCenter().postNotificationName(handleTraceContraints, object: dict)
+                if strType == "IntrinsicContent Width" || strType == "IntrinsicContent Height" || strType == "BaseLine" {
+                    return
+                }
+                if viewHit == nil{
+                    return;
+                }
+                var dict = arrConstrains![indexPath.row]
+                dict["View"] = ViewChaosObject.objectWithWeak(viewHit!)
+                NSNotificationCenter.defaultCenter().postNotificationName(handleTraceContraints, object: dict)
             default: return
             }
             minimize()
@@ -1329,6 +1323,8 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    deinit{
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
 
 }
