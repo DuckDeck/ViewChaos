@@ -14,10 +14,10 @@ extension UIWindow {
     static var onceToken:dispatch_once_t = 0
         }
             dispatch_once(&UIWindow_SwizzleToken.onceToken) { () -> Void in
-            hookMethod(UIWindow.self, originalSelector: Selector("makeKeyAndVisible"), swizzleSelector: Selector("vcMakeKeyAndVisible"))
-            hookMethod(UIView.self, originalSelector: Selector("willMoveToSuperview:"), swizzleSelector: Selector("vcWillMoveToSuperview:"))
-            hookMethod(UIView.self, originalSelector: Selector("willRemoveSubview:"), swizzleSelector: Selector("vcWillRemoveSubview:"))
-            hookMethod(UIView.self, originalSelector: Selector("didAddSubview:"), swizzleSelector: Selector("vcDidAddSubview:"))
+            Chaos.hookMethod(UIWindow.self, originalSelector: Selector("makeKeyAndVisible"), swizzleSelector: Selector("vcMakeKeyAndVisible"))
+            Chaos.hookMethod(UIView.self, originalSelector: Selector("willMoveToSuperview:"), swizzleSelector: Selector("vcWillMoveToSuperview:"))
+            Chaos.hookMethod(UIView.self, originalSelector: Selector("willRemoveSubview:"), swizzleSelector: Selector("vcWillRemoveSubview:"))
+            Chaos.hookMethod(UIView.self, originalSelector: Selector("didAddSubview:"), swizzleSelector: Selector("vcDidAddSubview:"))
         }
     }
     #endif
@@ -364,5 +364,112 @@ class ViewChaosObject: NSObject {
 }
 
 
+class Chaos {
+    typealias Task = (cancel:Bool)->()
+    static func delay(time:NSTimeInterval,task:()->())->Task?{
+        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(time * Double(NSEC_PER_SEC)))
+        func dispatch_later(block:()->()){
+            dispatch_after(delayTime, dispatch_get_main_queue(), block)
+        }
+        var closure:dispatch_block_t? = task
+        var result:Task?
+        let delayClosure:Task = {
+            cancel in
+            if let internalClosure = closure{
+                if cancel == false{
+                    dispatch_async(dispatch_get_main_queue(), internalClosure)
+                }
+            }
+            closure = nil
+            result = nil
+        }
+        result = delayClosure
+        dispatch_later { () -> () in
+            if let delayClosure = result{
+                delayClosure(cancel: false)
+            }
+        }
+        return result
+    }
+    
+   static func cancel(task:Task?){
+        task?(cancel:true)
+    }
+    
+    
+  static  func Log<T>(message:T,file:String = __FILE__, method:String = __FUNCTION__,line:Int = __LINE__){
+        #if DEBUG
+            if   let path = NSURL(string: file)
+            {
+                print("\(path.lastPathComponent!)[\(line)],\(method) \(message)")
+            }
+            else
+            {
+                print("[\(line)],\(method) \(message)")
+            }
+        #endif
+    }
 
+   static func hookMethod(cls:AnyClass,originalSelector:Selector,swizzleSelector:Selector){  //交换方法
+        let originalMethod = class_getInstanceMethod(cls, originalSelector)
+        let swizzledMethod = class_getInstanceMethod(cls, swizzleSelector)
+        let didAddMethod = class_addMethod(cls, originalSelector, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod))
+        if didAddMethod{
+            class_replaceMethod(cls, swizzleSelector, method_getImplementation(originalMethod), method_getTypeEncoding(originalMethod))
+        }
+        else{
+            method_exchangeImplementations(originalMethod, swizzledMethod)
+        }
+    }
+    
+   static func currentDate(f:String?)->String{
+        let  dateFormatter = NSDateFormatter()
+        if f == nil{
+            dateFormatter.dateFormat = "HH:mm:ss:SSS"
+        }
+        else{
+            dateFormatter.dateFormat = f!
+        }
+        let str = dateFormatter.stringFromDate(NSDate())
+        return str
+    }
+}
+
+extension Float{
+    func format(f:String)->String{
+        return String(format:"%\(f)",self)
+    }
+}
+extension Double{
+    func format(f:String)->String{
+        return String(format:"%\(f)",self)
+    }
+}
+extension CGFloat{
+    func format(f:String)->String{
+        return String(format:"%\(f)",self)
+    }
+}
+
+private var NSObject_Name = 0
+extension NSObject{
+    @objc  var name:String?{
+        get{
+            return objc_getAssociatedObject(self, &NSObject_Name) as? String
+        }
+        set{
+            objc_setAssociatedObject(self, &NSObject_Name, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_COPY_NONATOMIC)
+        }
+    }
+}
+
+let VcWillMoveToSuperview = "vcWillMoveToSuperview"
+let VcWillRemoveSubview = "vcWillRemoveSubview"
+let VcDidAddSubview = "vcDidAddSubview"
+let handleTraceView = "handleTraceView"
+let handleTraceContraints = "handleTraceContraints"
+let handleTraceAddSubView = "handleTraceAddSubView"
+let handleTraceShow = "handleTraceShow"
+let handleTraceRemoveView = "handleTraceRemoveView"
+let handleTraceRemoveSubView = "handleTraceRemoveSubView"
 
