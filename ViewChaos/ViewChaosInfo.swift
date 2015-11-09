@@ -301,6 +301,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
     func close(sender:UIButton){
         if btnClose.titleForState(UIControlState.Normal) == "Close"{
             self.removeFromSuperview()
+            NSNotificationCenter.defaultCenter().postNotificationName("handleTraceViewClose", object: nil)
         }
         else if btnClose.titleForState(UIControlState.Normal) == "Stop"{
             stopTrace()

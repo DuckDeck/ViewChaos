@@ -102,6 +102,7 @@ class ViewChaos: UIView {
         windowInfo.addSubview(lblInfo)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleTraceView:", name: "handleTraceView", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleTraceViewClose:", name: "handleTraceViewClose", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleTraceContraints:", name: "handleTraceContraints", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleTraceAddSubView:", name: "handleTraceAddSubView", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleTraceShow:", name: "handleTraceShow", object: nil)
@@ -133,6 +134,13 @@ class ViewChaos: UIView {
         
     }
     
+    func handleTraceViewClose(notif:NSNotification){
+        if viewNeat == nil{
+            return
+        }
+        viewNeat?.removeFromSuperview()
+        viewNeat = nil
+    }
     
     func handleTraceAddSubView(notif:NSNotification){
         if let viewSuper = notif.object
