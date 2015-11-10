@@ -130,9 +130,21 @@ class ViewNeat: UIView {
 //            if x * x + y*y >= 250{
 //                return
 //            }
-            let newFrame = CGRect(x: point.x - CGFloat(left), y: point.y - CGFloat(top), width: vRocker.frame.size.width, height: vRocker.frame.size.height)
-            if newFrame.origin.x <= 0 || newFrame.origin.x >= 60 || newFrame.origin.y <= 0 ||  newFrame.origin.y >= 60{
-                return
+            var newFrame = CGRect(x: point.x - CGFloat(left), y: point.y - CGFloat(top), width: vRocker.frame.size.width, height: vRocker.frame.size.height)
+//            if newFrame.origin.x <= 0 || newFrame.origin.x >= 60 || newFrame.origin.y <= 0 ||  newFrame.origin.y >= 60{
+//                return
+//            }
+            if newFrame.origin.x <= 0{
+                newFrame.origin.x = 0
+            }
+            if newFrame.origin.x >= 60{
+                newFrame.origin.x = 60
+            }
+            if newFrame.origin.y <= 0{
+                newFrame.origin.y = 0
+            }
+            if newFrame.origin.y >= 60{
+                newFrame.origin.y = 60
             }
             //self.vRocker.frame = CGRect(x: point.x - CGFloat(left), y: point.y - CGFloat(top), width: vRocker.frame.size.width, height: vRocker.frame.size.height)
             //用这种方法创建摇杆全部失败,
