@@ -7,49 +7,78 @@
 //
 
 import UIKit
-enum Neat:Int{
-    case location = 0,size
-}
+
 class ViewNeat: UIView {
-    var btnLocation:UIButton
-    var btnSize:UIButton
-    var viewControl:UIView?
-    var vFont:UIView
-    var vBorder:UIView
-    var vColor:UIView
+    enum neat:Int{
+        case location = 0,size,font,border,color,code
+    }
+    
+    enum neatSize:Int{
+        case topLeft = 0, rightBottom
+    }
+    
+    enum neatBorder:Int{
+        case borderColor = 0,borderWidth,cornerRadius
+    }
+    
+    enum neatColor:Int{
+        case foreGround = 0,backGround
+    }
+    
+    var segMenu:UISegmentedControl
+    var segItemMenu:UISegmentedControl
+    var viewControl:UIView?{
+        didSet{
+            if viewControl != nil{
+                originFrame = viewControl!.frame
+                lblViewInfo.text = "The view type is: \(viewControl!.dynamicType))"
+            }
+        }
+    }
+    var lblViewInfo:UILabel
     var isTouch = false
-    var neatType:Neat = .location
+    var neatType:neat = .location
+    var neatSizeType:neatSize = .topLeft
+    var neatBorderType:neatBorder = .borderColor
+    var neatColorType:neatColor = .foreGround
+    var originFrame:CGRect
+    
     var vRockerArea:UIView
     var vRocker: UIView
     var left,top:Float  //右 上
     var scaleX = 1
     var scaleY = 1
-    var lblTopLeft:UILabel
-    var lblRightBotoom:UILabel
     var timer:NSTimer?
     init(){
-        btnLocation = UIButton()
-        btnSize = UIButton()
-        vFont = UIView()
-        vBorder = UIView()
-        vColor = UIView()
+        //有一些View切换的细节后面边测试边处理
+        segMenu = UISegmentedControl(items: ["Location","Size","Font","Border","Color","Code"])
+        segItemMenu = UISegmentedControl(items: ["LeftTop","RightBottom"])
         vRockerArea = UIView()
         vRocker = UIView()
-        lblTopLeft  = UILabel()
-        lblRightBotoom = UILabel()
         left = 0
         top = 0
-        super.init(frame:CGRect(x: 10, y: UIScreen.mainScreen().bounds.height - 150, width: UIScreen.mainScreen().bounds.width-20, height: 150))
+        lblViewInfo = UILabel()
+        originFrame = CGRectZero
+        super.init(frame:CGRect(x: 0, y: UIScreen.mainScreen().bounds.height - 180, width: UIScreen.mainScreen().bounds.width, height: 180))
+        self.backgroundColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.3)
         timer = NSTimer.scheduledTimerWithTimeInterval(0.05, target: self, selector: "timerFire:", userInfo: nil, repeats: true)
-        btnLocation.frame = CGRect(x: 10, y: 100, width: 40, height: 40)
-        btnLocation.layer.cornerRadius = 20
-        btnLocation.backgroundColor = UIColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 0.5)
-        btnLocation.setTitle("位置", forState: UIControlState.Normal)
-        btnLocation.addTarget(self, action: "showLocation:", forControlEvents: UIControlEvents.TouchUpInside)
-        addSubview(btnLocation)
+        segMenu.frame = CGRect(x: 10, y:self.frame.size.height - 35 , width: self.frame.size.width - 20, height: 30)
+        segMenu.tintColor = UIColor.blackColor()
+        segMenu.addTarget(self, action: "segClick:", forControlEvents: UIControlEvents.ValueChanged)
+        if segMenu.selectedSegmentIndex == -1
+        {
+            segMenu.selectedSegmentIndex = 0
+        }
+        addSubview(segMenu)
         
+        segItemMenu.frame = CGRect(x: 10, y: 5, width: 150, height: 20)
+        segItemMenu.hidden = true
+        segItemMenu.tintColor = UIColor.blackColor()
+        segItemMenu.selectedSegmentIndex = 0
+        segItemMenu.addTarget(self, action: "segItemClick:", forControlEvents: UIControlEvents.ValueChanged)
+        addSubview(segItemMenu)
         
-        vRockerArea.frame = CGRect(x: self.frame.size.width / 2 - 50, y: 0, width: 100, height: 100)
+        vRockerArea.frame = CGRect(x: 10, y: 30, width: 100, height: 100)
         vRockerArea.layer.borderWidth = 0.5
         vRockerArea.layer.borderColor = UIColor.orangeColor().CGColor
         addSubview(vRockerArea)
@@ -62,14 +91,11 @@ class ViewNeat: UIView {
         vRocker.backgroundColor = UIColor.redColor()
         vRockerArea.addSubview(vRocker)
         
-        btnSize.frame = CGRect(x: 70, y: 100, width: 40, height: 40)
-        btnSize.layer.cornerRadius = 20
-        btnSize.backgroundColor = UIColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 0.5)
-        btnSize.setTitle("大小", forState: UIControlState.Normal)
-        btnSize.addTarget(self, action: "showSize:", forControlEvents: UIControlEvents.TouchUpInside)
-        addSubview(btnSize)
-        
-
+        lblViewInfo.frame = CGRect(x: CGRectGetMaxX(vRockerArea.frame) + 20 , y: 70, width: self.frame.size.width - CGRectGetMaxX(vRockerArea.frame) - 30, height: 60)
+        lblViewInfo.backgroundColor = UIColor(red: 0, green: 1, blue: 0, alpha: 0.3)
+        lblViewInfo.font = UIFont.systemFontOfSize(13)
+        lblViewInfo.numberOfLines = 0
+        addSubview(lblViewInfo)
     }
 
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -146,9 +172,79 @@ class ViewNeat: UIView {
         if viewControl != nil{
             switch(neatType){
                 case .location:
-                                Chaos.Log("scaleX:\(scaleX)  scaleY:\(scaleY)")
                         viewControl!.frame = CGRect(x: viewControl!.frame.origin.x + CGFloat(scaleX) * 0.5, y: viewControl!.frame.origin.y + CGFloat(scaleY) * 0.5, width: viewControl!.frame.size.width, height: viewControl!.frame.size.height)
-                case .size: break
+                    lblViewInfo.text = "\(viewControl!.dynamicType) l:\(viewControl!.frame.origin.x) t:\(viewControl!.frame.origin.y) w:\(viewControl!.frame.size.width) h:\(viewControl!.frame.size.height)"
+                case .size:
+                    switch neatSizeType{
+                    case.topLeft:
+                        let newFrame = CGRect(x: viewControl!.frame.origin.x + CGFloat(scaleX) * 0.5, y: viewControl!.frame.origin.y + CGFloat(scaleY) * 0.5, width: viewControl!.frame.size.width, height: viewControl!.frame.size.height)
+                        let newWidth = CGRectGetMaxX(originFrame) - newFrame.origin.x
+                        let newHeight = CGRectGetMaxY(originFrame) - newFrame.origin.y
+                        if newWidth <= CGFloat(0.0) || newHeight <= CGFloat(0.0)
+                        {
+                            return
+                        }
+                        viewControl!.frame = CGRect(x: newFrame.origin.x, y: newFrame.origin.y, width: newWidth, height: newHeight)
+                        lblViewInfo.text = "\(viewControl!.dynamicType) l:\(viewControl!.frame.origin.x) t:\(viewControl!.frame.origin.y) w:\(viewControl!.frame.size.width) h:\(viewControl!.frame.size.height)"
+                    case .rightBottom:
+                        let newWidth = viewControl!.frame.size.width + CGFloat(scaleX) * 0.5
+                        let newHeight = viewControl!.frame.size.height + CGFloat(scaleY) * 0.5
+                        if newWidth <= CGFloat(0.0) || newHeight <= CGFloat(0.0)
+                        {
+                            return
+                        }
+                        viewControl!.frame = CGRect(x: viewControl!.frame.origin.x, y: viewControl!.frame.origin.y, width: newWidth, height: newHeight)
+                        lblViewInfo.text = "\(viewControl!.dynamicType) l:\(viewControl!.frame.origin.x) t:\(viewControl!.frame.origin.y) w:\(viewControl!.frame.size.width) h:\(viewControl!.frame.size.height)"
+                }
+            case .font:
+                    if viewControl! is UILabel{
+                        let lbl = viewControl! as! UILabel
+                        let newSize = lbl.font.pointSize - CGFloat(scaleY) * 0.5
+                        if newSize <= 0
+                        {
+                            return
+                        }
+                        lbl.font = UIFont.systemFontOfSize(newSize)
+                        lblViewInfo.text = "\(viewControl!.dynamicType) FontSize: \(newSize))"
+                    }
+                    if viewControl! is UIButton{
+                        let btn = viewControl! as! UIButton
+                        if let fontSize = btn.titleLabel?.font.pointSize {
+                            let newSize = fontSize - CGFloat(scaleY) * 0.5
+                            if newSize <= 0
+                            {
+                                return
+                            }
+                            btn.titleLabel?.font = UIFont.systemFontOfSize(newSize)
+                            lblViewInfo.text = "\(viewControl!.dynamicType) FontSize: \(newSize))"
+                        }
+                    }
+                    if viewControl! is UITextField{
+                        let txt = viewControl! as! UITextField
+                        if let fontSize = txt.font?.pointSize {
+                            let newSize = fontSize - CGFloat(scaleY) * 0.5
+                            if newSize <= 0
+                            {
+                                return
+                            }
+                            txt.font = UIFont.systemFontOfSize(newSize)
+                            lblViewInfo.text = "\(viewControl!.dynamicType) FontSize: \(newSize))"
+                        }
+                    }
+                    if viewControl! is UITextView{
+                        let txt = viewControl! as! UITextView
+                        if let fontSize = txt.font?.pointSize {
+                            let newSize = fontSize - CGFloat(scaleY) * 0.5
+                            if newSize <= 0
+                            {
+                                return
+                            }
+                            txt.font = UIFont.systemFontOfSize(newSize)
+                            lblViewInfo.text = "\(viewControl!.dynamicType) FontSize: \(newSize))"
+                        }
+                }
+                
+                default: break
                 }
             }
         }
@@ -160,14 +256,67 @@ class ViewNeat: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func showLocation(sender:UIButton){
-        neatType = .location
+    func segClick(sender:UISegmentedControl){
+        switch sender.selectedSegmentIndex{
+            case 0: neatType = .location
+            segItemMenu.hidden = true
+            case 1:neatType = .size
+            segItemMenu.hidden = false
+            if segItemMenu.numberOfSegments == 3{
+                segItemMenu.removeSegmentAtIndex(2, animated: false)
+            }
+            segItemMenu.setTitle("LeftTop", forSegmentAtIndex: 0)
+            segItemMenu.setTitle("RightBottom", forSegmentAtIndex: 1)
+            case 2:neatType = .font
+            segItemMenu.hidden = true
+            case 3:neatType = .border
+            segItemMenu.hidden = false
+            if segItemMenu.numberOfSegments == 2{
+                segItemMenu.setTitle("Color", forSegmentAtIndex: 0)
+                segItemMenu.setTitle("Border", forSegmentAtIndex: 1)
+                segItemMenu.insertSegmentWithTitle("Radius", atIndex: 2, animated: false)
+            }
+            case 4:neatType = .color
+            segItemMenu.hidden = false
+            if segItemMenu.numberOfSegments == 3{
+                segItemMenu.removeSegmentAtIndex(2, animated: false)
+            }
+            segItemMenu.setTitle("Fore", forSegmentAtIndex: 0)
+            segItemMenu.setTitle("Back", forSegmentAtIndex: 1)
+            case 5:neatType = .code
+            segItemMenu.hidden = true
+            default: break
+        }
+        lblViewInfo.text = ""
     }
     
-    
-
-
-    
+    func segItemClick(sender:UISegmentedControl){
+        switch neatType{
+        case .size:
+            switch sender.selectedSegmentIndex{
+            case 0: neatSizeType = .topLeft
+            case 1:neatSizeType = .rightBottom
+            default:break
+            }
+        case .border:
+            switch sender.selectedSegmentIndex{
+            case 0: neatBorderType = .borderColor
+            case 1: neatBorderType = .borderWidth
+            case 2: neatBorderType = .cornerRadius
+            default:break
+            
+            }
+        case .color:
+            switch sender.selectedSegmentIndex{
+            case 0: neatColorType = .foreGround
+            case 1: neatColorType = .backGround
+            default:break
+                
+            }
+        default: break
+        }
+        
+    }
 }
 
 extension NSTimer{
@@ -187,3 +336,5 @@ extension NSTimer{
         self.fireDate = NSDate()
     }
 }
+
+
