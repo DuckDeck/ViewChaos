@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewNeat: UIView {
+class ViewNeat: UIView,ColorPickerDelegate {
     enum neat:Int{
         case location = 0,size,font,border,color,code
     }
@@ -22,7 +22,7 @@ class ViewNeat: UIView {
     }
     
     enum neatColor:Int{
-        case foreGround = 0,backGround
+        case foreGround = 0,backGround,tintColor
     }
     
     var segMenu:UISegmentedControl
@@ -42,13 +42,17 @@ class ViewNeat: UIView {
     var neatBorderType:neatBorder = .borderColor
     var neatColorType:neatColor = .foreGround
     var originFrame:CGRect
-    
+    var currentColor:UIColor
     var vRockerArea:UIView
     var vRocker: UIView
     var left,top:Float  //右 上
     var scaleX = 1
     var scaleY = 1
     var timer:NSTimer?
+    var stepScale:UIStepper
+    var lblScale:UILabel
+    var btnColorChooseCompleted:UIButton?
+    var vColorPicker:ChaosColorPicker?
     init(){
         //有一些View切换的细节后面边测试边处理
         segMenu = UISegmentedControl(items: ["Location","Size","Font","Border","Color","Code"])
@@ -59,6 +63,9 @@ class ViewNeat: UIView {
         top = 0
         lblViewInfo = UILabel()
         originFrame = CGRectZero
+        currentColor = UIColor.clearColor()
+        stepScale = UIStepper() //需要设置比例,来更精细的调节 
+        lblScale = UILabel()
         super.init(frame:CGRect(x: 0, y: UIScreen.mainScreen().bounds.height - 180, width: UIScreen.mainScreen().bounds.width, height: 180))
         self.backgroundColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.3)
         timer = NSTimer.scheduledTimerWithTimeInterval(0.05, target: self, selector: "timerFire:", userInfo: nil, repeats: true)
@@ -96,6 +103,17 @@ class ViewNeat: UIView {
         lblViewInfo.font = UIFont.systemFontOfSize(13)
         lblViewInfo.numberOfLines = 0
         addSubview(lblViewInfo)
+        
+        btnColorChooseCompleted = UIButton(frame: CGRect(x: frame.size.width - 70, y: 10, width: 70, height: 20))
+        btnColorChooseCompleted?.setTitle("ColorPick", forState: UIControlState.Normal)
+        btnColorChooseCompleted?.addTarget(self, action: "chooseColor:", forControlEvents: UIControlEvents.TouchUpInside)
+        btnColorChooseCompleted?.hidden = true
+        btnColorChooseCompleted?.layer.borderWidth = 0.5
+        btnColorChooseCompleted?.layer.borderColor = UIColor.blackColor().CGColor
+        btnColorChooseCompleted?.titleLabel?.font = UIFont.systemFontOfSize(13)
+        addSubview(btnColorChooseCompleted!)
+  
+        
     }
 
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -247,7 +265,7 @@ class ViewNeat: UIView {
                         let txt = viewControl! as! UITextView
                         if let fontSize = txt.font?.pointSize {
                             let newSize = fontSize - CGFloat(scaleY) * 0.5
-                            if newSize <= 0
+                            if newSize < 0
                             {
                                 return
                             }
@@ -255,7 +273,24 @@ class ViewNeat: UIView {
                             lblViewInfo.text = "\(viewControl!.dynamicType) FontSize: \(newSize))"
                         }
                 }
-                
+            case .border:
+                switch neatBorderType{
+                    case .borderWidth:
+                    let newWidth = viewControl!.layer.borderWidth  - CGFloat(scaleY) * 0.5
+                    if newWidth < 0{
+                        return
+                    }
+                    viewControl!.layer.borderWidth = newWidth
+                    lblViewInfo.text = "\(viewControl!.dynamicType) BorderWidth: \(newWidth))"
+                case.borderColor: break
+                case.cornerRadius:
+                    let newCornerRadius = viewControl!.layer.cornerRadius  - CGFloat(scaleY) * 0.5
+                    if newCornerRadius <= 0{
+                        return
+                    }
+                    viewControl!.layer.cornerRadius = newCornerRadius
+                    lblViewInfo.text = "\(viewControl!.dynamicType) CornerRadius: \(newCornerRadius))"
+                }
                 default: break
                 }
             }
@@ -269,6 +304,10 @@ class ViewNeat: UIView {
     }
     
     func segClick(sender:UISegmentedControl){
+        btnColorChooseCompleted?.hidden = true
+        btnColorChooseCompleted?.setTitle("ColorPick", forState: UIControlState.Normal)
+        vColorPicker?.delegate = nil
+        vColorPicker?.removeFromSuperview()
         switch sender.selectedSegmentIndex{
             case 0: neatType = .location
             segItemMenu.hidden = true
@@ -288,13 +327,25 @@ class ViewNeat: UIView {
                 segItemMenu.setTitle("Border", forSegmentAtIndex: 1)
                 segItemMenu.insertSegmentWithTitle("Radius", atIndex: 2, animated: false)
             }
+            segItemMenu.selectedSegmentIndex = 1
             case 4:neatType = .color
             segItemMenu.hidden = false
             if segItemMenu.numberOfSegments == 3{
-                segItemMenu.removeSegmentAtIndex(2, animated: false)
+                 segItemMenu.setTitle("Tint", forSegmentAtIndex: 1)
+            }
+            else if (segItemMenu.numberOfSegments == 2)
+            {
+                segItemMenu.insertSegmentWithTitle("Tint", atIndex: 2, animated: false)
             }
             segItemMenu.setTitle("Fore", forSegmentAtIndex: 0)
             segItemMenu.setTitle("Back", forSegmentAtIndex: 1)
+            segItemMenu.selectedSegmentIndex = 1
+            neatColorType = .backGround
+            btnColorChooseCompleted?.hidden = false
+            if let color = viewControl!.backgroundColor{
+                btnColorChooseCompleted?.setTitleColor(color, forState: UIControlState.Normal)
+                currentColor = color
+            }
             case 5:neatType = .code
             segItemMenu.hidden = true
             default: break
@@ -303,6 +354,10 @@ class ViewNeat: UIView {
     }
     
     func segItemClick(sender:UISegmentedControl){
+        btnColorChooseCompleted?.hidden = true
+        btnColorChooseCompleted?.setTitle("ColorPick", forState: UIControlState.Normal)
+        vColorPicker?.delegate = nil
+        vColorPicker?.removeFromSuperview()
         switch neatType{
         case .size:
             switch sender.selectedSegmentIndex{
@@ -313,6 +368,12 @@ class ViewNeat: UIView {
         case .border:
             switch sender.selectedSegmentIndex{
             case 0: neatBorderType = .borderColor
+                btnColorChooseCompleted?.hidden = false
+                if let color = viewControl!.layer.borderColor{
+                    btnColorChooseCompleted?.setTitleColor(UIColor(CGColor: color), forState: UIControlState.Normal)
+                    currentColor = UIColor(CGColor: color)
+                
+                }
             case 1: neatBorderType = .borderWidth
             case 2: neatBorderType = .cornerRadius
             default:break
@@ -321,13 +382,120 @@ class ViewNeat: UIView {
         case .color:
             switch sender.selectedSegmentIndex{
             case 0: neatColorType = .foreGround
+                //只有有字体的才是
+                if viewControl! is UIButton{
+                    btnColorChooseCompleted?.hidden = false
+                    let btn = viewControl! as! UIButton
+                    if let color = btn.titleColorForState(UIControlState.Normal){
+                        btnColorChooseCompleted?.setTitleColor(color, forState: UIControlState.Normal)
+                        currentColor = color
+                    }
+                }
+                else if viewControl! is UILabel{
+                    btnColorChooseCompleted?.hidden = false
+                    let lbl = viewControl! as! UILabel
+                    let color = lbl.textColor
+                    btnColorChooseCompleted?.setTitleColor(color, forState: UIControlState.Normal)
+                    currentColor = color
+                }
+                else if viewControl! is UITextField{
+                    btnColorChooseCompleted?.hidden = false
+                    let txt = viewControl! as! UITextField
+                    if   let color = txt.textColor{
+                        btnColorChooseCompleted?.setTitleColor(color, forState: UIControlState.Normal)
+                        currentColor = color
+                    }
+              }
+                else if viewControl! is UITextView{
+                    btnColorChooseCompleted?.hidden = false
+                    let txt = viewControl! as! UITextView
+                    if   let color = txt.textColor{
+                        btnColorChooseCompleted?.setTitleColor(color, forState: UIControlState.Normal)
+                        currentColor = color
+                    }
+                }
+                else{
+                     Chaos.toast("Only contain text UIView can change foreground color")
+                }
             case 1: neatColorType = .backGround
+                btnColorChooseCompleted?.hidden = false
+                if let color = viewControl!.backgroundColor{
+                    btnColorChooseCompleted?.setTitleColor(color, forState: UIControlState.Normal)
+                    currentColor = color
+                    }
+            case 2: neatColorType = .tintColor
+                    btnColorChooseCompleted?.hidden = false
+                    if let color = viewControl!.tintColor{
+                        btnColorChooseCompleted?.setTitleColor(color, forState: UIControlState.Normal)
+                        currentColor = color
+                    }
+                break
             default:break
                 
             }
         default: break
         }
         
+    }
+    
+    func colorSelectedChanged(color: UIColor) {
+        btnColorChooseCompleted?.setTitleColor(color, forState: UIControlState.Normal)
+        switch neatType{
+        case .border:
+            switch neatBorderType{
+            case.borderColor: viewControl!.layer.borderColor = color.CGColor
+            btnColorChooseCompleted?.setTitleColor(color, forState: UIControlState.Normal)
+                lblViewInfo.text = "\(viewControl!.dynamicType) CornerRadius: \(color))"
+            default : break
+            }
+        case .color:
+            switch neatColorType{
+            case .foreGround:
+                if viewControl! is UIButton{
+                    let btn = viewControl! as! UIButton
+                    btn.setTitleColor(color, forState: UIControlState.Normal)
+                    lblViewInfo.text = "\(viewControl!.dynamicType) TitleColor: \(color))"
+                }
+                else if viewControl! is UILabel{
+                    let lbl = viewControl! as! UILabel
+                   lbl.textColor = color
+                    lblViewInfo.text = "\(viewControl!.dynamicType) TextColor: \(color))"
+                }
+                else if viewControl! is UITextField{
+                    let txt = viewControl! as! UITextField
+                    txt.textColor = color
+                    lblViewInfo.text = "\(viewControl!.dynamicType) TextColor: \(color))"
+                }
+                else if viewControl! is UITextView{
+                    let txt = viewControl! as! UITextView
+                    txt.textColor = color
+                    lblViewInfo.text = "\(viewControl!.dynamicType) TextColor: \(color))"
+                }
+            case.backGround:
+                viewControl!.backgroundColor = color
+                lblViewInfo.text = "\(viewControl!.dynamicType) BackGroundColor: \(color))"
+            case .tintColor:
+                viewControl!.tintColor = color
+                lblViewInfo.text = "\(viewControl!.dynamicType) TintColor: \(color))"
+            }
+            break
+        default: break
+        }
+    }
+    
+    func chooseColor(sender:UIButton){
+        let title = sender.titleForState(UIControlState.Normal)
+        if title == "ColorPick"{
+            vColorPicker = ChaosColorPicker(frame: CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.width, height: 250), color: currentColor)
+            vColorPicker?.delegate = self
+            self.window?.addSubview(vColorPicker!)
+            sender.setTitle("Completed", forState: UIControlState.Normal)
+        }
+        else{
+             sender.setTitle("ColorPick", forState: UIControlState.Normal)
+            vColorPicker?.delegate = nil
+            vColorPicker?.removeFromSuperview()
+        }
     }
 }
 

@@ -20,8 +20,10 @@ class ViewController: UIViewController {
         btn?.name = "btn"
         btn?.addTarget(self, action: "click:", forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(btn!)
+    
     }
 
+    
     func click(sender:UIButton)
     {
         let story = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
