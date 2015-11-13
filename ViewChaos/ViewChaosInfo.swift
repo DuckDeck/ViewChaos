@@ -21,6 +21,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
     var lblCurrentView:UILabel
     var btnHit:UIButton
     var btnClose:UIButton
+    var btnControl:UIButton
     var tbLeft:UITableView
     var tbRight:UITableView
     var btnBack:UIButton
@@ -50,6 +51,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         btnBack = UIButton()
         lblCurrentView = UILabel()
         btnHit = UIButton()
+        btnControl = UIButton()
         btnMinimize = UIButton()
         super.init(frame: CGRect(x: 10, y: 80, width: UIScreen.mainScreen().bounds.width-20, height: UIScreen.mainScreen().bounds.height-160))
         backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
@@ -57,24 +59,31 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         tbRight.frame = CGRect(x: tbLeft.frame.size.width, y: 50, width: self.frame.size.width - tbLeft.frame.size.width, height: self.frame.size.height - 50)
         addSubview(tbLeft)
         addSubview(tbRight)
-        btnClose.frame = CGRect(x: self.frame.size.width - 50, y: 5, width: 50, height: 22)
+        btnClose.frame = CGRect(x: self.frame.size.width - 45, y: 5, width: 45, height: 22)
         btnClose.setTitle("Close", forState: UIControlState.Normal)
         btnClose.titleLabel?.font = UIFont.systemFontOfSize(13)
         btnClose.setTitleColor(UIColor.orangeColor(), forState: UIControlState.Normal)
         btnClose.addTarget(self, action: "close:", forControlEvents: UIControlEvents.TouchUpInside)
         addSubview(btnClose)
-        btnBack.frame = CGRect(x: self.frame.size.width - btnClose.frame.size.width - 60, y: 5, width: 45, height: 22)
+        btnBack.frame = CGRect(x: self.frame.size.width - btnClose.frame.size.width - 45, y: 5, width: 45, height: 22)
         btnBack.setTitle("Back", forState: UIControlState.Normal)
         btnBack.titleLabel?.font = UIFont.systemFontOfSize(12)
         btnBack.setTitleColor(UIColor.orangeColor(), forState: UIControlState.Normal)
         btnBack.addTarget(self, action: "back:", forControlEvents: UIControlEvents.TouchUpInside)
         addSubview(btnBack)
-        btnHit.frame = CGRect(x: btnBack.frame.origin.x - 60, y: 5, width: 45, height: 22)
+        btnHit.frame = CGRect(x: btnBack.frame.origin.x - 45, y: 5, width: 45, height: 22)
         btnHit.setTitle("Hit", forState: UIControlState.Normal)
         btnHit.titleLabel?.font = UIFont.systemFontOfSize(13)
         btnHit.setTitleColor(UIColor.orangeColor(), forState: UIControlState.Normal)
         btnHit.addTarget(self, action: "hit:", forControlEvents: UIControlEvents.TouchUpInside)
         addSubview(btnHit)
+        btnControl.frame = CGRect(x: btnHit.frame.origin.x - 45, y: 5, width: 45, height: 22)
+        btnControl.setTitle("Control", forState: UIControlState.Normal)
+        btnControl.titleLabel?.font = UIFont.systemFontOfSize(13)
+        btnControl.setTitleColor(UIColor.orangeColor(), forState: UIControlState.Normal)
+        btnControl.addTarget(self, action: "control:", forControlEvents: UIControlEvents.TouchUpInside)
+        addSubview(btnControl)
+        
         let lblCurrent = UILabel(frame: CGRect(x: 2, y: 5, width: 100, height: 22))
         lblCurrent.text = "Current View:"
         lblCurrent.textColor = UIColor.whiteColor()
@@ -329,6 +338,16 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             return
         }
         NSNotificationCenter.defaultCenter().postNotificationName("handleTraceView", object: viewHit!)
+        minimize()
+    }
+    
+    func control(sender:UIButton){
+        if viewHit == nil{
+            let alert = UIAlertView(title: "ViewChaos", message: "View has removed and can't control!", delegate: self, cancelButtonTitle: nil)
+            alert.show()
+            return
+        }
+        NSNotificationCenter.defaultCenter().postNotificationName(controlTraceView, object: viewHit!)
         minimize()
     }
     
@@ -1112,8 +1131,8 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             }
             else if view is UIButton{
                 let btn = view as! UIButton
-                let title = btn.titleForState(UIControlState.Normal)
-                cell?.detailTextLabel?.text = cell!.detailTextLabel!.text! + " text(\((title! as NSString).length): \(title!))"
+                let title = btn.titleForState(UIControlState.Normal) == nil ? "": btn.titleForState(UIControlState.Normal)!
+                cell?.detailTextLabel?.text = cell!.detailTextLabel!.text! + " text(\((title as NSString).length): \(title))"
             }
             cell?.detailTextLabel?.sizeToFit()
         }

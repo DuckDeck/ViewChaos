@@ -106,6 +106,7 @@ class ViewChaos: UIView {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleTraceContraints:", name: "handleTraceContraints", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleTraceAddSubView:", name: "handleTraceAddSubView", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleTraceShow:", name: "handleTraceShow", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "controlTraceShow:", name: controlTraceView, object: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -126,12 +127,7 @@ class ViewChaos: UIView {
             }) { (finished) -> Void in
                 self.viewBound.removeFromSuperview()
                 self.viewBound.alpha = 1
-                self.viewNeat = ViewNeat()
-                self.viewNeat?.viewControl = view;
-                self.viewNeat?.layer.zPosition = CGFloat(FLT_MAX)
-                self.window?.addSubview(self.viewNeat!);
-        }
-        
+            }
     }
     
     func handleTraceViewClose(notif:NSNotification){
@@ -140,6 +136,32 @@ class ViewChaos: UIView {
         }
         viewNeat?.removeFromSuperview()
         viewNeat = nil
+    }
+    
+    func controlTraceShow(notif:NSNotification){
+        
+        let view = notif.object as! UIView
+        self.window?.addSubview(viewBound)
+        let p = self.window?.convertRect(view.bounds, fromView: view)
+        Chaos.toast("开始控制:\(view.dynamicType)")
+        viewBound.frame = p!
+        UIView.animateWithDuration(0.3, delay: 0, options: [.AllowUserInteraction,.Repeat,.Autoreverse], animations: { () -> Void in
+            UIView.setAnimationRepeatCount(1)
+            self.viewBound.alpha = 0
+            }) { (finished) -> Void in
+                self.viewBound.removeFromSuperview()
+                self.viewBound.alpha = 1
+                if(self.viewNeat != nil){
+                    self.viewNeat?.viewControl = view
+                }
+                else{
+                    self.viewNeat = ViewNeat()
+                    self.viewNeat?.viewControl = view;
+                    self.viewNeat?.layer.zPosition = CGFloat(FLT_MAX)
+                    self.window?.addSubview(self.viewNeat!);
+                }
+        }
+
     }
     
     func handleTraceAddSubView(notif:NSNotification){
@@ -544,6 +566,7 @@ let VcWillMoveToSuperview = "vcWillMoveToSuperview"
 let VcWillRemoveSubview = "vcWillRemoveSubview"
 let VcDidAddSubview = "vcDidAddSubview"
 let handleTraceView = "handleTraceView"
+let controlTraceView = "controlTraceView"
 let handleTraceContraints = "handleTraceContraints"
 let handleTraceAddSubView = "handleTraceAddSubView"
 let handleTraceShow = "handleTraceShow"
