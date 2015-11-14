@@ -27,7 +27,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
     
     var segMenu:UISegmentedControl
     var segItemMenu:UISegmentedControl
-    var viewControl:UIView?{
+    weak var viewControl:UIView?{
         didSet{
             if viewControl != nil{
                 originFrame = viewControl!.frame
@@ -356,6 +356,9 @@ class ViewNeat: UIView,ColorPickerDelegate {
                 default: break
                 }
             }
+            else{
+                Chaos.toast("VIew have released")
+            }
         }
     
     override convenience init(frame: CGRect) {
@@ -366,6 +369,10 @@ class ViewNeat: UIView,ColorPickerDelegate {
     }
     
     func segClick(sender:UISegmentedControl){
+        if viewControl == nil{
+            Chaos.toast("VIew have released")
+            return
+        }
         btnColorChooseCompleted?.hidden = true
         btnColorChooseCompleted?.setTitle("ColorPick", forState: UIControlState.Normal)
         vColorPicker?.delegate = nil
@@ -374,14 +381,21 @@ class ViewNeat: UIView,ColorPickerDelegate {
             case 0: neatType = .location
             segItemMenu.hidden = true
             case 1:neatType = .size
+            lblViewInfo.text = "\(viewControl!.dynamicType) l:\(viewControl!.frame.origin.x) t:\(viewControl!.frame.origin.y) w:\(viewControl!.frame.size.width) h:\(viewControl!.frame.size.height)"
             segItemMenu.hidden = false
             if segItemMenu.numberOfSegments == 3{
                 segItemMenu.removeSegmentAtIndex(2, animated: false)
             }
             segItemMenu.setTitle("LeftTop", forSegmentAtIndex: 0)
             segItemMenu.setTitle("RightBottom", forSegmentAtIndex: 1)
+            neatSizeType = .topLeft
+            segItemMenu.selectedSegmentIndex = 0
+            lblViewInfo.text = "\(viewControl!.dynamicType) l:\(viewControl!.frame.origin.x) t:\(viewControl!.frame.origin.y) w:\(viewControl!.frame.size.width) h:\(viewControl!.frame.size.height)"
             case 2:neatType = .font
             segItemMenu.hidden = true
+            if let fontSize = getFont(){
+                lblViewInfo.text = "\(viewControl!.dynamicType) font:\(fontSize))"
+            }
             case 3:neatType = .border
             segItemMenu.hidden = false
             if segItemMenu.numberOfSegments == 2{
@@ -394,6 +408,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
             segItemMenu.setTitle("Border", forSegmentAtIndex: 1)
             segItemMenu.selectedSegmentIndex = 1
             neatBorderType = .borderWidth
+            lblViewInfo.text = "\(viewControl!.dynamicType) BorderWidth: \(viewControl!.layer.borderWidth))"
             case 4:neatType = .color
             segItemMenu.hidden = false
             if segItemMenu.numberOfSegments == 3{
@@ -411,16 +426,21 @@ class ViewNeat: UIView,ColorPickerDelegate {
             if let color = viewControl!.backgroundColor{
                 btnColorChooseCompleted?.setTitleColor(color, forState: UIControlState.Normal)
                 currentColor = color
+                lblViewInfo.text = "\(viewControl!.dynamicType) BackGroundColor: \(color.format("swift"))"
             }
             case 5:neatType = .code
             segItemMenu.hidden = true
             generateCode()
             default: break
         }
-        lblViewInfo.text = ""
+
     }
     
     func segItemClick(sender:UISegmentedControl){
+        if viewControl == nil{
+            Chaos.toast("VIew have released")
+            return
+        }
         btnColorChooseCompleted?.hidden = true
         btnColorChooseCompleted?.setTitle("ColorPick", forState: UIControlState.Normal)
         vColorPicker?.delegate = nil
@@ -506,6 +526,10 @@ class ViewNeat: UIView,ColorPickerDelegate {
     }
     
     func colorSelectedChanged(color: UIColor) {
+        if viewControl == nil{
+            Chaos.toast("VIew have released")
+            return
+        }
         btnColorChooseCompleted?.setTitleColor(color, forState: UIControlState.Normal)
         switch neatType{
         case .border:
@@ -554,8 +578,9 @@ class ViewNeat: UIView,ColorPickerDelegate {
         let title = sender.titleForState(UIControlState.Normal)
         if title == "ColorPick"{
             vColorPicker = ChaosColorPicker(frame: CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.width, height: 250), color: currentColor)
-            vColorPicker?.frame = CGRect(x: 0, y: UIScreen.mainScreen().bounds.height - self.frame.size.height - vColorPicker!.frame.size.height, width: UIScreen.mainScreen().bounds.width, height: 200)
+            vColorPicker?.frame = CGRect(x: 0, y: UIScreen.mainScreen().bounds.height - self.frame.size.height - vColorPicker!.frame.size.height , width: UIScreen.mainScreen().bounds.width, height: vColorPicker!.frame.size.height)
             vColorPicker?.delegate = self
+            vColorPicker?.layer.zPosition = CGFloat(FLT_MAX)
             self.window?.addSubview(vColorPicker!)
             sender.setTitle("Completed", forState: UIControlState.Normal)
         }
@@ -623,6 +648,10 @@ class ViewNeat: UIView,ColorPickerDelegate {
     }
     
     func generateCode(){
+        if viewControl == nil{
+            Chaos.toast("VIew have released")
+            return
+        }
         print("\n")
         print("Begin generate Swift code-------------------------------------:")
         var viewName = "view"
@@ -729,6 +758,32 @@ class ViewNeat: UIView,ColorPickerDelegate {
             print("\(viewName).backgroundColor = \(backColor.format("objc"));")
         }
         print("\(viewName).tintColor = \(viewControl!.tintColor.format("objc"));")
+    }
+    
+    func getFont()->CGFloat?{
+        if viewControl! is UIButton{
+            let btn = viewControl! as! UIButton
+            return btn.titleLabel?.font.pointSize
+        }
+        else if viewControl! is UILabel{
+            let lbl = viewControl! as! UILabel
+            return lbl.font.pointSize
+        }
+        else if viewControl! is UITextField{
+            let txt = viewControl! as! UITextField
+            return txt.font?.pointSize
+        }
+        else if viewControl! is UITextView{
+            let txt = viewControl! as! UITextView
+            return txt.font?.pointSize
+        }
+        return nil
+    }
+    
+    override func removeFromSuperview() {
+        super.removeFromSuperview()
+        vColorPicker?.delegate = nil
+        vColorPicker?.removeFromSuperview()
     }
 }
 

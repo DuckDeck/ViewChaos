@@ -17,7 +17,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         case trace = 4
         case about = 5
     }
-    var viewHit:UIView?
+    weak var viewHit:UIView?
     var lblCurrentView:UILabel
     var btnHit:UIButton
     var btnClose:UIButton
@@ -282,6 +282,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             viewHit?.addObserver(self, forKeyPath: "contentInset", options: [NSKeyValueObservingOptions.Old,NSKeyValueObservingOptions.New], context: nil)
         }
         traceSuperAndSubView()
+        Chaos.toast("Start Trace")
     }
     
     func stopTrace(){
@@ -333,7 +334,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
     
     func hit(sender:UIButton){
         if viewHit == nil{
-            let alert = UIAlertView(title: "ViewChaos", message: "View has removed and can't hit!", delegate: self, cancelButtonTitle: nil)
+            let alert = UIAlertView(title: "ViewChaos", message: "View has removed and can't hit!", delegate: self, cancelButtonTitle: "OK")
             alert.show()
             return
         }
@@ -343,7 +344,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
     
     func control(sender:UIButton){
         if viewHit == nil{
-            let alert = UIAlertView(title: "ViewChaos", message: "View has removed and can't control!", delegate: self, cancelButtonTitle: nil)
+            let alert = UIAlertView(title: "ViewChaos", message: "View has removed and can't control!", delegate: self, cancelButtonTitle: "OK")
             alert.show()
             return
         }
@@ -782,6 +783,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
     
     func expand(sender:UIButton){
         sender.removeFromSuperview()
+        NSNotificationCenter.defaultCenter().postNotificationName("handleTraceViewClose", object: nil)
         UIView.animateWithDuration(0.2) { () -> Void in
             self.frame = self.originFrame!
         }
