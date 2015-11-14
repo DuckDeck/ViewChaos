@@ -103,7 +103,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
         btnReset = UIButton(type: UIButtonType.RoundedRect)
         btnPrecise = UIButton()
         super.init(frame:CGRect(x: 0, y: UIScreen.mainScreen().bounds.height - 180, width: UIScreen.mainScreen().bounds.width, height: 180))
-        self.backgroundColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.3)
+        self.backgroundColor = UIColor(red: 0.0, green: 0.898, blue: 0.836, alpha: 0.3)
         timer = NSTimer.scheduledTimerWithTimeInterval(0.05, target: self, selector: "timerFire:", userInfo: nil, repeats: true)
         segMenu.frame = CGRect(x: 10, y:self.frame.size.height - 35 , width: self.frame.size.width - 20, height: 30)
         segMenu.tintColor = UIColor.blackColor()
@@ -135,7 +135,6 @@ class ViewNeat: UIView,ColorPickerDelegate {
         vRockerArea.addSubview(vRocker)
         
         lblViewInfo.frame = CGRect(x: CGRectGetMaxX(vRockerArea.frame) + 10 , y: 70, width: self.frame.size.width - CGRectGetMaxX(vRockerArea.frame) - 20, height: 60)
-        lblViewInfo.backgroundColor = UIColor(red: 0, green: 1, blue: 0, alpha: 0.3)
         lblViewInfo.font = UIFont.systemFontOfSize(13)
         lblViewInfo.numberOfLines = 0
         addSubview(lblViewInfo)
