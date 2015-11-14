@@ -140,7 +140,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
         lblViewInfo.numberOfLines = 0
         addSubview(lblViewInfo)
         
-        btnColorChooseCompleted = UIButton(frame: CGRect(x: frame.size.width - 70, y: 10, width: 70, height: 20))
+        btnColorChooseCompleted = UIButton(frame: CGRect(x: frame.size.width - 70, y: 5, width: 70, height: 27))
         btnColorChooseCompleted?.setTitle("ColorPick", forState: UIControlState.Normal)
         btnColorChooseCompleted?.addTarget(self, action: "chooseColor:", forControlEvents: UIControlEvents.TouchUpInside)
         btnColorChooseCompleted?.hidden = true
@@ -165,7 +165,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
         btnReset.addTarget(self, action: "reset:", forControlEvents: UIControlEvents.TouchUpInside)
         addSubview(btnReset)
         
-        stepScale.frame = CGRect(x: self.frame.size.width - 200, y: 40, width: 30, height: 20)
+        stepScale.frame = CGRect(x: CGRectGetMaxX(vRockerArea.frame) + 8, y: 40, width: 94, height: 20)
         stepScale.maximumValue = 5
         stepScale.minimumValue = 1
         stepScale.value = 5
@@ -175,12 +175,12 @@ class ViewNeat: UIView,ColorPickerDelegate {
         scale = Int(stepScale.value)
         addSubview(stepScale)
         
-        lblScale.frame = CGRect(x: self.frame.size.width - 200, y: 20, width: 45, height: 20)
+        lblScale.frame = CGRect(x: CGRectGetMaxX(vRockerArea.frame) + 8, y: 20, width: 45, height: 20)
         lblScale.text = "Scale:\(scale)"
         lblScale.font = UIFont.systemFontOfSize(13)
         lblScale.textColor = UIColor.blackColor()
         addSubview(lblScale)
-        btnPrecise.frame = CGRect(x: CGRectGetMaxX(lblScale.frame) + 2, y: 18, width: 60, height: 20)
+        btnPrecise.frame = CGRect(x: btnColorChooseCompleted!.frame.origin.x-72, y: 5, width: 62, height: 27)
         btnPrecise.setTitle("Precise", forState: UIControlState.Normal)
         btnPrecise.layer.borderWidth  = 0.5
         btnPrecise.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
@@ -213,18 +213,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
         }
         let touch = touches.first
         if let point = touch?.locationInView(vRockerArea){
-        //    Chaos.Log("X:\(point.x) Y:\(point.y)")
-            //Chaos.Log("CehterX:\(vRockerArea.center.x) CenterY:\(vRockerArea.center.y)")
-        //限定在一个圆形范围内
-//            let x = point.x - 50
-//            let y = point.y - 50
-//            if x * x + y*y >= 250{
-//                return
-//            }
             var newFrame = CGRect(x: point.x - CGFloat(left), y: point.y - CGFloat(top), width: vRocker.frame.size.width, height: vRocker.frame.size.height)
-//            if newFrame.origin.x <= 0 || newFrame.origin.x >= 60 || newFrame.origin.y <= 0 ||  newFrame.origin.y >= 60{
-//                return
-//            }
             if newFrame.origin.x <= 0{
                 newFrame.origin.x = 0
             }
@@ -281,8 +270,8 @@ class ViewNeat: UIView,ColorPickerDelegate {
                     switch neatSizeType{
                     case.topLeft:
                         let newFrame = CGRect(x: viewControl!.frame.origin.x + CGFloat(scaleX) * 0.5, y: viewControl!.frame.origin.y + CGFloat(scaleY) * 0.5, width: viewControl!.frame.size.width, height: viewControl!.frame.size.height)
-                        let newWidth = CGRectGetMaxX(originFrame) - newFrame.origin.x
-                        let newHeight = CGRectGetMaxY(originFrame) - newFrame.origin.y
+                        let newWidth = CGRectGetMaxX(viewControl!.frame) - newFrame.origin.x
+                        let newHeight = CGRectGetMaxY(viewControl!.frame) - newFrame.origin.y
                         if newWidth <= CGFloat(0.0) || newHeight <= CGFloat(0.0)
                         {
                             return
@@ -523,7 +512,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
             switch neatBorderType{
             case.borderColor: viewControl!.layer.borderColor = color.CGColor
             btnColorChooseCompleted?.setTitleColor(color, forState: UIControlState.Normal)
-                lblViewInfo.text = "\(viewControl!.dynamicType) CornerRadius: \(color.format())"
+                lblViewInfo.text = "\(viewControl!.dynamicType) CornerRadius: \(color.format("swift"))"
             default : break
             }
         case .color:
@@ -532,29 +521,29 @@ class ViewNeat: UIView,ColorPickerDelegate {
                 if viewControl! is UIButton{
                     let btn = viewControl! as! UIButton
                     btn.setTitleColor(color, forState: UIControlState.Normal)
-                    lblViewInfo.text = "\(viewControl!.dynamicType) TitleColor: \(color.format())"
+                    lblViewInfo.text = "\(viewControl!.dynamicType) TitleColor: \(color.format("swift"))"
                 }
                 else if viewControl! is UILabel{
                     let lbl = viewControl! as! UILabel
                    lbl.textColor = color
-                    lblViewInfo.text = "\(viewControl!.dynamicType) TextColor: \(color.format())"
+                    lblViewInfo.text = "\(viewControl!.dynamicType) TextColor: \(color.format("swift"))"
                 }
                 else if viewControl! is UITextField{
                     let txt = viewControl! as! UITextField
                     txt.textColor = color
-                    lblViewInfo.text = "\(viewControl!.dynamicType) TextColor: \(color.format()))"
+                    lblViewInfo.text = "\(viewControl!.dynamicType) TextColor: \(color.format("swift")))"
                 }
                 else if viewControl! is UITextView{
                     let txt = viewControl! as! UITextView
                     txt.textColor = color
-                    lblViewInfo.text = "\(viewControl!.dynamicType) TextColor: \(color.format())"
+                    lblViewInfo.text = "\(viewControl!.dynamicType) TextColor: \(color.format("swift"))"
                 }
             case.backGround:
                 viewControl!.backgroundColor = color
-                lblViewInfo.text = "\(viewControl!.dynamicType) BackGroundColor: \(color.format())"
+                lblViewInfo.text = "\(viewControl!.dynamicType) BackGroundColor: \(color.format("swift"))"
             case .tintColor:
                 viewControl!.tintColor = color
-                lblViewInfo.text = "\(viewControl!.dynamicType) TintColor: \(color.format())"
+                lblViewInfo.text = "\(viewControl!.dynamicType) TintColor: \(color.format("swift"))"
             }
             break
         default: break
@@ -565,6 +554,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
         let title = sender.titleForState(UIControlState.Normal)
         if title == "ColorPick"{
             vColorPicker = ChaosColorPicker(frame: CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.width, height: 250), color: currentColor)
+            vColorPicker?.frame = CGRect(x: 0, y: UIScreen.mainScreen().bounds.height - self.frame.size.height - vColorPicker!.frame.size.height, width: UIScreen.mainScreen().bounds.width, height: 200)
             vColorPicker?.delegate = self
             self.window?.addSubview(vColorPicker!)
             sender.setTitle("Completed", forState: UIControlState.Normal)
@@ -633,61 +623,112 @@ class ViewNeat: UIView,ColorPickerDelegate {
     }
     
     func generateCode(){
+        print("\n")
         print("Begin generate Swift code-------------------------------------:")
-        if let viewName = viewControl!.name
-        {
-            print("let \(viewName) = \(viewControl!.dynamicType)()")
-            print("\(viewName).frame = CGRect(x: \(viewControl!.frame.origin.x), y: \(viewControl!.frame.origin.y), width: \(viewControl!.frame.size.width), height: \(viewControl!.frame.size.height))")
-            if viewControl! is UIButton{
-                let btn = viewControl! as! UIButton
-                if let fontSize = btn.titleLabel?.font.pointSize.format(".1f")
-                {
-                    print("\(viewName).titleLabel?.font = UIFont.systemFontOfSize(\(fontSize))")
-                }
-                if let color = btn.titleColorForState(UIControlState.Normal)
-                {
-                    print("\(viewName).setTitleColor(\(color.format()), forState: UIControlState.Normal)") //颜色需要format
-                }
-            }
-            else if viewControl! is UILabel{
-                let lbl = viewControl! as! UILabel
-                print("\(viewName).font = UIFont.systemFontOfSize(\(lbl.font.pointSize.format(".1f")))")
-                let color = lbl.textColor
-                print("\(viewName).textColor = \(color.format())") //颜色需要format
-            }
-            else if viewControl! is UITextField{
-                let txt = viewControl! as! UITextField
-                if let font = txt.font{
-                    print("\(viewName).font = UIFont.systemFontOfSize(\(font.pointSize.format(".1f")))")
-                }
-                if let color = txt.textColor{
-                    print("\(viewName).textColor = \(color.format())") //颜色需要format
-                }
-            }
-            else if viewControl! is UITextView{
-                let txt = viewControl! as! UITextView
-                if let font = txt.font{
-                    print("\(viewName).font = UIFont.systemFontOfSize(\(font.pointSize.format(".1f")))")
-                }
-                if let color = txt.textColor{
-                    print("\(viewName).textColor = \(color.format())") //颜色需要format
-                }
-            }
-            viewControl!.tintColor = viewControl!.backgroundColor
-            viewControl!.layer.borderWidth = viewControl!.layer.borderWidth
-            if let borderColor = viewControl!.layer.borderColor{
-                print("\(viewName).layer.borderColor = \(UIColor(CGColor: borderColor).format()).CGColor")
-            }
-            print("\(viewName).layer.borderWidth = \(viewControl!.layer.borderWidth.format("0.1f"))")
-            print("\(viewName).layer.cornerRadius = \(viewControl!.layer.cornerRadius.format("0.1f"))")
-            if let backColor = viewControl!.backgroundColor{
-                print("\(viewName).backgroundColor = \(backColor.format())")
-            }
-            print("\(viewName).tintColor = \(viewControl!.tintColor.format())")
+        var viewName = "view"
+        if viewControl!.name != nil{
+            viewName = viewControl!.name!
         }
-        else{
-            print("let view = \(viewControl!.dynamicType)()")
+        print("let \(viewName) = \(viewControl!.dynamicType)()")
+        print("\(viewName).frame = CGRect(x: \(viewControl!.frame.origin.x), y: \(viewControl!.frame.origin.y), width: \(viewControl!.frame.size.width), height:\(viewControl!.frame.size.width))")
+        if viewControl! is UIButton{
+            let btn = viewControl! as! UIButton
+            if let fontSize = btn.titleLabel?.font.pointSize.format(".1f")
+            {
+                print("\(viewName).titleLabel?.font = UIFont.systemFontOfSize(\(fontSize))")
+            }
+            if let color = btn.titleColorForState(UIControlState.Normal)
+            {
+                print("\(viewName).setTitleColor(\(color.format("swift")), forState: UIControlState.Normal)") //颜色需要format
+            }
         }
+        else if viewControl! is UILabel{
+            let lbl = viewControl! as! UILabel
+            print("\(viewName).font = UIFont.systemFontOfSize(\(lbl.font.pointSize.format(".1f")))")
+            let color = lbl.textColor
+            print("\(viewName).textColor = \(color.format("swift"))") //颜色需要format
+        }
+        else if viewControl! is UITextField{
+            let txt = viewControl! as! UITextField
+            if let font = txt.font{
+                print("\(viewName).font = UIFont.systemFontOfSize(\(font.pointSize.format(".1f")))")
+            }
+            if let color = txt.textColor{
+                print("\(viewName).textColor = \(color.format("swift"))") //颜色需要format
+            }
+        }
+        else if viewControl! is UITextView{
+            let txt = viewControl! as! UITextView
+            if let font = txt.font{
+                print("\(viewName).font = UIFont.systemFontOfSize(\(font.pointSize.format(".1f")))")
+            }
+            if let color = txt.textColor{
+                print("\(viewName).textColor = \(color.format("swift"))") //颜色需要format
+            }
+        }
+        viewControl!.tintColor = viewControl!.backgroundColor
+        viewControl!.layer.borderWidth = viewControl!.layer.borderWidth
+        if let borderColor = viewControl!.layer.borderColor{
+            print("\(viewName).layer.borderColor = \(UIColor(CGColor: borderColor).format("swift")).CGColor")
+        }
+        print("\(viewName).layer.borderWidth = \(viewControl!.layer.borderWidth.format("0.1f"))")
+        print("\(viewName).layer.cornerRadius = \(viewControl!.layer.cornerRadius.format("0.1f"))")
+        if let backColor = viewControl!.backgroundColor{
+            print("\(viewName).backgroundColor = \(backColor.format("swift"))")
+        }
+        print("\(viewName).tintColor = \(viewControl!.tintColor.format("swift"))")
+        
+        
+        print("\n")
+        print("\n")
+        print("Begin generate Objective -C code-------------------------------------:")
+        print("\(viewControl!.dynamicType)*  \(viewName) = [\(viewControl!.dynamicType) new];")
+        print("\(viewName).frame =  CGRectMake(\(viewControl!.frame.origin.x), \(viewControl!.frame.origin.y), \(viewControl!.frame.size.width), \(viewControl!.frame.size.width));")
+        if viewControl! is UIButton{
+            let btn = viewControl! as! UIButton
+            if let fontSize = btn.titleLabel?.font.pointSize.format(".1f")
+            {
+                print("\(viewName).titleLabel.font = [UIFont systemFontOfSize:\(fontSize)];")
+            }
+            if let color = btn.titleColorForState(UIControlState.Normal)
+            {
+                print("[\(viewName) setTitleColor:\(color.format("objc")) forState:UIControlStateNormal];") //颜色需要format
+            }
+        }
+        else if viewControl! is UILabel{
+            let lbl = viewControl! as! UILabel
+            print("\(viewName).font = [UIFont systemFontOfSize:\(lbl.font.pointSize.format(".1f"))];")
+            let color = lbl.textColor
+            print("\(viewName).textColor = \(color.format("objc"));") //颜色需要format
+        }
+        else if viewControl! is UITextField{
+            let txt = viewControl! as! UITextField
+            if let font = txt.font{
+                print("\(viewName).font = [UIFont systemFontOfSize:\(font.pointSize.format(".1f"))];")
+            }
+            if let color = txt.textColor{
+                print("\(viewName).textColor = \(color.format("objc"));") //颜色需要format
+            }
+        }
+        else if viewControl! is UITextView{
+            let txt = viewControl! as! UITextView
+            if let font = txt.font{
+                print("\(viewName).font =  [UIFont systemFontOfSize:\(font.pointSize.format(".1f"))];")
+            }
+            if let color = txt.textColor{
+                print("\(viewName).textColor = \(color.format("objc"));") //颜色需要format
+            }
+        }
+  
+        if let borderColor = viewControl!.layer.borderColor{
+            print("\(viewName).layer.borderColor = \(UIColor(CGColor: borderColor).format("objc")).CGColor;")
+        }
+        print("\(viewName).layer.borderWidth = \(viewControl!.layer.borderWidth.format("0.1f"));")
+        print("\(viewName).layer.cornerRadius = \(viewControl!.layer.cornerRadius.format("0.1f"));")
+        if let backColor = viewControl!.backgroundColor{
+            print("\(viewName).backgroundColor = \(backColor.format("objc"));")
+        }
+        print("\(viewName).tintColor = \(viewControl!.tintColor.format("objc"));")
     }
 }
 
@@ -709,13 +750,21 @@ extension NSTimer{
     }
 }
 extension UIColor{
-    func format()->String{
+    func format(type:String)->String{
         var red:CGFloat = 0.0
         var green:CGFloat = 0.0
         var blue:CGFloat = 0.0
         var alpha:CGFloat = 0.0
         self.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-        return "UIColor(red: \(red.format(".2f")), green: \(green.format(".2f")), blue: \(blue.format(".2f")), alpha: \(alpha.format(".2f")))"
+         if type == "swift"{
+            return "UIColor(red: \(red.format(".2f")), green: \(green.format(".2f")), blue: \(blue.format(".2f")), alpha: \(alpha.format(".2f")))"
+        }
+         else if type == "objc"{
+            return "[UIColor colorWithRed:\(red.format(".2f")) green:\(green.format(".2f")) blue: \(blue.format(".2f")) alpha:\(alpha.format(".2f"))]"
+        }
+         else{
+            return self.description
+        }
     }
 }
 

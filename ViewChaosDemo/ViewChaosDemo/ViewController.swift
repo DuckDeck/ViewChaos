@@ -20,11 +20,6 @@ class ViewController: UIViewController {
         btn?.name = "btn"
         btn?.addTarget(self, action: "click:", forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(btn!)
-        
-        
-        let btt = UIButton(frame: CGRect(x: 10, y: 150, width: 100, height: 33))
-        btt.name = "btt"
-        view.addSubview(btt)
     }
 
     
