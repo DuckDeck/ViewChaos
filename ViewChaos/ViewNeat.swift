@@ -296,7 +296,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
                             return
                         }
                         lbl.font = UIFont.systemFontOfSize(newSize)
-                        lblViewInfo.text = "\(viewControl!.dynamicType) FontSize: \(newSize))"
+                        lblViewInfo.text = "\(viewControl!.dynamicType) FontSize: \(newSize)"
                     }
                     if viewControl! is UIButton{
                         let btn = viewControl! as! UIButton
@@ -307,7 +307,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
                                 return
                             }
                             btn.titleLabel?.font = UIFont.systemFontOfSize(newSize)
-                            lblViewInfo.text = "\(viewControl!.dynamicType) FontSize: \(newSize))"
+                            lblViewInfo.text = "\(viewControl!.dynamicType) FontSize: \(newSize)"
                         }
                     }
                     if viewControl! is UITextField{
@@ -319,7 +319,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
                                 return
                             }
                             txt.font = UIFont.systemFontOfSize(newSize)
-                            lblViewInfo.text = "\(viewControl!.dynamicType) FontSize: \(newSize))"
+                            lblViewInfo.text = "\(viewControl!.dynamicType) FontSize: \(newSize)"
                         }
                     }
                     if viewControl! is UITextView{
@@ -331,7 +331,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
                                 return
                             }
                             txt.font = UIFont.systemFontOfSize(newSize)
-                            lblViewInfo.text = "\(viewControl!.dynamicType) FontSize: \(newSize))"
+                            lblViewInfo.text = "\(viewControl!.dynamicType) FontSize: \(newSize)"
                         }
                 }
             case .border:
@@ -342,7 +342,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
                         return
                     }
                     viewControl!.layer.borderWidth = newWidth
-                    lblViewInfo.text = "\(viewControl!.dynamicType) BorderWidth: \(newWidth))"
+                    lblViewInfo.text = "\(viewControl!.dynamicType) BorderWidth: \(newWidth)"
                 case.borderColor: break
                 case.cornerRadius:
                     let newCornerRadius = viewControl!.layer.cornerRadius  - CGFloat(scaleY) * 0.5
@@ -350,7 +350,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
                         return
                     }
                     viewControl!.layer.cornerRadius = newCornerRadius
-                    lblViewInfo.text = "\(viewControl!.dynamicType) CornerRadius: \(newCornerRadius))"
+                    lblViewInfo.text = "\(viewControl!.dynamicType) CornerRadius: \(newCornerRadius)"
                 }
                 default: break
                 }
@@ -393,7 +393,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
             case 2:neatType = .font
             segItemMenu.hidden = true
             if let fontSize = getFont(){
-                lblViewInfo.text = "\(viewControl!.dynamicType) font:\(fontSize))"
+                lblViewInfo.text = "\(viewControl!.dynamicType) font:\(fontSize)"
             }
             case 3:neatType = .border
             segItemMenu.hidden = false
@@ -407,7 +407,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
             segItemMenu.setTitle("Border", forSegmentAtIndex: 1)
             segItemMenu.selectedSegmentIndex = 1
             neatBorderType = .borderWidth
-            lblViewInfo.text = "\(viewControl!.dynamicType) BorderWidth: \(viewControl!.layer.borderWidth))"
+            lblViewInfo.text = "\(viewControl!.dynamicType) BorderWidth: \(viewControl!.layer.borderWidth)"
             case 4:neatType = .color
             segItemMenu.hidden = false
             if segItemMenu.numberOfSegments == 3{

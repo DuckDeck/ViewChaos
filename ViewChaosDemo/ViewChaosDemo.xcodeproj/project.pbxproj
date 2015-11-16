@@ -19,9 +19,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		A211FECF1BF02A83004A0A29 /* ViewChaos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewChaos.swift; path = /Users/Tyrant/Desktop/ViewChaos/ViewChaos/ViewChaos.swift; sourceTree = "<absolute>"; };
-		A211FED01BF02A83004A0A29 /* ViewChaosInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewChaosInfo.swift; path = /Users/Tyrant/Desktop/ViewChaos/ViewChaos/ViewChaosInfo.swift; sourceTree = "<absolute>"; };
-		A211FED31BF03D0C004A0A29 /* ViewNeat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewNeat.swift; path = /Users/Tyrant/Desktop/ViewChaos/ViewChaos/ViewNeat.swift; sourceTree = "<absolute>"; };
+		A211FECF1BF02A83004A0A29 /* ViewChaos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewChaos.swift; path = /Users/Tyrant/Documents/ViewChaos/ViewChaos/ViewChaos.swift; sourceTree = "<absolute>"; };
+		A211FED01BF02A83004A0A29 /* ViewChaosInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewChaosInfo.swift; path = /Users/Tyrant/Documents/ViewChaos/ViewChaos/ViewChaosInfo.swift; sourceTree = "<absolute>"; };
+		A211FED31BF03D0C004A0A29 /* ViewNeat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewNeat.swift; path = /Users/Tyrant/Documents/ViewChaos/ViewChaos/ViewNeat.swift; sourceTree = "<absolute>"; };
 		A2E6F0161BEAFF7D0042FC43 /* ViewChaosDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ViewChaosDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2E6F0191BEAFF7D0042FC43 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A2E6F01B1BEAFF7D0042FC43 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
