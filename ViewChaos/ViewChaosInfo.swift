@@ -210,7 +210,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
     func initView(view:UIView,back:Bool){
         stopTrace()
         viewHit = view
-        if let name = viewHit?.name{
+        if let name = viewHit?.chaosName{
             lblCurrentView.text = "\(viewHit!.dynamicType) name:\(name) (\(viewHit!.description))"
         }
         else{

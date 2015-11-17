@@ -53,7 +53,9 @@ class ViewNeat: UIView,ColorPickerDelegate {
                originBorderWidth = viewControl!.layer.borderWidth
                originCornerRadius = viewControl!.layer.cornerRadius
                 originBackgroundColor = viewControl!.backgroundColor
-                originTintColor = viewControl!.tintColor
+                if let tColor = viewControl!.tintColor{
+                    originTintColor = tColor
+                }
             }
         }
     }

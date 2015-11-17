@@ -71,7 +71,7 @@ class ViewChaos: UIView {
         windowInfo = UIWindow(frame: CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.width, height: 50))
         windowInfo.backgroundColor = UIColor(red: 0.0, green: 0.898, blue: 0.836, alpha: 0.7)
         windowInfo.hidden = true
-        windowInfo.name = "windowInfo"
+        windowInfo.chaosName = "windowInfo"
         windowInfo.windowLevel = UIWindowLevelAlert
         lblInfo = UILabel(frame: windowInfo.bounds)
         lblInfo.numberOfLines = 2
@@ -552,7 +552,7 @@ extension CGFloat{
 
 private var NSObject_Name = 0
 extension NSObject{
-    @objc  var name:String?{
+    @objc  var chaosName:String?{
         get{
             return objc_getAssociatedObject(self, &NSObject_Name) as? String
         }
