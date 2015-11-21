@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "ViewChaos"
-  s.version      = "0.0.1"
+  s.version      = "0.0.2"
   s.summary      = "A iOS view diagnose tool."
 
   # This description is used to generate tags and improve search results.
