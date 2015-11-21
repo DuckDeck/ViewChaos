@@ -395,7 +395,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                         }
                     }
                     else if con.secondItem as! UIView == viewHit! && con.firstAttribute != con.secondAttribute{
-                        constant = -con.constant
+                        constant = con.constant
                     }
                 }
                 if #available(iOS 8.0, *) {
@@ -414,7 +414,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                         dict["Type"] = "Left"
                         dict["Value"] = con.description
                         dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
-                        dict["Constant"] = con.constant
+                        dict["Constant"] = constant
                         dict["Multiplier"] = con.multiplier
                         dict["Priority"] = con.priority
                         arrConstrains?.append(dict)
@@ -424,7 +424,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                         dict["Type"] = "Top"
                         dict["Value"] = con.description
                         dict["ToView"] = ViewChaosObject.objectWithWeak(con.secondItem!)
-                        dict["Constant"] = con.constant
+                        dict["Constant"] = constant
                         dict["Multiplier"] = con.multiplier
                         dict["Priority"] = con.priority
                         arrConstrains?.append(dict)
@@ -435,7 +435,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                         dict["Value"] = con.description
                         Chaos.Log(con.description)
                         dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
-                        dict["Constant"] = con.constant
+                        dict["Constant"] = constant
                         dict["Multiplier"] = con.multiplier
                         dict["Priority"] = con.priority
                         arrConstrains?.append(dict)
@@ -445,7 +445,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                         dict["Type"] = "Right"
                         dict["Value"] = con.description
                         dict["ToView"] = ViewChaosObject.objectWithWeak(con.secondItem!)
-                        dict["Constant"] = con.constant
+                        dict["Constant"] = constant
                         dict["Multiplier"] = con.multiplier
                         dict["Priority"] = con.priority
                         arrConstrains?.append(dict)
@@ -455,7 +455,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                         dict["Type"] = "Right"
                         dict["Value"] = con.description
                         dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
-                        dict["Constant"] = con.constant
+                        dict["Constant"] = constant
                         dict["Multiplier"] = con.multiplier
                         dict["Priority"] = con.priority
                         arrConstrains?.append(dict)
@@ -465,7 +465,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                         dict["Type"] = "Bottom"
                         dict["Value"] = con.description
                         dict["ToView"] = ViewChaosObject.objectWithWeak(con.secondItem!)
-                        dict["Constant"] = con.constant
+                        dict["Constant"] = constant
                         dict["Multiplier"] = con.multiplier
                         dict["Priority"] = con.priority
                         arrConstrains?.append(dict)
@@ -475,7 +475,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                         dict["Type"] = "Bottom"
                         dict["Value"] = con.description
                         dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
-                        dict["Constant"] = con.constant
+                        dict["Constant"] = constant
                         dict["Multiplier"] = con.multiplier
                         dict["Priority"] = con.priority
                         arrConstrains?.append(dict)
@@ -485,7 +485,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                             var dict = [String:AnyObject]()
                             dict["Type"] = "IntrinsicContent Width"
                             dict["Value"] = con.description
-                            dict["Constant"] = con.constant
+                            dict["Constant"] = constant
                             arrConstrains?.append(dict)
                         }
                         else{
@@ -493,7 +493,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                             dict["Type"] = "Width"
                             dict["Value"] = con.description
                             dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
-                            dict["Constant"] = con.constant
+                            dict["Constant"] = constant
                             dict["Multiplier"] = con.multiplier
                             dict["Priority"] = con.priority
                             arrConstrains?.append(dict)
@@ -512,7 +512,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                             dict["Type"] = "Height"
                             dict["Value"] = con.description
                             dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
-                            dict["Constant"] = con.constant
+                            dict["Constant"] = constant
                             dict["Multiplier"] = con.multiplier
                             dict["Priority"] = con.priority
                             arrConstrains?.append(dict)
@@ -523,7 +523,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                         dict["Type"] = "CenterX"
                         dict["Value"] = con.description
                         dict["ToView"] = ViewChaosObject.objectWithWeak(con.secondItem!)
-                        dict["Constant"] = con.constant
+                        dict["Constant"] = constant
                         dict["Multiplier"] = con.multiplier
                         dict["Priority"] = con.priority
                         arrConstrains?.append(dict)
@@ -533,7 +533,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                         dict["Type"] = "CenterX"
                         dict["Value"] = con.description
                         dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
-                        dict["Constant"] = con.constant
+                        dict["Constant"] = constant
                         dict["Multiplier"] = con.multiplier
                         dict["Priority"] = con.priority
                         arrConstrains?.append(dict)
@@ -543,7 +543,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                         dict["Type"] = "CenterY"
                         dict["Value"] = con.description
                         dict["ToView"] = ViewChaosObject.objectWithWeak(con.secondItem!)
-                        dict["Constant"] = con.constant
+                        dict["Constant"] = constant
                         dict["Multiplier"] = con.multiplier
                         dict["Priority"] = con.priority
                         arrConstrains?.append(dict)
@@ -553,7 +553,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                         dict["Type"] = "CenterY"
                         dict["Value"] = con.description
                         dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
-                        dict["Constant"] = con.constant
+                        dict["Constant"] = constant
                         dict["Multiplier"] = con.multiplier
                         dict["Priority"] = con.priority
                         arrConstrains?.append(dict)
@@ -563,7 +563,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                         dict["Type"] = "BaseLine"
                         dict["Value"] = con.description
                         dict["ToView"] = ViewChaosObject.objectWithWeak(con.secondItem!)
-                        dict["Constant"] = con.constant
+                        dict["Constant"] = constant
                         dict["Multiplier"] = con.multiplier
                         dict["Priority"] = con.priority
                         arrConstrains?.append(dict)
@@ -573,7 +573,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                         dict["Type"] = "BaseLine"
                         dict["Value"] = con.description
                         dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
-                        dict["Constant"] = con.constant
+                        dict["Constant"] = constant
                         dict["Multiplier"] = con.multiplier
                         dict["Priority"] = con.priority
                         arrConstrains?.append(dict)
@@ -595,7 +595,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                         dict["Type"] = "Left"
                         dict["Value"] = con.description
                         dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
-                        dict["Constant"] = con.constant
+                        dict["Constant"] = constant
                         dict["Multiplier"] = con.multiplier
                         dict["Priority"] = con.priority
                         arrConstrains?.append(dict)
@@ -605,7 +605,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                         dict["Type"] = "Top"
                         dict["Value"] = con.description
                         dict["ToView"] = ViewChaosObject.objectWithWeak(con.secondItem!)
-                        dict["Constant"] = con.constant
+                        dict["Constant"] = constant
                         dict["Multiplier"] = con.multiplier
                         dict["Priority"] = con.priority
                         arrConstrains?.append(dict)
@@ -615,7 +615,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                         dict["Type"] = "Top"
                         dict["Value"] = con.description
                         dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
-                        dict["Constant"] = con.constant
+                        dict["Constant"] = constant
                         dict["Multiplier"] = con.multiplier
                         dict["Priority"] = con.priority
                         arrConstrains?.append(dict)
@@ -625,7 +625,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                         dict["Type"] = "Right"
                         dict["Value"] = con.description
                         dict["ToView"] = ViewChaosObject.objectWithWeak(con.secondItem!)
-                        dict["Constant"] = con.constant
+                        dict["Constant"] = constant
                         dict["Multiplier"] = con.multiplier
                         dict["Priority"] = con.priority
                         arrConstrains?.append(dict)
@@ -635,7 +635,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                         dict["Type"] = "Right"
                         dict["Value"] = con.description
                         dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
-                        dict["Constant"] = con.constant
+                        dict["Constant"] = constant
                         dict["Multiplier"] = con.multiplier
                         dict["Priority"] = con.priority
                         arrConstrains?.append(dict)
@@ -645,7 +645,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                         dict["Type"] = "Bottom"
                         dict["Value"] = con.description
                         dict["ToView"] = ViewChaosObject.objectWithWeak(con.secondItem!)
-                        dict["Constant"] = con.constant
+                        dict["Constant"] = constant
                         dict["Multiplier"] = con.multiplier
                         dict["Priority"] = con.priority
                         arrConstrains?.append(dict)
@@ -655,7 +655,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                         dict["Type"] = "Bottom"
                         dict["Value"] = con.description
                         dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
-                        dict["Constant"] = con.constant
+                        dict["Constant"] = constant
                         dict["Multiplier"] = con.multiplier
                         dict["Priority"] = con.priority
                         arrConstrains?.append(dict)
@@ -665,7 +665,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                             var dict = [String:AnyObject]()
                             dict["Type"] = "IntrinsicContent Width"
                             dict["Value"] = con.description
-                            dict["Constant"] = con.constant
+                            dict["Constant"] = constant
                             arrConstrains?.append(dict)
                         }
                         else{
@@ -673,7 +673,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                             dict["Type"] = "Width"
                             dict["Value"] = con.description
                             dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
-                            dict["Constant"] = con.constant
+                            dict["Constant"] = constant
                             dict["Multiplier"] = con.multiplier
                             dict["Priority"] = con.priority
                             arrConstrains?.append(dict)
@@ -684,7 +684,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                             var dict = [String:AnyObject]()
                             dict["Type"] = "IntrinsicContent Height"
                             dict["Value"] = con.description
-                            dict["Constant"] = con.constant
+                            dict["Constant"] = constant
                             arrConstrains?.append(dict)
                         }
                         else{
@@ -692,7 +692,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                             dict["Type"] = "Height"
                             dict["Value"] = con.description
                             dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
-                            dict["Constant"] = con.constant
+                            dict["Constant"] = constant
                             dict["Multiplier"] = con.multiplier
                             dict["Priority"] = con.priority
                             arrConstrains?.append(dict)
@@ -703,7 +703,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                         dict["Type"] = "CenterX"
                         dict["Value"] = con.description
                         dict["ToView"] = ViewChaosObject.objectWithWeak(con.secondItem!)
-                        dict["Constant"] = con.constant
+                        dict["Constant"] = constant
                         dict["Multiplier"] = con.multiplier
                         dict["Priority"] = con.priority
                         arrConstrains?.append(dict)
@@ -713,7 +713,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                         dict["Type"] = "CenterX"
                         dict["Value"] = con.description
                         dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
-                        dict["Constant"] = con.constant
+                        dict["Constant"] = constant
                         dict["Multiplier"] = con.multiplier
                         dict["Priority"] = con.priority
                         arrConstrains?.append(dict)
@@ -723,7 +723,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                         dict["Type"] = "CenterY"
                         dict["Value"] = con.description
                         dict["ToView"] = ViewChaosObject.objectWithWeak(con.secondItem!)
-                        dict["Constant"] = con.constant
+                        dict["Constant"] = constant
                         dict["Multiplier"] = con.multiplier
                         dict["Priority"] = con.priority
                         arrConstrains?.append(dict)
@@ -733,7 +733,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                         dict["Type"] = "CenterY"
                         dict["Value"] = con.description
                         dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
-                        dict["Constant"] = con.constant
+                        dict["Constant"] = constant
                         dict["Multiplier"] = con.multiplier
                         dict["Priority"] = con.priority
                         arrConstrains?.append(dict)
@@ -743,7 +743,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                         dict["Type"] = "BaseLine"
                         dict["Value"] = con.description
                         dict["ToView"] = ViewChaosObject.objectWithWeak(con.secondItem!)
-                        dict["Constant"] = con.constant
+                        dict["Constant"] = constant
                         dict["Multiplier"] = con.multiplier
                         dict["Priority"] = con.priority
                         arrConstrains?.append(dict)
@@ -753,7 +753,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                         dict["Type"] = "BaseLine"
                         dict["Value"] = con.description
                         dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
-                        dict["Constant"] = con.constant
+                        dict["Constant"] = constant
                         dict["Multiplier"] = con.multiplier
                         dict["Priority"] = con.priority
                         arrConstrains?.append(dict)
