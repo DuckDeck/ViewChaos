@@ -398,359 +398,98 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                         constant = con.constant
                     }
                 }
-                if #available(iOS 8.0, *) {
-                    if con.firstItem as! UIView == viewHit! && (con.firstAttribute == NSLayoutAttribute.Leading || con.firstAttribute == NSLayoutAttribute.Left || con.firstAttribute == NSLayoutAttribute.LeadingMargin || con.firstAttribute == NSLayoutAttribute.LeftMargin){
+                if con.firstItem as! UIView == viewHit! && (con.firstAttribute == NSLayoutAttribute.Leading || con.firstAttribute == NSLayoutAttribute.Left || con.firstAttribute == NSLayoutAttribute.LeadingMargin || con.firstAttribute == NSLayoutAttribute.LeftMargin){
+                    var dict = [String:AnyObject]()
+                    dict["Type"] = "Left"
+                    dict["Value"] = con.description
+                    dict["ToView"] = ViewChaosObject.objectWithWeak(con.secondItem!)
+                    dict["Constant"] = con.constant
+                    dict["Multiplier"] = con.multiplier
+                    dict["Priority"] = con.priority
+                    arrConstrains?.append(dict)
+                }
+                else if  con.secondItem as? UIView == viewHit! && (con.secondAttribute == NSLayoutAttribute.Leading || con.secondAttribute == NSLayoutAttribute.Left || con.secondAttribute == NSLayoutAttribute.LeadingMargin || con.secondAttribute == NSLayoutAttribute.LeftMargin){
+                    var dict = [String:AnyObject]()
+                    dict["Type"] = "Left"
+                    dict["Value"] = con.description
+                    dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
+                    dict["Constant"] = constant
+                    dict["Multiplier"] = con.multiplier
+                    dict["Priority"] = con.priority
+                    arrConstrains?.append(dict)
+                }
+                else if con.firstItem as! UIView == viewHit! && (con.firstAttribute == NSLayoutAttribute.Top || con.firstAttribute == NSLayoutAttribute.TopMargin) {
+                    var dict = [String:AnyObject]()
+                    dict["Type"] = "Top"
+                    dict["Value"] = con.description
+                    dict["ToView"] = ViewChaosObject.objectWithWeak(con.secondItem!)
+                    dict["Constant"] = constant
+                    dict["Multiplier"] = con.multiplier
+                    dict["Priority"] = con.priority
+                    arrConstrains?.append(dict)
+                }
+                else if con.secondItem as? UIView == viewHit! && (con.secondAttribute == NSLayoutAttribute.Top || con.secondAttribute == NSLayoutAttribute.TopMargin) {
+                    var dict = [String:AnyObject]()
+                    dict["Type"] = "Top"
+                    dict["Value"] = con.description
+                    Chaos.Log(con.description)
+                    dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
+                    dict["Constant"] = constant
+                    dict["Multiplier"] = con.multiplier
+                    dict["Priority"] = con.priority
+                    arrConstrains?.append(dict)
+                }
+                else if con.firstItem as! UIView == viewHit! && (con.firstAttribute == NSLayoutAttribute.Trailing || con.firstAttribute == NSLayoutAttribute.TrailingMargin || con.firstAttribute == NSLayoutAttribute.Right || con.firstAttribute == NSLayoutAttribute.RightMargin){
+                    var dict = [String:AnyObject]()
+                    dict["Type"] = "Right"
+                    dict["Value"] = con.description
+                    dict["ToView"] = ViewChaosObject.objectWithWeak(con.secondItem!)
+                    dict["Constant"] = constant
+                    dict["Multiplier"] = con.multiplier
+                    dict["Priority"] = con.priority
+                    arrConstrains?.append(dict)
+                }
+                else if con.secondItem as? UIView == viewHit! && (con.secondAttribute == NSLayoutAttribute.Trailing || con.secondAttribute == NSLayoutAttribute.TrailingMargin || con.secondAttribute == NSLayoutAttribute.Right || con.secondAttribute == NSLayoutAttribute.RightMargin){
+                    var dict = [String:AnyObject]()
+                    dict["Type"] = "Right"
+                    dict["Value"] = con.description
+                    dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
+                    dict["Constant"] = constant
+                    dict["Multiplier"] = con.multiplier
+                    dict["Priority"] = con.priority
+                    arrConstrains?.append(dict)
+                }
+                else if con.firstItem as! UIView == viewHit! && (con.firstAttribute == NSLayoutAttribute.Bottom || con.firstAttribute == NSLayoutAttribute.BottomMargin) {
+                    var dict = [String:AnyObject]()
+                    dict["Type"] = "Bottom"
+                    dict["Value"] = con.description
+                    dict["ToView"] = ViewChaosObject.objectWithWeak(con.secondItem!)
+                    dict["Constant"] = constant
+                    dict["Multiplier"] = con.multiplier
+                    dict["Priority"] = con.priority
+                    arrConstrains?.append(dict)
+                }
+                else if con.secondItem as? UIView == viewHit! && (con.secondAttribute == NSLayoutAttribute.Bottom || con.secondAttribute == NSLayoutAttribute.BottomMargin) {
+                    var dict = [String:AnyObject]()
+                    dict["Type"] = "Bottom"
+                    dict["Value"] = con.description
+                    dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
+                    dict["Constant"] = constant
+                    dict["Multiplier"] = con.multiplier
+                    dict["Priority"] = con.priority
+                    arrConstrains?.append(dict)
+                }
+                else if (con.firstItem as! UIView == viewHit! && con.firstAttribute == NSLayoutAttribute.Width) || (con.secondItem as? UIView == viewHit && con.secondAttribute == NSLayoutAttribute.Width){
+                    if con.isKindOfClass(NSClassFromString("NSContentSizeLayoutConstraint")!){
                         var dict = [String:AnyObject]()
-                        dict["Type"] = "Left"
+                        dict["Type"] = "IntrinsicContent Width"
                         dict["Value"] = con.description
-                        dict["ToView"] = ViewChaosObject.objectWithWeak(con.secondItem!)
-                        dict["Constant"] = con.constant
-                        dict["Multiplier"] = con.multiplier
-                        dict["Priority"] = con.priority
-                        arrConstrains?.append(dict)
-                    }
-                    else if  con.secondItem as? UIView == viewHit! && (con.secondAttribute == NSLayoutAttribute.Leading || con.secondAttribute == NSLayoutAttribute.Left || con.secondAttribute == NSLayoutAttribute.LeadingMargin || con.secondAttribute == NSLayoutAttribute.LeftMargin){
-                        var dict = [String:AnyObject]()
-                        dict["Type"] = "Left"
-                        dict["Value"] = con.description
-                        dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
                         dict["Constant"] = constant
-                        dict["Multiplier"] = con.multiplier
-                        dict["Priority"] = con.priority
                         arrConstrains?.append(dict)
                     }
-                    else if con.firstItem as! UIView == viewHit! && (con.firstAttribute == NSLayoutAttribute.Top || con.firstAttribute == NSLayoutAttribute.TopMargin) {
+                    else{
                         var dict = [String:AnyObject]()
-                        dict["Type"] = "Top"
-                        dict["Value"] = con.description
-                        dict["ToView"] = ViewChaosObject.objectWithWeak(con.secondItem!)
-                        dict["Constant"] = constant
-                        dict["Multiplier"] = con.multiplier
-                        dict["Priority"] = con.priority
-                        arrConstrains?.append(dict)
-                    }
-                    else if con.secondItem as? UIView == viewHit! && (con.secondAttribute == NSLayoutAttribute.Top || con.secondAttribute == NSLayoutAttribute.TopMargin) {
-                        var dict = [String:AnyObject]()
-                        dict["Type"] = "Top"
-                        dict["Value"] = con.description
-                        Chaos.Log(con.description)
-                        dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
-                        dict["Constant"] = constant
-                        dict["Multiplier"] = con.multiplier
-                        dict["Priority"] = con.priority
-                        arrConstrains?.append(dict)
-                    }
-                    else if con.firstItem as! UIView == viewHit! && (con.firstAttribute == NSLayoutAttribute.Trailing || con.firstAttribute == NSLayoutAttribute.TrailingMargin || con.firstAttribute == NSLayoutAttribute.Right || con.firstAttribute == NSLayoutAttribute.RightMargin){
-                        var dict = [String:AnyObject]()
-                        dict["Type"] = "Right"
-                        dict["Value"] = con.description
-                        dict["ToView"] = ViewChaosObject.objectWithWeak(con.secondItem!)
-                        dict["Constant"] = constant
-                        dict["Multiplier"] = con.multiplier
-                        dict["Priority"] = con.priority
-                        arrConstrains?.append(dict)
-                    }
-                    else if con.secondItem as? UIView == viewHit! && (con.secondAttribute == NSLayoutAttribute.Trailing || con.secondAttribute == NSLayoutAttribute.TrailingMargin || con.secondAttribute == NSLayoutAttribute.Right || con.secondAttribute == NSLayoutAttribute.RightMargin){
-                        var dict = [String:AnyObject]()
-                        dict["Type"] = "Right"
-                        dict["Value"] = con.description
-                        dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
-                        dict["Constant"] = constant
-                        dict["Multiplier"] = con.multiplier
-                        dict["Priority"] = con.priority
-                        arrConstrains?.append(dict)
-                    }
-                    else if con.firstItem as! UIView == viewHit! && (con.firstAttribute == NSLayoutAttribute.Bottom || con.firstAttribute == NSLayoutAttribute.BottomMargin) {
-                        var dict = [String:AnyObject]()
-                        dict["Type"] = "Bottom"
-                        dict["Value"] = con.description
-                        dict["ToView"] = ViewChaosObject.objectWithWeak(con.secondItem!)
-                        dict["Constant"] = constant
-                        dict["Multiplier"] = con.multiplier
-                        dict["Priority"] = con.priority
-                        arrConstrains?.append(dict)
-                    }
-                    else if con.secondItem as? UIView == viewHit! && (con.secondAttribute == NSLayoutAttribute.Bottom || con.secondAttribute == NSLayoutAttribute.BottomMargin) {
-                        var dict = [String:AnyObject]()
-                        dict["Type"] = "Bottom"
-                        dict["Value"] = con.description
-                        dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
-                        dict["Constant"] = constant
-                        dict["Multiplier"] = con.multiplier
-                        dict["Priority"] = con.priority
-                        arrConstrains?.append(dict)
-                    }
-                    else if (con.firstItem as! UIView == viewHit! && con.firstAttribute == NSLayoutAttribute.Width) || (con.secondItem as? UIView == viewHit && con.secondAttribute == NSLayoutAttribute.Width){
-                        if con.isKindOfClass(NSClassFromString("NSContentSizeLayoutConstraint")!){
-                            var dict = [String:AnyObject]()
-                            dict["Type"] = "IntrinsicContent Width"
-                            dict["Value"] = con.description
-                            dict["Constant"] = constant
-                            arrConstrains?.append(dict)
-                        }
-                        else{
-                            var dict = [String:AnyObject]()
-                            dict["Type"] = "Width"
-                            dict["Value"] = con.description
-                            dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
-                            dict["Constant"] = constant
-                            dict["Multiplier"] = con.multiplier
-                            dict["Priority"] = con.priority
-                            arrConstrains?.append(dict)
-                        }
-                    }
-                    else if (con.firstItem as! UIView == viewHit! && con.firstAttribute == NSLayoutAttribute.Height) || (con.secondItem as? UIView == viewHit && con.secondAttribute == NSLayoutAttribute.Height){
-                        if con.isKindOfClass(NSClassFromString("NSContentSizeLayoutConstraint")!){
-                            var dict = [String:AnyObject]()
-                            dict["Type"] = "IntrinsicContent Height"
-                            dict["Value"] = con.description
-                            dict["Constant"] = con.constant
-                            arrConstrains?.append(dict)
-                        }
-                        else{
-                            var dict = [String:AnyObject]()
-                            dict["Type"] = "Height"
-                            dict["Value"] = con.description
-                            dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
-                            dict["Constant"] = constant
-                            dict["Multiplier"] = con.multiplier
-                            dict["Priority"] = con.priority
-                            arrConstrains?.append(dict)
-                        }
-                    }
-                    else if con.firstItem as! UIView == viewHit! && con.firstAttribute == NSLayoutAttribute.CenterX{
-                        var dict = [String:AnyObject]()
-                        dict["Type"] = "CenterX"
-                        dict["Value"] = con.description
-                        dict["ToView"] = ViewChaosObject.objectWithWeak(con.secondItem!)
-                        dict["Constant"] = constant
-                        dict["Multiplier"] = con.multiplier
-                        dict["Priority"] = con.priority
-                        arrConstrains?.append(dict)
-                    }
-                    else if con.secondItem as? UIView == viewHit! && con.firstAttribute == NSLayoutAttribute.CenterX{
-                        var dict = [String:AnyObject]()
-                        dict["Type"] = "CenterX"
-                        dict["Value"] = con.description
-                        dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
-                        dict["Constant"] = constant
-                        dict["Multiplier"] = con.multiplier
-                        dict["Priority"] = con.priority
-                        arrConstrains?.append(dict)
-                    }
-                    else if con.firstItem as! UIView == viewHit! && con.firstAttribute == NSLayoutAttribute.CenterY{
-                        var dict = [String:AnyObject]()
-                        dict["Type"] = "CenterY"
-                        dict["Value"] = con.description
-                        dict["ToView"] = ViewChaosObject.objectWithWeak(con.secondItem!)
-                        dict["Constant"] = constant
-                        dict["Multiplier"] = con.multiplier
-                        dict["Priority"] = con.priority
-                        arrConstrains?.append(dict)
-                    }
-                    else if con.secondItem as? UIView == viewHit! && con.firstAttribute == NSLayoutAttribute.CenterY{
-                        var dict = [String:AnyObject]()
-                        dict["Type"] = "CenterY"
-                        dict["Value"] = con.description
-                        dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
-                        dict["Constant"] = constant
-                        dict["Multiplier"] = con.multiplier
-                        dict["Priority"] = con.priority
-                        arrConstrains?.append(dict)
-                    }
-                    else if con.firstItem as! UIView == viewHit! && con.firstAttribute == NSLayoutAttribute.Baseline{
-                        var dict = [String:AnyObject]()
-                        dict["Type"] = "BaseLine"
-                        dict["Value"] = con.description
-                        dict["ToView"] = ViewChaosObject.objectWithWeak(con.secondItem!)
-                        dict["Constant"] = constant
-                        dict["Multiplier"] = con.multiplier
-                        dict["Priority"] = con.priority
-                        arrConstrains?.append(dict)
-                    }
-                    else if con.secondItem as? UIView == viewHit! && con.firstAttribute == NSLayoutAttribute.Baseline{
-                        var dict = [String:AnyObject]()
-                        dict["Type"] = "BaseLine"
-                        dict["Value"] = con.description
-                        dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
-                        dict["Constant"] = constant
-                        dict["Multiplier"] = con.multiplier
-                        dict["Priority"] = con.priority
-                        arrConstrains?.append(dict)
-                    }
-                    
-                } else {
-                    if con.firstItem as! UIView == viewHit! && (con.firstAttribute == NSLayoutAttribute.Leading || con.firstAttribute == NSLayoutAttribute.Left ){
-                        var dict = [String:AnyObject]()
-                        dict["Type"] = "Left"
-                        dict["Value"] = con.description
-                        dict["ToView"] = ViewChaosObject.objectWithWeak(con.secondItem!)
-                        dict["Constant"] = con.constant
-                        dict["Multiplier"] = con.multiplier
-                        dict["Priority"] = con.priority
-                        arrConstrains?.append(dict)
-                    }
-                    else if  con.secondItem as! UIView == viewHit! && (con.secondAttribute == NSLayoutAttribute.Leading || con.secondAttribute == NSLayoutAttribute.Left ){
-                        var dict = [String:AnyObject]()
-                        dict["Type"] = "Left"
-                        dict["Value"] = con.description
-                        dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
-                        dict["Constant"] = constant
-                        dict["Multiplier"] = con.multiplier
-                        dict["Priority"] = con.priority
-                        arrConstrains?.append(dict)
-                    }
-                    else if con.firstItem as! UIView == viewHit! && (con.firstAttribute == NSLayoutAttribute.Top ) {
-                        var dict = [String:AnyObject]()
-                        dict["Type"] = "Top"
-                        dict["Value"] = con.description
-                        dict["ToView"] = ViewChaosObject.objectWithWeak(con.secondItem!)
-                        dict["Constant"] = constant
-                        dict["Multiplier"] = con.multiplier
-                        dict["Priority"] = con.priority
-                        arrConstrains?.append(dict)
-                    }
-                    else if con.secondItem as! UIView == viewHit! && (con.secondAttribute == NSLayoutAttribute.Top) {
-                        var dict = [String:AnyObject]()
-                        dict["Type"] = "Top"
-                        dict["Value"] = con.description
-                        dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
-                        dict["Constant"] = constant
-                        dict["Multiplier"] = con.multiplier
-                        dict["Priority"] = con.priority
-                        arrConstrains?.append(dict)
-                    }
-                    else if con.firstItem as! UIView == viewHit! && (con.firstAttribute == NSLayoutAttribute.Trailing  || con.firstAttribute == NSLayoutAttribute.Right ){
-                        var dict = [String:AnyObject]()
-                        dict["Type"] = "Right"
-                        dict["Value"] = con.description
-                        dict["ToView"] = ViewChaosObject.objectWithWeak(con.secondItem!)
-                        dict["Constant"] = constant
-                        dict["Multiplier"] = con.multiplier
-                        dict["Priority"] = con.priority
-                        arrConstrains?.append(dict)
-                    }
-                    else if con.secondItem as! UIView == viewHit! && (con.secondAttribute == NSLayoutAttribute.Trailing  || con.secondAttribute == NSLayoutAttribute.Right){
-                        var dict = [String:AnyObject]()
-                        dict["Type"] = "Right"
-                        dict["Value"] = con.description
-                        dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
-                        dict["Constant"] = constant
-                        dict["Multiplier"] = con.multiplier
-                        dict["Priority"] = con.priority
-                        arrConstrains?.append(dict)
-                    }
-                    else if con.firstItem as! UIView == viewHit! && (con.firstAttribute == NSLayoutAttribute.Bottom ) {
-                        var dict = [String:AnyObject]()
-                        dict["Type"] = "Bottom"
-                        dict["Value"] = con.description
-                        dict["ToView"] = ViewChaosObject.objectWithWeak(con.secondItem!)
-                        dict["Constant"] = constant
-                        dict["Multiplier"] = con.multiplier
-                        dict["Priority"] = con.priority
-                        arrConstrains?.append(dict)
-                    }
-                    else if con.secondItem as! UIView == viewHit! && (con.secondAttribute == NSLayoutAttribute.Bottom ) {
-                        var dict = [String:AnyObject]()
-                        dict["Type"] = "Bottom"
-                        dict["Value"] = con.description
-                        dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
-                        dict["Constant"] = constant
-                        dict["Multiplier"] = con.multiplier
-                        dict["Priority"] = con.priority
-                        arrConstrains?.append(dict)
-                    }
-                    else if (con.firstItem as! UIView == viewHit! && con.firstAttribute == NSLayoutAttribute.Width) || (con.secondItem as? UIView == viewHit && con.secondAttribute == NSLayoutAttribute.Width){
-                        if con.isKindOfClass(NSClassFromString("NSContentSizeLayoutConstraint")!){
-                            var dict = [String:AnyObject]()
-                            dict["Type"] = "IntrinsicContent Width"
-                            dict["Value"] = con.description
-                            dict["Constant"] = constant
-                            arrConstrains?.append(dict)
-                        }
-                        else{
-                            var dict = [String:AnyObject]()
-                            dict["Type"] = "Width"
-                            dict["Value"] = con.description
-                            dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
-                            dict["Constant"] = constant
-                            dict["Multiplier"] = con.multiplier
-                            dict["Priority"] = con.priority
-                            arrConstrains?.append(dict)
-                        }
-                    }
-                    else if (con.firstItem as! UIView == viewHit! && con.firstAttribute == NSLayoutAttribute.Height) || (con.secondItem as? UIView == viewHit && con.secondAttribute == NSLayoutAttribute.Height){
-                        if con.isKindOfClass(NSClassFromString("NSContentSizeLayoutConstraint")!){
-                            var dict = [String:AnyObject]()
-                            dict["Type"] = "IntrinsicContent Height"
-                            dict["Value"] = con.description
-                            dict["Constant"] = constant
-                            arrConstrains?.append(dict)
-                        }
-                        else{
-                            var dict = [String:AnyObject]()
-                            dict["Type"] = "Height"
-                            dict["Value"] = con.description
-                            dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
-                            dict["Constant"] = constant
-                            dict["Multiplier"] = con.multiplier
-                            dict["Priority"] = con.priority
-                            arrConstrains?.append(dict)
-                        }
-                    }
-                    else if con.firstItem as! UIView == viewHit! && con.firstAttribute == NSLayoutAttribute.CenterX{
-                        var dict = [String:AnyObject]()
-                        dict["Type"] = "CenterX"
-                        dict["Value"] = con.description
-                        dict["ToView"] = ViewChaosObject.objectWithWeak(con.secondItem!)
-                        dict["Constant"] = constant
-                        dict["Multiplier"] = con.multiplier
-                        dict["Priority"] = con.priority
-                        arrConstrains?.append(dict)
-                    }
-                    else if con.secondItem as? UIView == viewHit! && con.firstAttribute == NSLayoutAttribute.CenterX{
-                        var dict = [String:AnyObject]()
-                        dict["Type"] = "CenterX"
-                        dict["Value"] = con.description
-                        dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
-                        dict["Constant"] = constant
-                        dict["Multiplier"] = con.multiplier
-                        dict["Priority"] = con.priority
-                        arrConstrains?.append(dict)
-                    }
-                    else if con.firstItem as! UIView == viewHit! && con.firstAttribute == NSLayoutAttribute.CenterY{
-                        var dict = [String:AnyObject]()
-                        dict["Type"] = "CenterY"
-                        dict["Value"] = con.description
-                        dict["ToView"] = ViewChaosObject.objectWithWeak(con.secondItem!)
-                        dict["Constant"] = constant
-                        dict["Multiplier"] = con.multiplier
-                        dict["Priority"] = con.priority
-                        arrConstrains?.append(dict)
-                    }
-                    else if con.secondItem as? UIView == viewHit! && con.firstAttribute == NSLayoutAttribute.CenterY{
-                        var dict = [String:AnyObject]()
-                        dict["Type"] = "CenterY"
-                        dict["Value"] = con.description
-                        dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
-                        dict["Constant"] = constant
-                        dict["Multiplier"] = con.multiplier
-                        dict["Priority"] = con.priority
-                        arrConstrains?.append(dict)
-                    }
-                    else if con.firstItem as! UIView == viewHit! && con.firstAttribute == NSLayoutAttribute.Baseline{
-                        var dict = [String:AnyObject]()
-                        dict["Type"] = "BaseLine"
-                        dict["Value"] = con.description
-                        dict["ToView"] = ViewChaosObject.objectWithWeak(con.secondItem!)
-                        dict["Constant"] = constant
-                        dict["Multiplier"] = con.multiplier
-                        dict["Priority"] = con.priority
-                        arrConstrains?.append(dict)
-                    }
-                    else if con.secondItem as? UIView == viewHit! && con.firstAttribute == NSLayoutAttribute.Baseline{
-                        var dict = [String:AnyObject]()
-                        dict["Type"] = "BaseLine"
+                        dict["Type"] = "Width"
                         dict["Value"] = con.description
                         dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
                         dict["Constant"] = constant
@@ -759,7 +498,87 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                         arrConstrains?.append(dict)
                     }
                 }
-                
+                else if (con.firstItem as! UIView == viewHit! && con.firstAttribute == NSLayoutAttribute.Height) || (con.secondItem as? UIView == viewHit && con.secondAttribute == NSLayoutAttribute.Height){
+                    if con.isKindOfClass(NSClassFromString("NSContentSizeLayoutConstraint")!){
+                        var dict = [String:AnyObject]()
+                        dict["Type"] = "IntrinsicContent Height"
+                        dict["Value"] = con.description
+                        dict["Constant"] = con.constant
+                        arrConstrains?.append(dict)
+                    }
+                    else{
+                        var dict = [String:AnyObject]()
+                        dict["Type"] = "Height"
+                        dict["Value"] = con.description
+                        dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
+                        dict["Constant"] = constant
+                        dict["Multiplier"] = con.multiplier
+                        dict["Priority"] = con.priority
+                        arrConstrains?.append(dict)
+                    }
+                }
+                else if con.firstItem as! UIView == viewHit! && con.firstAttribute == NSLayoutAttribute.CenterX{
+                    var dict = [String:AnyObject]()
+                    dict["Type"] = "CenterX"
+                    dict["Value"] = con.description
+                    dict["ToView"] = ViewChaosObject.objectWithWeak(con.secondItem!)
+                    dict["Constant"] = constant
+                    dict["Multiplier"] = con.multiplier
+                    dict["Priority"] = con.priority
+                    arrConstrains?.append(dict)
+                }
+                else if con.secondItem as? UIView == viewHit! && con.firstAttribute == NSLayoutAttribute.CenterX{
+                    var dict = [String:AnyObject]()
+                    dict["Type"] = "CenterX"
+                    dict["Value"] = con.description
+                    dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
+                    dict["Constant"] = constant
+                    dict["Multiplier"] = con.multiplier
+                    dict["Priority"] = con.priority
+                    arrConstrains?.append(dict)
+                }
+                else if con.firstItem as! UIView == viewHit! && con.firstAttribute == NSLayoutAttribute.CenterY{
+                    var dict = [String:AnyObject]()
+                    dict["Type"] = "CenterY"
+                    dict["Value"] = con.description
+                    dict["ToView"] = ViewChaosObject.objectWithWeak(con.secondItem!)
+                    dict["Constant"] = constant
+                    dict["Multiplier"] = con.multiplier
+                    dict["Priority"] = con.priority
+                    arrConstrains?.append(dict)
+                }
+                else if con.secondItem as? UIView == viewHit! && con.firstAttribute == NSLayoutAttribute.CenterY{
+                    var dict = [String:AnyObject]()
+                    dict["Type"] = "CenterY"
+                    dict["Value"] = con.description
+                    dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
+                    dict["Constant"] = constant
+                    dict["Multiplier"] = con.multiplier
+                    dict["Priority"] = con.priority
+                    arrConstrains?.append(dict)
+                }
+                else if con.firstItem as! UIView == viewHit! && con.firstAttribute == NSLayoutAttribute.Baseline{
+                    var dict = [String:AnyObject]()
+                    dict["Type"] = "BaseLine"
+                    dict["Value"] = con.description
+                    dict["ToView"] = ViewChaosObject.objectWithWeak(con.secondItem!)
+                    dict["Constant"] = constant
+                    dict["Multiplier"] = con.multiplier
+                    dict["Priority"] = con.priority
+                    arrConstrains?.append(dict)
+                }
+                else if con.secondItem as? UIView == viewHit! && con.firstAttribute == NSLayoutAttribute.Baseline{
+                    var dict = [String:AnyObject]()
+                    dict["Type"] = "BaseLine"
+                    dict["Value"] = con.description
+                    dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
+                    dict["Constant"] = constant
+                    dict["Multiplier"] = con.multiplier
+                    dict["Priority"] = con.priority
+                    arrConstrains?.append(dict)
+                }
+                    
+                    
             }
             viewConstraint = viewConstraint?.superview
         }
