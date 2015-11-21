@@ -656,8 +656,8 @@ class ViewNeat: UIView,ColorPickerDelegate {
         print("\n")
         print("Begin generate Swift code-------------------------------------:")
         var viewName = "view"
-        if viewControl!.name != nil{
-            viewName = viewControl!.name!
+        if viewControl!.chaosName != nil{
+            viewName = viewControl!.chaosName!
         }
         print("let \(viewName) = \(viewControl!.dynamicType)()")
         print("\(viewName).frame = CGRect(x: \(viewControl!.frame.origin.x), y: \(viewControl!.frame.origin.y), width: \(viewControl!.frame.size.width), height:\(viewControl!.frame.size.width))")
