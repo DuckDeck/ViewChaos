@@ -12,9 +12,15 @@ change the view
 
 Requirements 
 
-Xcode 6.1 iOS 7.1
+Xcode 8.0 iOS 7.1
 
 Installation
-pod 'ViewChaos' or copy the three files to your project ,it will automatically work
+pod 'ViewChaos' or copy the three files(ViewChaos.swift,ViewChaosInfo.swift,ViewNeat.swift) to your project
+Target->build setting-> search swift compile ->add -DDEBUG (it only work in debug mode)
+Make sure you are not using the main stroyboard as the start up interface, you must use code to add viewcontroller. and call the makekeyvsible funtion
+after the three steps, it's done.
+
+
+
 
 
