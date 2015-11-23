@@ -26,6 +26,7 @@ Xcode 8.0 and iOS 7.1
 * step1:pod 'ViewChaos', and install it.
 * step2:select the Pods project, then choose target-> your project -> Build Setting-> serach 'swift compile'-> select 'Other Swift Flags' -> select DeBug option -> add -DDEBUG command (this make it only work in debug mode).
 * step3: just use it!
+
 ##How To Use It 
 
 
