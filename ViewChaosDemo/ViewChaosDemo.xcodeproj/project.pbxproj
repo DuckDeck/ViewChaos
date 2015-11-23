@@ -279,7 +279,7 @@
 				INFOPLIST_FILE = ViewChaosDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				OTHER_SWIFT_FLAGS = "-DDEBUG";
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = Tyrant.ViewChaosDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
