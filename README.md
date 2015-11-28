@@ -68,5 +68,6 @@ Xcode 8.0 and iOS 7.1
 * Close will close the control panel
 * Some color porperty, the panel will show a ColorPick button, click this button a ColorPick will show, the can usr it to choose color.
 
-
+##Contact 
+Any issue or problem please contact me:3421902@qq.com, I will be happy fix it
 
