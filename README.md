@@ -1,7 +1,7 @@
 ViewChaos
 ===
 ##ViewChaos is a iOS view diagnose tool
-ViewChaos is a powerful iOS UI development tool, It can help you locatie the view, find the superView and subView. check the constrains, and trace the view which you want to observer. and the most magically thing is that it can change the view's frame. backgroung&title color, resize the font. change the border color,width and cornerradius. at last. it can generate the code,  you can just copy the ajusted view's code. and parse to the Xcode.  it's very powerful. and every iOS developer should use this tool!
+ViewChaos is a powerful iOS UI development tool, It can help you locate the view, find the superView and subView. check the constrains, and trace the view which you want to observe. and the most magical thing is that it can change the view's frame. background&title color, resize the font. change the border color,width and corner radius. at last.it can generate the code,  you can just copy the ajusted view's code parse to the Xcode.  it is very powerful. and every iOS developer should use this tool!
 
 ##Key Features
 * No code, you do not need write any code!
@@ -13,7 +13,7 @@ ViewChaos is a powerful iOS UI development tool, It can help you locatie the vie
 
 ##Requirements 
 
-Xcode 8.0 and iOS 7.1
+Xcode 7.1 and iOS 8.0
 
 ##Installation(this is very important)
 `if you like to copy the three files(ViewChaos.swift,ViewChaosInfo.swift,ViewNeat.swift) to your project to install ViewChaos, please follow these setps bellow:`
@@ -30,7 +30,7 @@ Xcode 8.0 and iOS 7.1
 ![add -DDEBUG location](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/0.png)  
 
 ##How To Use It 
-* If you install ViewChaos successfully, then run your project, you will see a green ball, and you can move it, the green ball will obtain the toppest view and show on the screen's top.
+* If you install ViewChaos successfully, then run your project, you will see a green ball, and you can move it, the green ball will capture the toppest view and show on the screen's top.
 <br>
 ![add -DDEBUG location](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/1.gif)
 <br>
