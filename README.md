@@ -94,9 +94,9 @@ ViewChaos是一个强大的IOS UI开发工具，它可以帮助你定位View，�
 Xcode 7.1 and iOS 8.0
 
 ##安装(非常重要，请细读)
-`如果你想使用文件，那么拷贝这三个文件ViewChaos.swift,ViewChaosInfo.swift,ViewNeat.swift到你项目即可，再按照发下步骤:`
+`如果你想使用文件，那么拷贝这三个文件ViewChaos.swift,ViewChaosInfo.swift,ViewNeat.swift到你项目即可，再按照以下步骤:`
 * 第一步：拷贝这三个文件ViewChaos.swift,ViewChaosInfo.swift,ViewNeat.swift到你项目.
-*第二步：选择 target-> 你的项目 -> Build Setting-> 搜索 'swift compile'-> 选择 'Other Swift Flags' -> 选择 DeBug option -> 添加 -DDEBUG command (这个能让此工具仅工Debug模式有效).
+* 第二步：选择 target-> 你的项目 -> Build Setting-> 搜索 'swift compile'-> 选择 'Other Swift Flags' -> 选择 DeBug option -> 添加 -DDEBUG command (这个能让此工具仅工Debug模式有效).
 * 第三步:如果你找不到Other Swift Flags选项，说明你的项目是纯objective-c，那么你需要手动添加一个swift文件到你的项目，这时XCode会让你添加一个header bridge文件，这时侯选择是，再做第二步操作.
 * 第四步:开始使用! 
 
