@@ -869,12 +869,12 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             switch type{
             case .superview: let view = arrSuperView![indexPath.row].obj as? UIView
                 if view != nil{
-                    NSNotificationCenter.defaultCenter().postNotificationName(handleTraceView, object: view!)
+                    NSNotificationCenter.defaultCenter().postNotificationName(handleTraceView, object: view!) //不需要点一下就跳进去看那个View, 所以这里不要缩小
                     initView(view!, back: false)
                 }
             case .subview: let view = arrSubview![indexPath.row].obj as? UIView
                 if view != nil{
-                    NSNotificationCenter.defaultCenter().postNotificationName(handleTraceView, object: view!)
+                    NSNotificationCenter.defaultCenter().postNotificationName(handleTraceView, object: view!) //不需要点一下就跳进去看那个View, 所以这里不要缩小
                     initView(view!, back: false)
                 }
             case .constrain: let strType = arrConstrains![indexPath.row]["Type"] as! String
@@ -887,9 +887,10 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                 var dict = arrConstrains![indexPath.row]
                 dict["View"] = ViewChaosObject.objectWithWeak(viewHit!)
                 NSNotificationCenter.defaultCenter().postNotificationName(handleTraceContraints, object: dict)
+                 minimize()  //只有这里可以缩小一下
             default: return
             }
-            minimize()
+           
         }
     }
     
@@ -947,8 +948,9 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             cell?.detailTextLabel?.frame = CGRect(x: 0, y: 0, width: cell!.detailTextLabel!.frame.size.width, height: 40)
             cell?.detailTextLabel?.text = "l:\(view!.frame.origin.x.format(".1f")) t:\(view!.frame.origin.y.format(".1f")) w:\(view!.frame.size.width.format(".1f")) h:\(view!.frame.size.height.format(".1f"))"
             if view is UILabel || view is UITextField || view is UITextView{
-                let text = view?.valueForKey("text") as! String
-                cell?.detailTextLabel?.text = cell!.detailTextLabel!.text! + " text(\((text as NSString).length): \(text))"
+                if let text = view?.valueForKey("text") as? String{
+                    cell?.detailTextLabel?.text = cell!.detailTextLabel!.text! + " text(\((text as NSString).length): \(text))"
+                }
             }
             else if view is UIButton{
                 let btn = view as! UIButton
@@ -982,8 +984,9 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             cell?.detailTextLabel?.frame = CGRect(x: 0, y: 0, width: cell!.detailTextLabel!.frame.size.width, height: 40)
             cell?.detailTextLabel?.text = "l:\(view!.frame.origin.x.format(".1f")) t:\(view!.frame.origin.y.format(".1f")) w:\(view!.frame.size.width.format(".1f")) h:\(view!.frame.size.height.format(".1f"))"
             if view is UILabel || view is UITextField || view is UITextView{
-                let text = view?.valueForKey("text") as! String
-                cell?.detailTextLabel?.text = cell!.detailTextLabel!.text! + " text(\((text as NSString).length): \(text))"
+                if let text = view?.valueForKey("text") as? String{
+                    cell?.detailTextLabel?.text = cell!.detailTextLabel!.text! + " text(\((text as NSString).length): \(text))"
+                }
             }
             else if view is UIButton{
                 let btn = view as! UIButton
