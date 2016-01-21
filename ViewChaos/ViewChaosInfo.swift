@@ -53,10 +53,16 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         btnHit = UIButton()
         btnControl = UIButton()
         btnMinimize = UIButton()
+        
         super.init(frame: CGRect(x: 10, y: 80, width: UIScreen.mainScreen().bounds.width-20, height: UIScreen.mainScreen().bounds.height-160))
-        backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
+        backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.6)
         tbLeft.frame = CGRect(x: 0, y: 50, width: self.frame.size.width / 3, height: self.frame.size.height - 50)
+        tbLeft.backgroundView?.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.6)
+        tbLeft.backgroundColor  = UIColor(red: 1, green: 1, blue: 1, alpha: 0.6)
+        tbLeft.tableFooterView = UIView()
         tbRight.frame = CGRect(x: tbLeft.frame.size.width, y: 50, width: self.frame.size.width - tbLeft.frame.size.width, height: self.frame.size.height - 50)
+        tbRight.backgroundView?.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.6)
+        tbRight.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.6)
         addSubview(tbLeft)
         addSubview(tbRight)
         btnClose.frame = CGRect(x: self.frame.size.width - 45, y: 5, width: 45, height: 22)
@@ -830,6 +836,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             cell = tableView.dequeueReusableCellWithIdentifier("cellLeft")
             if cell == nil{
                 cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "cellLeft")
+                cell?.backgroundColor = UIColor.clearColor()
             }
             cell?.textLabel?.font = UIFont.systemFontOfSize(14)
             cell?.textLabel?.text = arrLeft![indexPath.row]
@@ -917,6 +924,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         var cell = tbRight.dequeueReusableCellWithIdentifier("tbrightGeneral")
         if cell == nil{
             cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "tbrightGeneral")
+            cell?.backgroundColor = UIColor.clearColor()
         }
         cell?.textLabel?.numberOfLines = 0
         cell?.textLabel?.lineBreakMode = NSLineBreakMode.ByCharWrapping
@@ -930,6 +938,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         var cell = tbRight.dequeueReusableCellWithIdentifier("tbrightSuperView")
         if cell == nil{
             cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "tbrightSuperView")
+            cell?.backgroundColor = UIColor.clearColor()
         }
         let view = (arrSuperView![index.row]).obj as? UIView
         if view == nil{
@@ -967,6 +976,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         var cell = tbRight.dequeueReusableCellWithIdentifier("tbrightSubView")
         if cell == nil{
             cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "tbrightSubView")
+            cell?.backgroundColor = UIColor.clearColor()
         }
         let view = (arrSubview![index.row]).obj as? UIView
         if view == nil{
@@ -1002,6 +1012,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         var cell = tbRight.dequeueReusableCellWithIdentifier("tbrightConstrain")
         if cell == nil{
             cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "tbrightConstrain")
+            cell?.backgroundColor = UIColor.clearColor()
         }
         let dict = arrConstrains![index.row]
         cell?.textLabel?.numberOfLines = 0
@@ -1027,6 +1038,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         var cell = tbRight.dequeueReusableCellWithIdentifier("tbrightTrace")
         if cell == nil{
             cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "tbrightTrace")
+            cell?.backgroundColor = UIColor.clearColor()
         }
         let dict = arrTrace![index.row]
         cell?.textLabel?.numberOfLines = 0
@@ -1049,6 +1061,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         var cell = tbRight.dequeueReusableCellWithIdentifier("tbrightAbout")
         if cell == nil{
             cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "tbrightAbout")
+            cell?.backgroundColor = UIColor.clearColor()
         }
         cell?.textLabel?.numberOfLines = 0
         cell?.textLabel?.lineBreakMode = NSLineBreakMode.ByCharWrapping
