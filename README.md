@@ -160,6 +160,9 @@ Xcode 7.1 and iOS 8.0
 * Reset 将会将View重设为初始状态.
 * Close将会关闭操作面板.
 * 一些可以改变颜色的属性被选中时，面板上将会显示一个选择颜色的按钮，可以用它来设置各种颜色.
+
+
+
 ##Change Log
 <br>
 0.0.3
@@ -175,6 +178,8 @@ Improve the UI, which is the show view table. I make it transparent and when you
 <br>
 发布第一个版本
 <br>
+
+
 ##与我联系 
 任何问题或者BUG请直接和我联系3421902@qq.com, 我会乐于帮你解决
 
