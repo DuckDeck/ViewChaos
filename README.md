@@ -69,6 +69,21 @@ Xcode 7.1 and iOS 8.0
 * Close will close the control panel
 * Some color porperty, the panel will show a ColorPick button, click this button a ColorPick will show, the can usr it to choose color.
 
+
+##Change Log
+<br>
+0.0.3
+<br>
+Improve the precise mode. you can use four buttons to control the target.
+<br>
+0.0.2
+<br>
+Improve the UI, which is the show view table. I make it transparent and when you hit the Superview or the Subviews, the table will not minimize. you can use Hit button to location the target view
+<br>
+0.0.1
+<br>
+Release the first version
+<br>
 ##Contact 
 Any issue or problem please contact me:3421902@qq.com, I will be happy fix it
 
@@ -145,7 +160,21 @@ Xcode 7.1 and iOS 8.0
 * Reset 将会将View重设为初始状态.
 * Close将会关闭操作面板.
 * 一些可以改变颜色的属性被选中时，面板上将会显示一个选择颜色的按钮，可以用它来设置各种颜色.
-
+##Change Log
+<br>
+0.0.3
+<br>
+改装了精确模式,你可以用四个按钮来控制目标
+<br>
+0.0.2
+<br>
+Improve the UI, which is the show view table. I make it transparent and when you hit the Superview or the Subviews, the table will not minimize. you can use Hit button to location the target view
+改装了UI,原来的黑色表变成黑色半透明的了.,当你点了里面的Superview或者Subviews时,它不再缩小,只有点Hit按钮才会缩小再去定位目标View
+<br>
+0.0.1
+<br>
+发布第一个版本
+<br>
 ##与我联系 
 任何问题或者BUG请直接和我联系3421902@qq.com, 我会乐于帮你解决
 
