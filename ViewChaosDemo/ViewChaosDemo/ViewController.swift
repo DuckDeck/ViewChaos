@@ -11,6 +11,8 @@ import UIKit
 class ViewController: UIViewController {
     var btn:UIButton?
     override func viewDidLoad() {
+        let a = roundf(23.50)
+        print(a)
         super.viewDidLoad()
         self.navigationItem.title = "ViewChaos"
         view.backgroundColor = UIColor.whiteColor()

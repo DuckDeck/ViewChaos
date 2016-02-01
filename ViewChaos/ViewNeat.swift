@@ -25,6 +25,10 @@ class ViewNeat: UIView,ColorPickerDelegate {
         case foreGround = 0,backGround,tintColor
     }
     
+    enum preciseMode:Int{
+        case normal=0,precise
+    }
+    
     var segMenu:UISegmentedControl
     var segItemMenu:UISegmentedControl
     weak var viewControl:UIView?{
@@ -65,6 +69,8 @@ class ViewNeat: UIView,ColorPickerDelegate {
     var neatSizeType:neatSize = .topLeft
     var neatBorderType:neatBorder = .borderColor
     var neatColorType:neatColor = .foreGround
+    var neatPreciseMode = preciseMode.normal
+    var operatonScale:CGFloat = 0.0
     var originFrame:CGRect
     var originFont:UIFont?;
     var originBorderWidth:CGFloat = 0
@@ -88,6 +94,10 @@ class ViewNeat: UIView,ColorPickerDelegate {
     var btnClose:UIButton
     var btnReset:UIButton
     var btnPrecise:UIButton
+    var btnUp:UIButton
+    var btnDown:UIButton
+    var btnLeft:UIButton
+    var btnRight:UIButton
     init(){
         //有一些View切换的细节后面边测试边处理
         segMenu = UISegmentedControl(items: ["Location","Size","Font","Border","Color","Code"])
@@ -104,6 +114,10 @@ class ViewNeat: UIView,ColorPickerDelegate {
         btnClose = UIButton()
         btnReset = UIButton(type: UIButtonType.RoundedRect)
         btnPrecise = UIButton()
+        btnUp = UIButton()
+        btnDown = UIButton()
+        btnLeft = UIButton()
+        btnRight = UIButton()
         super.init(frame:CGRect(x: 0, y: UIScreen.mainScreen().bounds.height - 180, width: UIScreen.mainScreen().bounds.width, height: 180))
         self.backgroundColor = UIColor(red: 0.0, green: 0.898, blue: 0.836, alpha: 0.3)
         timer = NSTimer.scheduledTimerWithTimeInterval(0.05, target: self, selector: "timerFire:", userInfo: nil, repeats: true)
@@ -135,6 +149,46 @@ class ViewNeat: UIView,ColorPickerDelegate {
         vRocker.clipsToBounds = true
         vRocker.backgroundColor = UIColor.redColor()
         vRockerArea.addSubview(vRocker)
+        
+        
+        btnUp.frame = CGRect(x: vRockerArea.frame.size.width / 2 - 15, y: 0, width: 30, height: 30)
+        btnUp.setTitle("⬆︎", forState: UIControlState.Normal)
+        btnUp.setTitleColor(UIColor.redColor(), forState: UIControlState.Normal)
+        btnUp.tag = 100
+        btnUp.layer.borderColor = UIColor.redColor().CGColor
+        btnUp.layer.borderWidth = 1
+        btnUp.titleLabel?.font = UIFont.systemFontOfSize(20)
+        vRockerArea.addSubview(btnUp)
+        btnDown.frame = CGRect(x: vRockerArea.frame.size.width / 2 - 15, y: vRockerArea.frame.size.height - 30, width: 30, height: 30)
+        btnDown.setTitle("⬇︎", forState: UIControlState.Normal)
+        btnDown.setTitleColor(UIColor.redColor(), forState: UIControlState.Normal)
+        btnDown.tag = 101
+        btnDown.layer.borderColor = UIColor.redColor().CGColor
+        btnDown.layer.borderWidth = 1
+        btnDown.titleLabel?.font = UIFont.systemFontOfSize(20)
+        vRockerArea.addSubview(btnDown)
+        btnLeft.frame = CGRect(x: 0, y: vRockerArea.frame.size.height / 2 - 15, width: 30, height: 30)
+        btnLeft.setTitle("⬅︎", forState: UIControlState.Normal)
+        btnLeft.setTitleColor(UIColor.redColor(), forState: UIControlState.Normal)
+        btnLeft.tag = 102
+        btnLeft.layer.borderColor = UIColor.redColor().CGColor
+        btnLeft.layer.borderWidth = 1
+        btnLeft.titleLabel?.font = UIFont.systemFontOfSize(20)
+        vRockerArea.addSubview(btnLeft)
+        btnRight.frame = CGRect(x: vRockerArea.frame.size.width - 30, y:  vRockerArea.frame.size.height / 2 - 15, width: 30, height: 30)
+        btnRight.setTitle("➡︎", forState: UIControlState.Normal)
+        btnRight.setTitleColor(UIColor.redColor(), forState: UIControlState.Normal)
+        btnRight.tag = 103
+        btnRight.layer.borderColor = UIColor.redColor().CGColor
+        btnRight.layer.borderWidth = 1
+        btnRight.titleLabel?.font = UIFont.systemFontOfSize(20)
+        vRockerArea.addSubview(btnRight)
+        btnUp.addTarget(self, action: "oper:", forControlEvents: UIControlEvents.TouchUpInside)
+        btnDown.addTarget(self, action: "oper:", forControlEvents: UIControlEvents.TouchUpInside)
+        btnLeft.addTarget(self, action: "oper:", forControlEvents: UIControlEvents.TouchUpInside)
+        btnRight.addTarget(self, action: "oper:", forControlEvents: UIControlEvents.TouchUpInside)
+        setOperButtonsVisible(false)
+        
         
         lblViewInfo.frame = CGRect(x: CGRectGetMaxX(vRockerArea.frame) + 10 , y: 70, width: self.frame.size.width - CGRectGetMaxX(vRockerArea.frame) - 20, height: 60)
         lblViewInfo.font = UIFont.systemFontOfSize(13)
@@ -176,12 +230,12 @@ class ViewNeat: UIView,ColorPickerDelegate {
         scale = Int(stepScale.value)
         addSubview(stepScale)
         
-        lblScale.frame = CGRect(x: CGRectGetMaxX(vRockerArea.frame) + 8, y: 20, width: 45, height: 20)
+        lblScale.frame = CGRect(x: CGRectGetMaxX(vRockerArea.frame) + 8, y: 20, width: 60, height: 20)
         lblScale.text = "Scale:\(scale)"
-        lblScale.font = UIFont.systemFontOfSize(13)
+        lblScale.font = UIFont.systemFontOfSize(12)
         lblScale.textColor = UIColor.blackColor()
         addSubview(lblScale)
-        btnPrecise.frame = CGRect(x: btnColorChooseCompleted!.frame.origin.x-72, y: 5, width: 62, height: 27)
+        btnPrecise.frame = CGRect(x: btnColorChooseCompleted!.frame.origin.x-65, y: 5, width: 62, height: 27)
         btnPrecise.setTitle("Precise", forState: UIControlState.Normal)
         btnPrecise.layer.borderWidth  = 0.5
         btnPrecise.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
@@ -258,109 +312,151 @@ class ViewNeat: UIView,ColorPickerDelegate {
         
     }
     
+    func setOperButtonsVisible(visible:Bool){
+        if(visible){
+            btnUp.hidden = false
+            btnDown.hidden = false
+            btnLeft.hidden = false
+            btnRight.hidden = false
+            vRocker.hidden = true
+        }
+        else{
+            btnUp.hidden = true
+            btnDown.hidden = true
+            btnLeft.hidden = true
+            btnRight.hidden = true
+            vRocker.hidden = false
+        }
+    }
+    func oper(sender:UIButton){
+        switch sender.tag{
+        case 100:
+            scaleY = -1
+            scaleX = 0
+        case 101:
+            scaleY = 1
+            scaleX = 0
+        case 102:
+            scaleX = -1
+            scaleY = 0
+        case 103:
+            scaleX = 1
+            scaleY = 0
+        default:break
+        }
+        operationView()
+    }
+    
     func timerFire(sender:NSTimer){
         if !isTouch{
             return
         }
         if viewControl != nil{
-            switch(neatType){
-                case .location:
-                        viewControl!.frame = CGRect(x: viewControl!.frame.origin.x + CGFloat(scaleX) * 0.5, y: viewControl!.frame.origin.y + CGFloat(scaleY) * 0.5, width: viewControl!.frame.size.width, height: viewControl!.frame.size.height)
-                    lblViewInfo.text = "\(viewControl!.dynamicType) l:\(viewControl!.frame.origin.x) t:\(viewControl!.frame.origin.y) w:\(viewControl!.frame.size.width) h:\(viewControl!.frame.size.height)"
-                case .size:
-                    switch neatSizeType{
-                    case.topLeft:
-                        let newFrame = CGRect(x: viewControl!.frame.origin.x + CGFloat(scaleX) * 0.5, y: viewControl!.frame.origin.y + CGFloat(scaleY) * 0.5, width: viewControl!.frame.size.width, height: viewControl!.frame.size.height)
-                        let newWidth = CGRectGetMaxX(viewControl!.frame) - newFrame.origin.x
-                        let newHeight = CGRectGetMaxY(viewControl!.frame) - newFrame.origin.y
-                        if newWidth <= CGFloat(0.0) || newHeight <= CGFloat(0.0)
-                        {
-                            return
-                        }
-                        viewControl!.frame = CGRect(x: newFrame.origin.x, y: newFrame.origin.y, width: newWidth, height: newHeight)
-                        lblViewInfo.text = "\(viewControl!.dynamicType) l:\(viewControl!.frame.origin.x) t:\(viewControl!.frame.origin.y) w:\(viewControl!.frame.size.width) h:\(viewControl!.frame.size.height)"
-                    case .rightBottom:
-                        let newWidth = viewControl!.frame.size.width + CGFloat(scaleX) * 0.5
-                        let newHeight = viewControl!.frame.size.height + CGFloat(scaleY) * 0.5
-                        if newWidth <= CGFloat(0.0) || newHeight <= CGFloat(0.0)
-                        {
-                            return
-                        }
-                        viewControl!.frame = CGRect(x: viewControl!.frame.origin.x, y: viewControl!.frame.origin.y, width: newWidth, height: newHeight)
-                        lblViewInfo.text = "\(viewControl!.dynamicType) l:\(viewControl!.frame.origin.x) t:\(viewControl!.frame.origin.y) w:\(viewControl!.frame.size.width) h:\(viewControl!.frame.size.height)"
-                }
-            case .font:
-                    if viewControl! is UILabel{
-                        let lbl = viewControl! as! UILabel
-                        let newSize = lbl.font.pointSize - CGFloat(scaleY) * 0.5
-                        if newSize <= 0
-                        {
-                            return
-                        }
-                        lbl.font = UIFont.systemFontOfSize(newSize)
-                        lblViewInfo.text = "\(viewControl!.dynamicType) FontSize: \(newSize)"
-                    }
-                    if viewControl! is UIButton{
-                        let btn = viewControl! as! UIButton
-                        if let fontSize = btn.titleLabel?.font.pointSize {
-                            let newSize = fontSize - CGFloat(scaleY) * 0.5
-                            if newSize <= 0
-                            {
-                                return
-                            }
-                            btn.titleLabel?.font = UIFont.systemFontOfSize(newSize)
-                            lblViewInfo.text = "\(viewControl!.dynamicType) FontSize: \(newSize)"
-                        }
-                    }
-                    if viewControl! is UITextField{
-                        let txt = viewControl! as! UITextField
-                        if let fontSize = txt.font?.pointSize {
-                            let newSize = fontSize - CGFloat(scaleY) * 0.5
-                            if newSize <= 0
-                            {
-                                return
-                            }
-                            txt.font = UIFont.systemFontOfSize(newSize)
-                            lblViewInfo.text = "\(viewControl!.dynamicType) FontSize: \(newSize)"
-                        }
-                    }
-                    if viewControl! is UITextView{
-                        let txt = viewControl! as! UITextView
-                        if let fontSize = txt.font?.pointSize {
-                            let newSize = fontSize - CGFloat(scaleY) * 0.5
-                            if newSize < 0
-                            {
-                                return
-                            }
-                            txt.font = UIFont.systemFontOfSize(newSize)
-                            lblViewInfo.text = "\(viewControl!.dynamicType) FontSize: \(newSize)"
-                        }
-                }
-            case .border:
-                switch neatBorderType{
-                    case .borderWidth:
-                    let newWidth = viewControl!.layer.borderWidth  - CGFloat(scaleY) * 0.5
-                    if newWidth < 0{
-                        return
-                    }
-                    viewControl!.layer.borderWidth = newWidth
-                    lblViewInfo.text = "\(viewControl!.dynamicType) BorderWidth: \(newWidth)"
-                case.borderColor: break
-                case.cornerRadius:
-                    let newCornerRadius = viewControl!.layer.cornerRadius  - CGFloat(scaleY) * 0.5
-                    if newCornerRadius < 0{
-                        return
-                    }
-                    viewControl!.layer.cornerRadius = newCornerRadius
-                    lblViewInfo.text = "\(viewControl!.dynamicType) CornerRadius: \(newCornerRadius)"
-                }
-                default: break
-                }
+            operationView()
             }
             else{
                 Chaos.toast("VIew have released")
             }
         }
+    
+    
+    func operationView(){
+        operatonScale = neatPreciseMode == .normal ? 0.5 : (CGFloat(scale) / 10.0)
+        switch(neatType){
+        case .location:
+            viewControl!.frame = CGRect(x: viewControl!.frame.origin.x + CGFloat(scaleX) * operatonScale, y: viewControl!.frame.origin.y + CGFloat(scaleY) * operatonScale, width: viewControl!.frame.size.width, height: viewControl!.frame.size.height)
+            lblViewInfo.text = "\(viewControl!.dynamicType) l:\(viewControl!.frame.origin.x) t:\(viewControl!.frame.origin.y) w:\(viewControl!.frame.size.width) h:\(viewControl!.frame.size.height)"
+        case .size:
+            switch neatSizeType{
+            case.topLeft:
+                let newFrame = CGRect(x: viewControl!.frame.origin.x + CGFloat(scaleX) * operatonScale, y: viewControl!.frame.origin.y + CGFloat(scaleY) * operatonScale, width: viewControl!.frame.size.width, height: viewControl!.frame.size.height)
+                let newWidth = CGRectGetMaxX(viewControl!.frame) - newFrame.origin.x
+                let newHeight = CGRectGetMaxY(viewControl!.frame) - newFrame.origin.y
+                if newWidth <= CGFloat(0.0) || newHeight <= CGFloat(0.0)
+                {
+                    return
+                }
+                viewControl!.frame = CGRect(x: newFrame.origin.x, y: newFrame.origin.y, width: newWidth, height: newHeight)
+                lblViewInfo.text = "\(viewControl!.dynamicType) l:\(viewControl!.frame.origin.x) t:\(viewControl!.frame.origin.y) w:\(viewControl!.frame.size.width) h:\(viewControl!.frame.size.height)"
+            case .rightBottom:
+                let newWidth = viewControl!.frame.size.width + CGFloat(scaleX) * operatonScale
+                let newHeight = viewControl!.frame.size.height + CGFloat(scaleY) * operatonScale
+                if newWidth <= CGFloat(0.0) || newHeight <= CGFloat(0.0)
+                {
+                    return
+                }
+                viewControl!.frame = CGRect(x: viewControl!.frame.origin.x, y: viewControl!.frame.origin.y, width: newWidth, height: newHeight)
+                lblViewInfo.text = "\(viewControl!.dynamicType) l:\(viewControl!.frame.origin.x) t:\(viewControl!.frame.origin.y) w:\(viewControl!.frame.size.width) h:\(viewControl!.frame.size.height)"
+            }
+        case .font:
+            if viewControl! is UILabel{
+                let lbl = viewControl! as! UILabel
+                let newSize = lbl.font.pointSize - CGFloat(scaleY) * operatonScale
+                if newSize <= 0
+                {
+                    return
+                }
+                lbl.font = UIFont.systemFontOfSize(newSize)
+                lblViewInfo.text = "\(viewControl!.dynamicType) FontSize: \(newSize)"
+            }
+            if viewControl! is UIButton{
+                let btn = viewControl! as! UIButton
+                if let fontSize = btn.titleLabel?.font.pointSize {
+                    let newSize = fontSize - CGFloat(scaleY) * operatonScale
+                    if newSize <= 0
+                    {
+                        return
+                    }
+                    btn.titleLabel?.font = UIFont.systemFontOfSize(newSize)
+                    lblViewInfo.text = "\(viewControl!.dynamicType) FontSize: \(newSize)"
+                }
+            }
+            if viewControl! is UITextField{
+                let txt = viewControl! as! UITextField
+                if let fontSize = txt.font?.pointSize {
+                    let newSize = fontSize - CGFloat(scaleY) * operatonScale
+                    if newSize <= 0
+                    {
+                        return
+                    }
+                    txt.font = UIFont.systemFontOfSize(newSize)
+                    lblViewInfo.text = "\(viewControl!.dynamicType) FontSize: \(newSize)"
+                }
+            }
+            if viewControl! is UITextView{
+                let txt = viewControl! as! UITextView
+                if let fontSize = txt.font?.pointSize {
+                    let newSize = fontSize - CGFloat(scaleY) * operatonScale
+                    if newSize < 0
+                    {
+                        return
+                    }
+                    txt.font = UIFont.systemFontOfSize(newSize)
+                    lblViewInfo.text = "\(viewControl!.dynamicType) FontSize: \(newSize)"
+                }
+            }
+        case .border:
+            switch neatBorderType{
+            case .borderWidth:
+                let newWidth = viewControl!.layer.borderWidth  - CGFloat(scaleY) * operatonScale
+                if newWidth < 0{
+                    return
+                }
+                viewControl!.layer.borderWidth = newWidth
+                lblViewInfo.text = "\(viewControl!.dynamicType) BorderWidth: \(newWidth)"
+            case.borderColor: break
+            case.cornerRadius:
+                let newCornerRadius = viewControl!.layer.cornerRadius  - CGFloat(scaleY) * operatonScale
+                if newCornerRadius < 0{
+                    return
+                }
+                viewControl!.layer.cornerRadius = newCornerRadius
+                lblViewInfo.text = "\(viewControl!.dynamicType) CornerRadius: \(newCornerRadius)"
+            }
+        default: break
+        }
+
+    }
     
     override convenience init(frame: CGRect) {
         self.init()
@@ -596,25 +692,34 @@ class ViewNeat: UIView,ColorPickerDelegate {
          let title = sender.titleForState(UIControlState.Normal)!
         if title == "Precise"{
             sender.setTitle("Imprecise", forState: UIControlState.Normal)
-            timer?.invalidate()
-            timer = NSTimer.scheduledTimerWithTimeInterval(0.3, target: self, selector: "timerFire:", userInfo: nil, repeats: true)
-            scale = 1
-            stepScale.enabled = false
-            lblScale.text = "Scale:\(scale)"
+            timer?.pauseChaosTimer()
+            setOperButtonsVisible(true)
+            neatPreciseMode = .precise
+            scaleX = 0
+            scaleY = 0
+          //  timer = NSTimer.scheduledTimerWithTimeInterval(0.3, target: self, selector: "timerFire:", userInfo: nil, repeats: true)
+          //  scale = 1
+          //  stepScale.enabled = false
+            lblScale.text = "Scale:\(CGFloat(scale) / 10.0)"
+            
         }
         else{
             sender.setTitle("Precise", forState: UIControlState.Normal)
-            timer?.invalidate()
-            timer = NSTimer.scheduledTimerWithTimeInterval(0.05, target: self, selector: "timerFire:", userInfo: nil, repeats: true)
-            scale = Int(stepScale.value)
-            stepScale.enabled = true
+            timer?.resumeChaosTimer()
+            setOperButtonsVisible(false)
+            neatPreciseMode = .normal
+           // timer = NSTimer.scheduledTimerWithTimeInterval(0.05, target: self, selector: "timerFire:", userInfo: nil, repeats: true)
+           // scale = Int(stepScale.value)
+         //   stepScale.enabled = true
             lblScale.text = "Scale:\(scale)"
         }
     }
     
     func scaleChange(sender:UIStepper){
         scale = Int(sender.value)
-        lblScale.text = "Scale:\(scale)"
+        let showScaleValue = neatPreciseMode == .normal ? CGFloat(scale) : (CGFloat(scale) / 10.0)
+      //  lblScale.text = "Scale:\(showScaleValue.format("00.00"))"
+          lblScale.text = "Scale:\(showScaleValue)"
     }
     
     func reset(sender:UIButton){
