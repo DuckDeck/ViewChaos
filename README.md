@@ -71,19 +71,12 @@ Xcode 7.1 and iOS 8.0
 
 
 ##Change Log
-<br>
-####0.0.3
-<br>
+#####0.0.3
 Improve the precise mode. you can use four buttons to control the target.
-<br>
-####0.0.2
-<br>
+#####0.0.2
 Improve the UI, which is the show view table. I make it transparent and when you hit the Superview or the Subviews, the table will not minimize. you can use Hit button to location the target view
-<br>
-####0.0.1
-<br>
+#####0.0.1
 Release the first version
-<br>
 ##Contact 
 Any issue or problem please contact me:3421902@qq.com, I will be happy fix it
 
@@ -115,9 +108,9 @@ Xcode 7.1 and iOS 8.0
 * 第三步:如果你找不到Other Swift Flags选项，说明你的项目是纯objective-c，那么你需要手动添加一个swift文件到你的项目，这时XCode会让你添加一个header bridge文件，这时侯选择是，再做第二步操作.
 * 第四步:开始使用! 
 
-`如果你使用cocopods, 则pod 'StarReview'.`
-* 第一步：pod 'StarReview'，再安装.
-* 第二步：选择Pods项目->选择 target-> 你的项目 -> Build Setting-> 搜索 'swift compile'-> 选择 'Other Swift Flags' -> 选择 DeBug option -> 添加 -DDEBUG command (这个能让此工具仅工Debug模式有效).
+`如果你使用cocopods, 则pod 'ViewChaos'.`
+* 第一步：pod 'ViewChaos'，再安装.
+* 第二步：选择Pods项目->选择 target-> ViewChaos -> Build Setting-> 搜索 'swift compile'-> 选择 'Other Swift Flags' -> 选择 DeBug option -> 添加 -DDEBUG command (这个能让此工具仅工Debug模式有效).
 * 第三步:开始使用!
 <br>
 ![add -DDEBUG location](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/0.png)  
@@ -162,17 +155,11 @@ Xcode 7.1 and iOS 8.0
 * 一些可以改变颜色的属性被选中时，面板上将会显示一个选择颜色的按钮，可以用它来设置各种颜色.
 
 ##Change Log
-<br>
-####0.0.3
-<br>
+#####0.0.3
 改装了精确模式,你可以用四个按钮来控制目标
-<br>
-####0.0.2
-<br>
+#####0.0.2
 改善了UI,原来的黑色表变成黑色半透明的了.,当你点了里面的Superview或者Subviews时,它不再缩小,只有点Hit按钮才会缩小再去定位目标View
-<br>
-####0.0.1
-<br>
+#####0.0.1
 发布第一个版本
 <br>
 
