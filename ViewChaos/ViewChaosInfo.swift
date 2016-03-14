@@ -1000,8 +1000,8 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             }
             else if view is UIButton{
                 let btn = view as! UIButton
-                let title = btn.titleForState(UIControlState.Normal)
-                cell?.detailTextLabel?.text = cell!.detailTextLabel!.text! + " text(\((title! as NSString).length): \(title!))"
+                let title = btn.titleForState(UIControlState.Normal) == nil ? "": btn.titleForState(UIControlState.Normal)!
+                cell?.detailTextLabel?.text = cell!.detailTextLabel!.text! + " text(\((title as NSString).length): \(title))"
             }
             cell?.detailTextLabel?.sizeToFit()
         }
