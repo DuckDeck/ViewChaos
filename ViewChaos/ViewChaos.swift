@@ -7,7 +7,10 @@
 //
 
 import UIKit
-extension UIWindow {
+enum ChaosFeature:Int{
+    case None=0,Zoom,Border,Alpha,Draw
+}
+extension UIWindow:UIActionSheetDelegate {
     #if DEBUG
     public override  class func initialize(){
     struct UIWindow_SwizzleToken {
@@ -27,8 +30,79 @@ extension UIWindow {
         {
             let viewChaos = ViewChaos()
             self.addSubview(viewChaos)
+            viewZoom = ZoomView(frame: CGRectNull)
+            UIApplication.sharedApplication().applicationSupportsShakeToEdit = true
+            self.chaosFeature = 0
         }
     }
+    
+    public override func motionBegan(motion: UIEventSubtype, withEvent event: UIEvent?) {
+        
+        switch self.chaosFeature
+        {
+            case ChaosFeature.None.rawValue:
+            //这里放一个菜单
+            let menu = UIActionSheet(title: "使用功能", delegate: self, cancelButtonTitle:"取消", destructiveButtonTitle: nil)
+            menu.addButtonWithTitle("启用放大镜")
+            menu.showInView(self)
+        case ChaosFeature.Zoom.rawValue:
+            UIAlertView.setMessage("关闭放大镜").addFirstButton("取消").addSecondButton("确定").alertWithButtonClick({ (buttonIndex, alert) -> Void in
+                if buttonIndex == 1{
+                    Chaos.toast("放大镜已经关闭")
+                    NSNotificationCenter.defaultCenter().postNotificationName(setZoomViewWork, object: nil)
+                    self.chaosFeature = ChaosFeature.None.rawValue
+                }
+            })
+        default:break
+        }
+        
+    }
+    
+    
+    public func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
+        if buttonIndex == 1{
+            NSNotificationCenter.defaultCenter().postNotificationName(setZoomViewWork, object: nil)
+            Chaos.toast("放大镜已经启用")
+            self.chaosFeature = ChaosFeature.Zoom.rawValue
+        }
+    }
+    
+    public override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        if viewZoom == nil{
+            return
+        }
+        
+        if !viewZoom!.needWork{
+           return
+        }
+        if let touch = touches.first{
+            let point = touch.locationInView(self)
+            viewZoom?.pointToZoom = point
+            viewZoom?.hidden = false
+            if viewZoom?.viewToZoom == nil{
+                viewZoom?.viewToZoom = self
+            }
+            viewZoom?.makeKeyAndVisible()
+        }
+    }
+    
+    public override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        if !viewZoom!.needWork{
+            return
+        }
+        if let touch = touches.first{
+            let point = touch.locationInView(self)
+            viewZoom?.pointToZoom = point
+            viewZoom?.makeKeyAndVisible()
+        }
+    }
+   public  override  func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        viewZoom?.hidden = true
+    }
+    public override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
+         viewZoom?.hidden = true
+    }
+    
 }
 extension UIView{
     public func vcWillMoveToSuperview(subview:UIView?){
@@ -50,6 +124,7 @@ extension UIView{
         }
     }
 }
+
 class ViewChaos: UIView {
     var isTouch:Bool //是否下在触摸中
     var left,top:Float  //右 上
@@ -86,6 +161,10 @@ class ViewChaos: UIView {
         super.init(frame: CGRectZero)
         self.frame = CGRect(x: UIScreen.mainScreen().bounds.width-35, y: 100, width: 30, height: 30)
         self.layer.zPosition = CGFloat(FLT_MAX)
+        
+        
+  
+        
         let lbl = UILabel(frame: self.bounds)
         lbl.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleHeight]
         lbl.textAlignment = NSTextAlignment.Center
@@ -100,6 +179,8 @@ class ViewChaos: UIView {
         lblInfo.userInteractionEnabled = true
         lblInfo.addGestureRecognizer(tap)
         windowInfo.addSubview(lblInfo)
+    
+       
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleTraceView:", name: "handleTraceView", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleTraceViewClose:", name: "handleTraceViewClose", object: nil)
@@ -112,6 +193,11 @@ class ViewChaos: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    override func motionBegan(motion: UIEventSubtype, withEvent event: UIEvent?) {
+        print(1)
+    }
+    
     
     func handleTraceShow(notif:NSNotification){ //如果关了ViewChaosInfo,就会显示出来
         self.hidden = false
@@ -272,11 +358,13 @@ class ViewChaos: UIView {
         windowInfo.hidden = false
         viewChaosInfo?.removeFromSuperview()
         viewBound.removeFromSuperview()
+        
         let touch = touches.first
         let point = touch?.locationInView(self)
         left = Float(point!.x)
         top = Float(point!.y)
         let topPoint = touch?.locationInView(self.window)
+        
         if  let view = topView(self.window!, point: topPoint!)
         {
             let fm = self.window?.convertRect(view.bounds, fromView: view)
@@ -406,9 +494,6 @@ class Chaos {
     class var staredChaos:Chaos {
         return sharedInstance
     }
-    var vToast:UIView?
-    var lblToastMsg:UILabel?
-    var wind:UIWindow?
     typealias Task = (cancel:Bool)->()
     static func delay(time:NSTimeInterval,task:()->())->Task?{
         let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(time * Double(NSEC_PER_SEC)))
@@ -478,58 +563,43 @@ class Chaos {
         return str
     }
     
-    
+
+    class var sharedToast:Chaos {
+        return sharedInstance
+    }
+    var lbl:ToastLable?
+    var window:UIWindow?
     static func toast(msg:String){
-        Chaos.sharedInstance.showToast(msg)
+        Chaos.sharedToast.showToast(msg)
+    }
+    
+    static func toast(msg:String,verticalScale:Float){
+        Chaos.sharedToast.showToast(msg,verticalScale:verticalScale)
+    }
+    
+    private func showToast(msg:String){
+        self.showToast(msg,verticalScale:0.85)
     }
     
     
-    func showToast(msg:String){
-        if vToast == nil{
-            vToast = UIView(frame: CGRect(x: 0, y: UIScreen.mainScreen().bounds.height - 100, width: UIScreen.mainScreen().bounds.size.width, height: 30))
-            vToast?.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.7)
-            vToast?.layer.cornerRadius = 4
-            lblToastMsg = UILabel(frame: CGRect(x: 5, y: 5, width: vToast!.frame.size.width - 40, height: vToast!.frame.size.height))
-            lblToastMsg?.textColor = UIColor.whiteColor()
-            lblToastMsg?.font = UIFont.systemFontOfSize(14)
-            lblToastMsg?.numberOfLines = 0
-            lblToastMsg?.textAlignment = NSTextAlignment.Center
-            lblToastMsg?.backgroundColor = UIColor.clearColor()
-            vToast?.addSubview(lblToastMsg!)
+    private func showToast(msg:String,verticalScale:Float = 0.8){
+        if lbl == nil{
+            lbl = ToastLable(text: msg)
         }
-        if wind == nil{
-            wind = UIApplication.sharedApplication().keyWindow
+        else{
+            lbl?.text = msg
+            lbl?.sizeToFit()
+            lbl?.layer.removeAnimationForKey("animation")
         }
-        if !(wind!.subviews.contains(vToast!)){
-            wind?.addSubview(vToast!)
+        if window == nil{
+            window = UIApplication.sharedApplication().keyWindow
         }
-        vToast?.frame = CGRect(x: 0, y: UIScreen.mainScreen().bounds.height - 100, width: UIScreen.mainScreen().bounds.size.width, height: 30)
-        lblToastMsg?.frame = CGRect(x: 5, y: 5, width: vToast!.frame.size.width - 40, height: vToast!.frame.size.height)
-        lblToastMsg?.text = msg
-        
-        let size = CGSize(width: lblToastMsg!.frame.size.width, height: CGFloat(MAXFLOAT))
-        let attribute = [NSFontAttributeName:lblToastMsg!.font]
-        var labelSize = (msg as NSString).boundingRectWithSize(size, options: [NSStringDrawingOptions.TruncatesLastVisibleLine,NSStringDrawingOptions.UsesLineFragmentOrigin,NSStringDrawingOptions.UsesFontLeading], attributes: attribute, context: nil).size
-        if (msg as NSString).length >= 30{
-            labelSize.height += 30
+        if !(window!.subviews.contains(lbl!)){
+            window?.addSubview(lbl!)
+            lbl?.center = window!.center
+            lbl?.frame.origin.y = UIScreen.mainScreen().bounds.height * CGFloat(verticalScale)
         }
-        var rect = lblToastMsg!.frame
-        rect.size.width = labelSize.width
-        rect.size.height = labelSize.height
-        lblToastMsg?.frame = rect
-        var rectView = vToast!.frame
-        rectView.size.width = rect.size.width + 10
-        rectView.size.height = rect.size.height + 10
-        rectView.origin.x = (UIScreen.mainScreen().bounds.width - labelSize.width) / 2
-        vToast?.frame = rectView
-        vToast?.alpha = 1
-        Chaos.delay(1) { () -> () in
-            UIView.animateWithDuration(1, animations: { () -> Void in
-                self.vToast?.alpha = 0
-                }, completion: { (finished) -> Void in
-                    self.wind = nil
-            })
-        }
+        lbl?.addAnimationGroup()
     }
     
 }
@@ -551,6 +621,7 @@ extension CGFloat{
 }
 
 private var NSObject_Name = 0
+private var UIWindow_Zoom = 0
 extension NSObject{
     @objc  var chaosName:String?{
         get{
@@ -560,6 +631,28 @@ extension NSObject{
             objc_setAssociatedObject(self, &NSObject_Name, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_COPY_NONATOMIC)
         }
     }
+}
+
+private var UIWindow_Feature = 0
+extension UIWindow{
+    @objc  var viewZoom:ZoomView?{
+        get{
+            return objc_getAssociatedObject(self, &UIWindow_Zoom) as? ZoomView
+        }
+        set{
+            objc_setAssociatedObject(self, &UIWindow_Zoom, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+
+    @objc var chaosFeature:Int{
+            get{
+                return objc_getAssociatedObject(self, &UIWindow_Feature) as! Int
+            }
+            set{
+                objc_setAssociatedObject(self, &UIWindow_Feature, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            }
+    }
+    
 }
 
 let VcWillMoveToSuperview = "vcWillMoveToSuperview"
@@ -572,7 +665,7 @@ let handleTraceAddSubView = "handleTraceAddSubView"
 let handleTraceShow = "handleTraceShow"
 let handleTraceRemoveView = "handleTraceRemoveView"
 let handleTraceRemoveSubView = "handleTraceRemoveSubView"
-
+let setZoomViewWork = "setZoomViewWork"
 
 
 
@@ -805,5 +898,238 @@ class ChaosColorPicker: UIView
         
         super.init(coder: aDecoder);
         self.loadView();
+    }
+}
+
+
+
+
+
+
+class ToastLable:UILabel {
+    enum ToastShowType{
+        case Top,Center,Bottom
+    }
+    var forwardAnimationDuration:CFTimeInterval = 0.3
+    var backwardAnimationDuration:CFTimeInterval = 0.2
+    var waitAnimationDuration:CFTimeInterval = 1.5
+    var textInsets:UIEdgeInsets?
+    var maxWidth:Float?
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        textInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        maxWidth = Float(UIScreen.mainScreen().bounds.width) - 20.0
+        self.layer.cornerRadius = 5
+        self.layer.masksToBounds = true
+        self.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.6)
+        self.numberOfLines = 0
+        self.textAlignment = NSTextAlignment.Left
+        self.textColor = UIColor.whiteColor()
+        self.font = UIFont.systemFontOfSize(14)
+    }
+    convenience init(text:String) {
+        self.init(frame:CGRectZero)
+        self.text = text
+        self.sizeToFit()
+    }
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    func addAnimationGroup(){
+        let forwardAnimation = CABasicAnimation(keyPath: "transform.scale")
+        forwardAnimation.duration = self.forwardAnimationDuration
+        forwardAnimation.timingFunction = CAMediaTimingFunction(controlPoints: 0.5, 1.7, 0.6, 0.85)
+        forwardAnimation.fromValue = 0
+        forwardAnimation.toValue = 1
+        
+        let backWardAnimation = CABasicAnimation(keyPath: "transform.scale")
+        backWardAnimation.duration = self.backwardAnimationDuration
+        backWardAnimation.beginTime = forwardAnimation.duration + waitAnimationDuration
+        backWardAnimation.timingFunction = CAMediaTimingFunction(controlPoints: 0.4, 0.15, 0.5, -0.7)
+        backWardAnimation.fromValue = 1
+        backWardAnimation.toValue = 0
+        
+        let animationGroup = CAAnimationGroup()
+        animationGroup.animations = [forwardAnimation,backWardAnimation]
+        animationGroup.duration = forwardAnimation.duration + backWardAnimation.duration + waitAnimationDuration
+        animationGroup.removedOnCompletion = false
+        animationGroup.delegate = self
+        animationGroup.fillMode = kCAFillModeForwards
+        self.layer.addAnimation(animationGroup, forKey: "animation")
+    }
+    override func sizeToFit() {
+        super.sizeToFit()
+        var fm = self.frame
+        let width = CGRectGetWidth(self.bounds) + self.textInsets!.left + self.textInsets!.right
+        fm.size.width = width > CGFloat(self.maxWidth!) ? CGFloat(self.maxWidth!) : width
+        fm.size.height = CGRectGetHeight(self.bounds) + self.textInsets!.top + self.textInsets!.bottom
+        fm.origin.x = UIScreen.mainScreen().bounds.width / 2 - fm.size.width / 2
+        self.frame = fm
+    }
+    override func animationDidStop(anim: CAAnimation, finished flag: Bool) {
+        if flag{
+            self.removeFromSuperview()
+        }
+    }
+    override func drawTextInRect(rect: CGRect) {
+        super.drawTextInRect(UIEdgeInsetsInsetRect(rect, self.textInsets!))
+    }
+    override func textRectForBounds(bounds: CGRect, limitedToNumberOfLines numberOfLines: Int) -> CGRect {
+        var rect = bounds
+        if let txt = self.text{
+            rect.size =  (txt as NSString).boundingRectWithSize(CGSize(width: CGFloat(self.maxWidth!) - self.textInsets!.left - self.textInsets!.right, height: CGFloat.max), options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: [NSFontAttributeName:self.font], context: nil).size
+        }
+        return rect
+    }
+}
+
+
+
+
+
+
+
+
+
+extension UIAlertView {
+    static func setMessage(msg:String)->UIAlertView{
+        let alert = BlockAlert()
+        alert.message = msg
+        return alert
+    }
+    
+    func addAlertStyle(style:UIAlertViewStyle)->UIAlertView{
+        self.alertViewStyle = style
+        return self
+    }
+    
+    func addTitle(title:String)->UIAlertView{
+        self.title = title
+        return self
+    }
+    
+    func addFirstButton(btnTitle:String)->UIAlertView{
+        self.addButtonWithTitle(btnTitle)
+        return self
+    }
+    
+    func addSecondButton(btnTitle:String)->UIAlertView{
+        self.addButtonWithTitle(btnTitle)
+        return self
+    }
+    
+    func addButtons(btnTitles:[String])->UIAlertView{
+        for title in btnTitles{
+            self.addButtonWithTitle(title)
+        }
+        return self
+    }
+    
+    func addButtonClickEvent(clickButton:((buttonIndex:Int,alert:UIAlertView)->Void)?)->UIAlertView{
+        if let alert = self as? BlockAlert{
+            alert.completion = clickButton
+        }
+        return self
+    }
+    
+    func addDidDismissEvent(event:((buttonIndex:Int,alert:UIAlertView)->Void)?)->UIAlertView{
+        if let alert = self as? BlockAlert{
+            alert.didDismissBlock = event
+        }
+        return self
+    }
+    
+    func addWillDismissEvent(event:((buttonIndex:Int,alert:UIAlertView)->Void)?)->UIAlertView{
+        if let alert = self as? BlockAlert{
+            alert.willDismissBlock = event
+        }
+        return self
+    }
+    
+    
+    func addDidPresentEvent(event:((alert:UIAlertView)->Void)?)->UIAlertView{
+        if let alert = self as? BlockAlert{
+            alert.didPresentBlock = event
+        }
+        return self
+    }
+    
+    func addWillPresentEvent(event:((alert:UIAlertView)->Void)?)->UIAlertView{
+        if let alert = self as? BlockAlert{
+            alert.willPresentBlock = event
+        }
+        return self
+    }
+    
+    func addAlertCancelEvent(event:((alert:UIAlertView)->Void)?)->UIAlertView{
+        if let alert = self as? BlockAlert{
+            alert.alertWithCalcelBlock = event
+        }
+        return self
+    }
+    
+    
+    func alertWithButtonClick(clickButton:((buttonIndex:Int,alert:UIAlertView)->Void)?){
+        if let alert = self as? BlockAlert{
+            alert.completion = clickButton
+            alert.show()
+        }
+    }
+}
+class BlockAlert:UIAlertView,UIAlertViewDelegate {
+    var completion:((buttonIndex:Int,alert:UIAlertView)->Void)?
+    var willDismissBlock:((buttonIndex:Int,alert:UIAlertView)->Void)?
+    var didDismissBlock:((buttonIndex:Int,alert:UIAlertView)->Void)?
+    var didPresentBlock:((alert:UIAlertView)->Void)?
+    var willPresentBlock:((alert:UIAlertView)->Void)?
+    var alertWithCalcelBlock:((alert:UIAlertView)->Void)?
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.delegate = self
+    }
+    
+    
+    func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
+        if let block = completion{
+            block(buttonIndex: buttonIndex, alert: alertView)
+        }
+    }
+    
+    
+    func alertView(alertView: UIAlertView, didDismissWithButtonIndex buttonIndex: Int) {
+        if let block = didDismissBlock{
+            block(buttonIndex: buttonIndex, alert: alertView)
+        }
+    }
+    
+    func alertView(alertView: UIAlertView, willDismissWithButtonIndex buttonIndex: Int) {
+        if let block = willDismissBlock{
+            block(buttonIndex: buttonIndex, alert: alertView)
+        }
+        
+    }
+    
+    
+    func didPresentAlertView(alertView: UIAlertView) {
+        if let block = didPresentBlock{
+            block(alert: alertView)
+        }
+    }
+    
+    func willPresentAlertView(alertView: UIAlertView) {
+        if let block = willPresentBlock{
+            block(alert: alertView)
+        }
+    }
+    
+    func alertViewCancel(alertView: UIAlertView) {
+        if let block = alertWithCalcelBlock{
+            block(alert: alertView)
+        }
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }

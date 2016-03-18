@@ -22,7 +22,10 @@ class ViewController: UIViewController {
         btn?.chaosName = "btn"
         btn?.addTarget(self, action: "click:", forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(btn!)
+        
+
     }
+
 
     
     func click(sender:UIButton)
@@ -31,6 +34,7 @@ class ViewController: UIViewController {
         let next = story.instantiateViewControllerWithIdentifier("next")
         self.navigationController?.pushViewController(next, animated: true)
     }
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
