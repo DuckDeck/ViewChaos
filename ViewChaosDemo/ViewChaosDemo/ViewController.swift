@@ -20,7 +20,7 @@ class ViewController: UIViewController {
         btn?.backgroundColor = UIColor.redColor()
         btn?.setTitle("Next", forState: UIControlState.Normal)
         btn?.chaosName = "btn"
-        btn?.addTarget(self, action: "click:", forControlEvents: UIControlEvents.TouchUpInside)
+        btn?.addTarget(self, action: #selector(ViewController.click(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(btn!)
         
 

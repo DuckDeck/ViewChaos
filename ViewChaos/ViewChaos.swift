@@ -17,21 +17,21 @@ extension UIWindow:UIActionSheetDelegate {
     static var onceToken:dispatch_once_t = 0
         }
             dispatch_once(&UIWindow_SwizzleToken.onceToken) { () -> Void in
-            Chaos.hookMethod(UIWindow.self, originalSelector: Selector("makeKeyAndVisible"), swizzleSelector: Selector("vcMakeKeyAndVisible"))
-            Chaos.hookMethod(UIView.self, originalSelector: Selector("willMoveToSuperview:"), swizzleSelector: Selector("vcWillMoveToSuperview:"))
-            Chaos.hookMethod(UIView.self, originalSelector: Selector("willRemoveSubview:"), swizzleSelector: Selector("vcWillRemoveSubview:"))
-            Chaos.hookMethod(UIView.self, originalSelector: Selector("didAddSubview:"), swizzleSelector: Selector("vcDidAddSubview:"))
+            Chaos.hookMethod(UIWindow.self, originalSelector: #selector(UIWindow.makeKeyAndVisible), swizzleSelector: #selector(UIWindow.vcMakeKeyAndVisible))
+            Chaos.hookMethod(UIView.self, originalSelector: #selector(UIView.willMoveToSuperview(_:)), swizzleSelector: #selector(UIView.vcWillMoveToSuperview(_:)))
+            Chaos.hookMethod(UIView.self, originalSelector: #selector(UIView.willRemoveSubview(_:)), swizzleSelector: #selector(UIView.vcWillRemoveSubview(_:)))
+            Chaos.hookMethod(UIView.self, originalSelector: #selector(UIView.didAddSubview(_:)), swizzleSelector: #selector(UIView.vcDidAddSubview(_:)))
         }
     }
-    #endif
+    
     public  func vcMakeKeyAndVisible(){
         self.vcMakeKeyAndVisible()//看起来是死循环,其实不是,因为已经交换过了
-        if self.frame.size.height > 20  //为什么是20
-        {
+        if self.frame.size.height > 20  //为什么是20,当时写这个的时侯不明白为什么是20
+        {//现在我在做放大镜时终于明白知道为什么是20,因为如果是20 的话就是最上面的信号条,而不是下面的UIWindow,信号条其实也是个UIWindow对象
             let viewChaos = ViewChaos()
             self.addSubview(viewChaos)
             viewZoom = ZoomView(frame: CGRectNull)
-            UIApplication.sharedApplication().applicationSupportsShakeToEdit = true
+            UIApplication.sharedApplication().applicationSupportsShakeToEdit = true //启用摇一摇功能
             self.chaosFeature = 0
         }
     }
@@ -49,6 +49,7 @@ extension UIWindow:UIActionSheetDelegate {
             UIAlertView.setMessage("关闭放大镜").addFirstButton("取消").addSecondButton("确定").alertWithButtonClick({ (buttonIndex, alert) -> Void in
                 if buttonIndex == 1{
                     Chaos.toast("放大镜已经关闭")
+                    self.viewZoom?.viewZoom = nil
                     NSNotificationCenter.defaultCenter().postNotificationName(setZoomViewWork, object: nil)
                     self.chaosFeature = ChaosFeature.None.rawValue
                 }
@@ -67,7 +68,11 @@ extension UIWindow:UIActionSheetDelegate {
         }
     }
     
+
+    
     public override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        print(self)
+        print(self.keyWindow)
         if viewZoom == nil{
             return
         }
@@ -79,30 +84,47 @@ extension UIWindow:UIActionSheetDelegate {
             let point = touch.locationInView(self)
             viewZoom?.pointToZoom = point
             viewZoom?.hidden = false
+            
             if viewZoom?.viewToZoom == nil{
                 viewZoom?.viewToZoom = self
             }
-            viewZoom?.makeKeyAndVisible()
+            viewZoom?.makeKeyAndVisible()//这个严重要说明,这个方法应该会将这个Window设成Keywindow,然后原来的那个就不是KeyWindow了,所以调用Xcode主视图查看器就看不到东西了,
+            //Issue2 ,使用些功能后会让XCode 的 view hierarchy 功能失效,会变成一片空白,看有没有什么解决的办法
+            print("self is key window\(self.keyWindow)")
+            print("viewZoom is key window \(viewZoom?.keyWindow)")
+            
         }
     }
     
     public override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        if viewZoom == nil{
+            return
+        }
         if !viewZoom!.needWork{
             return
         }
         if let touch = touches.first{
             let point = touch.locationInView(self)
             viewZoom?.pointToZoom = point
-            viewZoom?.makeKeyAndVisible()
+            //viewZoom?.makeKeyAndVisible() 这个只要调用一次就行.不然后会有内存问题,所以要注视掉
+            //Issue3 用放大镜吃内存问题,已经解决,在这里不再调用makeKeyAndVisible()就行
         }
     }
    public  override  func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         viewZoom?.hidden = true
+        print("self is key window\(self.keyWindow)")
+        print("viewZoom is key window \(viewZoom?.keyWindow)")
+        self.viewZoom?.resignKeyWindow()
+
     }
     public override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
          viewZoom?.hidden = true
+        print("self is key window\(self.keyWindow)")
+        print("viewZoom is key window \(viewZoom?.keyWindow)")
+        self.viewZoom?.resignKeyWindow()
+
     }
-    
+    #endif
 }
 extension UIView{
     public func vcWillMoveToSuperview(subview:UIView?){
@@ -175,19 +197,19 @@ class ViewChaos: UIView {
         self.layer.cornerRadius = 15
         
         
-        let tap = UITapGestureRecognizer(target: self, action: "tapInfo:")
+        let tap = UITapGestureRecognizer(target: self, action: #selector(ViewChaos.tapInfo(_:)))
         lblInfo.userInteractionEnabled = true
         lblInfo.addGestureRecognizer(tap)
         windowInfo.addSubview(lblInfo)
     
        
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleTraceView:", name: "handleTraceView", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleTraceViewClose:", name: "handleTraceViewClose", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleTraceContraints:", name: "handleTraceContraints", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleTraceAddSubView:", name: "handleTraceAddSubView", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleTraceShow:", name: "handleTraceShow", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "controlTraceShow:", name: controlTraceView, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewChaos.handleTraceView(_:)), name: "handleTraceView", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewChaos.handleTraceViewClose(_:)), name: "handleTraceViewClose", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewChaos.handleTraceContraints(_:)), name: "handleTraceContraints", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewChaos.handleTraceAddSubView(_:)), name: "handleTraceAddSubView", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewChaos.handleTraceShow(_:)), name: "handleTraceShow", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewChaos.controlTraceShow(_:)), name: controlTraceView, object: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -448,10 +470,11 @@ class ViewChaos: UIView {
         }
     }
     
-    func hitTest(view:UIView,var point:CGPoint){
+    func hitTest(view:UIView, point:CGPoint){
+        var pt = point
         if view is UIScrollView{
-            point.x += (view as! UIScrollView).contentOffset.x
-            point.y += (view as! UIScrollView).contentOffset.y
+            pt.x += (view as! UIScrollView).contentOffset.x
+            pt.y += (view as! UIScrollView).contentOffset.y
         }
         if view.pointInside(point, withEvent: nil) && !view.hidden && view.alpha > 0.01 && view != viewBound && !view.isDescendantOfView(self){//这里的判断很重要.
             arrViewHit.append(view)
@@ -526,7 +549,7 @@ class Chaos {
     }
     
     
-  static  func Log<T>(message:T,file:String = __FILE__, method:String = __FUNCTION__,line:Int = __LINE__){
+  static  func Log<T>(message:T,file:String = #file, method:String = #function,line:Int = #line){
         #if DEBUG
             if   let path = NSURL(string: file)
             {
@@ -591,9 +614,9 @@ class Chaos {
             lbl?.sizeToFit()
             lbl?.layer.removeAnimationForKey("animation")
         }
-        if window == nil{
-            window = UIApplication.sharedApplication().keyWindow
-        }
+        window = UIApplication.sharedApplication().keyWindow
+        //Issue4 window对象可能是会改变的,前面的UIWindow是KeyWindow,后来可能就不是了,所以Toast也就显示不出来了,这个是我的猜测.
+        //因为使用放大镜功能后Toast就再也显示不出来了.后面让window在每次都指向keyWindow对象就行了,但还是不完美
         if !(window!.subviews.contains(lbl!)){
             window?.addSubview(lbl!)
             lbl?.center = window!.center
@@ -641,6 +664,8 @@ extension UIWindow{
         }
         set{
             objc_setAssociatedObject(self, &UIWindow_Zoom, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            //Issue1, 要添加不同的类型的属性,就要设置正确的objc_AssociationPolicy,如果是Class,就要用OBJC_ASSOCIATION_RETAIN_NONATOMIC,Int要用OBJC_ASSOCIATION_ASSIGN,String要用OBJC_ASSOCIATION_COPY_NONATOMIC
+            //不然后可能会造成数据丢失或者其他异常
         }
     }
 
@@ -649,7 +674,7 @@ extension UIWindow{
                 return objc_getAssociatedObject(self, &UIWindow_Feature) as! Int
             }
             set{
-                objc_setAssociatedObject(self, &UIWindow_Feature, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                objc_setAssociatedObject(self, &UIWindow_Feature, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_ASSIGN)//注意objc_AssociationPolicy类型一定要正确,不然可能会从内存里丢失
             }
     }
     
@@ -712,18 +737,21 @@ class ChaosColorPicker: UIView
         let context: CGContextRef = UIGraphicsGetCurrentContext()!;
         let recSize = CGSize(width:ceil(imageWidth/256),
             height:ceil(imageWidth/256));
-        
-        for(var y: CGFloat = 0; y < imageHeight; y += imageHeight/256)
-        {
-            for(var x: CGFloat = 0; x < imageWidth; x += imageWidth/256)
-            {
+
+        var y:CGFloat = 0
+        while  y < imageHeight{
+            var x:CGFloat = 0
+            while x < imageWidth {
                 let rec = CGRect(x: x, y: y, width: recSize.width , height: recSize.height);
                 let color = self.colorFor(x, y: y);
-                
+
                 CGContextSetFillColorWithColor(context, color.CGColor);
                 CGContextFillRect(context,rec);
+                x += imageWidth / 256
             }
+            y += imageHeight / 256
         }
+
         
         let hueImage = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
@@ -748,13 +776,14 @@ class ChaosColorPicker: UIView
         var saturation:CGFloat = 0.0;
         baseColor.getHue(&hue, saturation:&saturation, brightness:nil, alpha:nil);
         
-        for(var x: CGFloat = 0; x < imageWidth; x += imageWidth/256)
-        {
-            let rec = CGRect(x: x, y: 0, width: recSize.width , height: recSize.height);
-            let color = UIColor(hue: hue, saturation: saturation, brightness: (imageWidth-x)/imageWidth, alpha: 1);
+        var z:CGFloat = 0
+        while z < imageWidth {
+            let rec = CGRect(x: z, y: 0, width: recSize.width , height: recSize.height);
+            let color = UIColor(hue: hue, saturation: saturation, brightness: (imageWidth-z)/imageWidth, alpha: 1);
             
             CGContextSetFillColorWithColor(context, color.CGColor);
             CGContextFillRect(context,rec);
+            z += imageWidth/256
         }
         
         let hueImage = UIGraphicsGetImageFromCurrentImageContext();
@@ -792,10 +821,10 @@ class ChaosColorPicker: UIView
         self.hueColorsImageView = UIImageView(image: hueColorImage);
         self.addSubview(self.hueColorsImageView);
         
-        let panRecognizer = UIPanGestureRecognizer(target: self, action:"baseColorPicking:");
+        let panRecognizer = UIPanGestureRecognizer(target: self, action:#selector(ChaosColorPicker.baseColorPicking(_:)));
         self.hueColorsImageView.addGestureRecognizer(panRecognizer);
         
-        let tapRecognizer = UITapGestureRecognizer(target: self, action: "baseColorPicking:");
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(ChaosColorPicker.baseColorPicking(_:)));
         self.hueColorsImageView.addGestureRecognizer(tapRecognizer);
         self.hueColorsImageView.userInteractionEnabled = true;
         
@@ -810,10 +839,10 @@ class ChaosColorPicker: UIView
         self.brightnessColorsImageView.frame = brImgRect;
         self.brightnessColorsImageView.userInteractionEnabled = true;
         
-        let brightSlideGesture = UIPanGestureRecognizer(target: self, action:Selector("colorPicking:"));
+        let brightSlideGesture = UIPanGestureRecognizer(target: self, action:#selector(ChaosColorPicker.colorPicking(_:)));
         self.brightnessColorsImageView.addGestureRecognizer(brightSlideGesture);
         
-        let brightTapGesture = UITapGestureRecognizer(target: self, action: Selector("colorPicking:"));
+        let brightTapGesture = UITapGestureRecognizer(target: self, action: #selector(ChaosColorPicker.colorPicking(_:)));
         self.brightnessColorsImageView.addGestureRecognizer(brightTapGesture);
         self.brightnessColorsImageView.userInteractionEnabled = true;
     }

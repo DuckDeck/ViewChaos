@@ -69,25 +69,25 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         btnClose.setTitle("Close", forState: UIControlState.Normal)
         btnClose.titleLabel?.font = UIFont.systemFontOfSize(13)
         btnClose.setTitleColor(UIColor.orangeColor(), forState: UIControlState.Normal)
-        btnClose.addTarget(self, action: "close:", forControlEvents: UIControlEvents.TouchUpInside)
+        btnClose.addTarget(self, action: #selector(ViewChaosInfo.close(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         addSubview(btnClose)
         btnBack.frame = CGRect(x: self.frame.size.width - btnClose.frame.size.width - 45, y: 5, width: 45, height: 22)
         btnBack.setTitle("Back", forState: UIControlState.Normal)
         btnBack.titleLabel?.font = UIFont.systemFontOfSize(12)
         btnBack.setTitleColor(UIColor.orangeColor(), forState: UIControlState.Normal)
-        btnBack.addTarget(self, action: "back:", forControlEvents: UIControlEvents.TouchUpInside)
+        btnBack.addTarget(self, action: #selector(ViewChaosInfo.back(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         addSubview(btnBack)
         btnHit.frame = CGRect(x: btnBack.frame.origin.x - 45, y: 5, width: 45, height: 22)
         btnHit.setTitle("Hit", forState: UIControlState.Normal)
         btnHit.titleLabel?.font = UIFont.systemFontOfSize(13)
         btnHit.setTitleColor(UIColor.orangeColor(), forState: UIControlState.Normal)
-        btnHit.addTarget(self, action: "hit:", forControlEvents: UIControlEvents.TouchUpInside)
+        btnHit.addTarget(self, action: #selector(ViewChaosInfo.hit(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         addSubview(btnHit)
         btnControl.frame = CGRect(x: btnHit.frame.origin.x - 45, y: 5, width: 45, height: 22)
         btnControl.setTitle("Control", forState: UIControlState.Normal)
         btnControl.titleLabel?.font = UIFont.systemFontOfSize(13)
         btnControl.setTitleColor(UIColor.orangeColor(), forState: UIControlState.Normal)
-        btnControl.addTarget(self, action: "control:", forControlEvents: UIControlEvents.TouchUpInside)
+        btnControl.addTarget(self, action: #selector(ViewChaosInfo.control(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         addSubview(btnControl)
         
         let lblCurrent = UILabel(frame: CGRect(x: 2, y: 5, width: 100, height: 22))
@@ -103,7 +103,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         btnMinimize.backgroundColor = UIColor.blackColor()
         btnMinimize.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
         btnMinimize.setTitle(">", forState: UIControlState.Normal)
-        btnMinimize.addTarget(self, action: "minimize:", forControlEvents: UIControlEvents.TouchUpInside)
+        btnMinimize.addTarget(self, action: #selector(ViewChaosInfo.minimize(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         addSubview(btnMinimize)
     }
     
@@ -131,9 +131,9 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             arrGeneral = [String]()
             arrAbout = ["这是一个测试UI的工具",",这个工具是RunTrace的Swift版本.希望大家用得开心"]
             initView(viewHit!, back: false)
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleRemoveView:", name: handleTraceRemoveView, object: nil)
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleRemoveSubView:", name: handleTraceRemoveSubView, object: nil)
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleAddSubView:", name: handleTraceAddSubView, object: nil)
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewChaosInfo.handleRemoveView(_:)), name: handleTraceRemoveView, object: nil)
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewChaosInfo.handleRemoveSubView(_:)), name: handleTraceRemoveSubView, object: nil)
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewChaosInfo.handleAddSubView(_:)), name: handleTraceAddSubView, object: nil)
         }
         else{
             NSNotificationCenter.defaultCenter().removeObserver(self)
@@ -601,7 +601,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                 btn.setTitle("<", forState: UIControlState.Normal)
                 btn.backgroundColor = UIColor.blackColor()
                 btn.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
-                btn.addTarget(self, action: "expand:", forControlEvents: UIControlEvents.TouchUpInside)
+                btn.addTarget(self, action: #selector(ViewChaosInfo.expand(_:)), forControlEvents: UIControlEvents.TouchUpInside)
                 self.addSubview(btn)
         }
     }
@@ -864,7 +864,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                 btn.setTitle(isTrace! ? "Stop" : "Start", forState: UIControlState.Normal)
                 btn.setTitleColor(UIColor.orangeColor(), forState: UIControlState.Normal)
                 btn.backgroundColor = UIColor(red: 0.0, green: 1.0, blue: 0.74, alpha: 1.0)
-                btn.addTarget(self, action: "onTrace:", forControlEvents: UIControlEvents.TouchUpInside)
+                btn.addTarget(self, action: #selector(ViewChaosInfo.onTrace(_:)), forControlEvents: UIControlEvents.TouchUpInside)
                 tbRight.tableHeaderView = btn
             }
             else

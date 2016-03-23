@@ -120,10 +120,10 @@ class ViewNeat: UIView,ColorPickerDelegate {
         btnRight = UIButton()
         super.init(frame:CGRect(x: 0, y: UIScreen.mainScreen().bounds.height - 180, width: UIScreen.mainScreen().bounds.width, height: 180))
         self.backgroundColor = UIColor(red: 0.0, green: 0.898, blue: 0.836, alpha: 0.3)
-        timer = NSTimer.scheduledTimerWithTimeInterval(0.05, target: self, selector: "timerFire:", userInfo: nil, repeats: true)
+        timer = NSTimer.scheduledTimerWithTimeInterval(0.05, target: self, selector: #selector(ViewNeat.timerFire(_:)), userInfo: nil, repeats: true)
         segMenu.frame = CGRect(x: 10, y:self.frame.size.height - 35 , width: self.frame.size.width - 20, height: 30)
         segMenu.tintColor = UIColor.blackColor()
-        segMenu.addTarget(self, action: "segClick:", forControlEvents: UIControlEvents.ValueChanged)
+        segMenu.addTarget(self, action: #selector(ViewNeat.segClick(_:)), forControlEvents: UIControlEvents.ValueChanged)
         if segMenu.selectedSegmentIndex == -1
         {
             segMenu.selectedSegmentIndex = 0
@@ -134,7 +134,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
         segItemMenu.hidden = true
         segItemMenu.tintColor = UIColor.blackColor()
         segItemMenu.selectedSegmentIndex = 0
-        segItemMenu.addTarget(self, action: "segItemClick:", forControlEvents: UIControlEvents.ValueChanged)
+        segItemMenu.addTarget(self, action: #selector(ViewNeat.segItemClick(_:)), forControlEvents: UIControlEvents.ValueChanged)
         addSubview(segItemMenu)
         
         vRockerArea.frame = CGRect(x: 10, y: 30, width: 100, height: 100)
@@ -183,10 +183,10 @@ class ViewNeat: UIView,ColorPickerDelegate {
         btnRight.layer.borderWidth = 1
         btnRight.titleLabel?.font = UIFont.systemFontOfSize(20)
         vRockerArea.addSubview(btnRight)
-        btnUp.addTarget(self, action: "oper:", forControlEvents: UIControlEvents.TouchUpInside)
-        btnDown.addTarget(self, action: "oper:", forControlEvents: UIControlEvents.TouchUpInside)
-        btnLeft.addTarget(self, action: "oper:", forControlEvents: UIControlEvents.TouchUpInside)
-        btnRight.addTarget(self, action: "oper:", forControlEvents: UIControlEvents.TouchUpInside)
+        btnUp.addTarget(self, action: #selector(ViewNeat.oper(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        btnDown.addTarget(self, action: #selector(ViewNeat.oper(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        btnLeft.addTarget(self, action: #selector(ViewNeat.oper(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        btnRight.addTarget(self, action: #selector(ViewNeat.oper(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         setOperButtonsVisible(false)
         
         
@@ -197,7 +197,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
         
         btnColorChooseCompleted = UIButton(frame: CGRect(x: frame.size.width - 70, y: 5, width: 70, height: 27))
         btnColorChooseCompleted?.setTitle("ColorPick", forState: UIControlState.Normal)
-        btnColorChooseCompleted?.addTarget(self, action: "chooseColor:", forControlEvents: UIControlEvents.TouchUpInside)
+        btnColorChooseCompleted?.addTarget(self, action: #selector(ViewNeat.chooseColor(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         btnColorChooseCompleted?.hidden = true
         btnColorChooseCompleted?.layer.borderWidth = 0.5
         btnColorChooseCompleted?.layer.borderColor = UIColor.blackColor().CGColor
@@ -209,7 +209,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
         btnClose.layer.borderWidth  = 0.5
         btnClose.titleLabel?.font = UIFont.systemFontOfSize(13)
         btnClose.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
-        btnClose.addTarget(self, action: "close:", forControlEvents: UIControlEvents.TouchUpInside)
+        btnClose.addTarget(self, action: #selector(ViewNeat.close(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         addSubview(btnClose)
         
         btnReset.frame = CGRect(x: self.frame.size.width - 100, y: 40, width: 40, height: 27)
@@ -217,7 +217,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
         btnReset.layer.borderWidth  = 0.5
         btnReset.titleLabel?.font = UIFont.systemFontOfSize(13)
         btnReset.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
-        btnReset.addTarget(self, action: "reset:", forControlEvents: UIControlEvents.TouchUpInside)
+        btnReset.addTarget(self, action: #selector(ViewNeat.reset(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         addSubview(btnReset)
         
         stepScale.frame = CGRect(x: CGRectGetMaxX(vRockerArea.frame) + 8, y: 40, width: 94, height: 20)
@@ -225,7 +225,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
         stepScale.minimumValue = 1
         stepScale.value = 5
         stepScale.tintColor = UIColor.blackColor()
-        stepScale.addTarget(self, action: "scaleChange:", forControlEvents: UIControlEvents.ValueChanged)
+        stepScale.addTarget(self, action: #selector(ViewNeat.scaleChange(_:)), forControlEvents: UIControlEvents.ValueChanged)
         stepScale.stepValue = 1
         scale = Int(stepScale.value)
         addSubview(stepScale)
@@ -240,7 +240,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
         btnPrecise.layer.borderWidth  = 0.5
         btnPrecise.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
         btnPrecise.titleLabel?.font = UIFont.systemFontOfSize(13)
-        btnPrecise.addTarget(self, action: "precise:", forControlEvents: UIControlEvents.TouchUpInside)
+        btnPrecise.addTarget(self, action: #selector(ViewNeat.precise(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         addSubview(btnPrecise)
     }
 
