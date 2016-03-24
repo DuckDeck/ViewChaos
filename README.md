@@ -5,6 +5,7 @@ ViewChaos
 ViewChaos is a powerful iOS UI development tool, It can help you locate the view, find the superView and subView. check the constrains, and trace the view which you want to observe. and the most magical thing is that it can change the view's frame. background&title color, resize the font. change the border color,width and corner radius. at last.it can generate the code,  you can just copy the ajusted view's code parse to the Xcode.  it is very powerful. and every iOS developer should use this tool!
 
 ###I am working on the 1.0.0 version and I will bring some awesomw feature.
+zoom featue is almost OK
 
 
 ##Key Features
