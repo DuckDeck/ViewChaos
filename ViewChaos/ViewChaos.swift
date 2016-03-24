@@ -30,7 +30,6 @@ extension UIWindow:UIActionSheetDelegate {
         {//现在我在做放大镜时终于明白知道为什么是20,因为如果是20 的话就是最上面的信号条,而不是下面的UIWindow,信号条其实也是个UIWindow对象
             let viewChaos = ViewChaos()
             self.addSubview(viewChaos)
-            viewZoom = ZoomView(frame: CGRectNull)
             UIApplication.sharedApplication().applicationSupportsShakeToEdit = true //启用摇一摇功能
             self.chaosFeature = 0
         }
@@ -49,9 +48,12 @@ extension UIWindow:UIActionSheetDelegate {
             UIAlertView.setMessage("关闭放大镜").addFirstButton("取消").addSecondButton("确定").alertWithButtonClick({ (buttonIndex, alert) -> Void in
                 if buttonIndex == 1{
                     Chaos.toast("放大镜已经关闭")
-                    self.viewZoom?.viewZoom = nil
-                    NSNotificationCenter.defaultCenter().postNotificationName(setZoomViewWork, object: nil)
                     self.chaosFeature = ChaosFeature.None.rawValue
+                    for view in self.subviews{
+                        if view.tag == -1000{
+                            view.removeFromSuperview()
+                        }
+                    }
                 }
             })
         default:break
@@ -64,67 +66,16 @@ extension UIWindow:UIActionSheetDelegate {
         if buttonIndex == 1{
             NSNotificationCenter.defaultCenter().postNotificationName(setZoomViewWork, object: nil)
             Chaos.toast("放大镜已经启用")
+            let view = ZoomViewBrace(frame: CGRectZero)
+            view.tag = -1000
+            self.insertSubview(view, atIndex: 100)
             self.chaosFeature = ChaosFeature.Zoom.rawValue
         }
     }
     
 
     
-    public override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        print(self)
-        print(self.keyWindow)
-        if viewZoom == nil{
-            return
-        }
-        
-        if !viewZoom!.needWork{
-           return
-        }
-        if let touch = touches.first{
-            let point = touch.locationInView(self)
-            viewZoom?.pointToZoom = point
-            viewZoom?.hidden = false
-            
-            if viewZoom?.viewToZoom == nil{
-                viewZoom?.viewToZoom = self
-            }
-            viewZoom?.makeKeyAndVisible()//这个严重要说明,这个方法应该会将这个Window设成Keywindow,然后原来的那个就不是KeyWindow了,所以调用Xcode主视图查看器就看不到东西了,
-            //Issue2 ,使用些功能后会让XCode 的 view hierarchy 功能失效,会变成一片空白,看有没有什么解决的办法
-            print("self is key window\(self.keyWindow)")
-            print("viewZoom is key window \(viewZoom?.keyWindow)")
-            
-        }
-    }
-    
-    public override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        if viewZoom == nil{
-            return
-        }
-        if !viewZoom!.needWork{
-            return
-        }
-        if let touch = touches.first{
-            let point = touch.locationInView(self)
-            viewZoom?.pointToZoom = point
-            //viewZoom?.makeKeyAndVisible() 这个只要调用一次就行.不然后会有内存问题,所以要注视掉
-            //Issue3 用放大镜吃内存问题,已经解决,在这里不再调用makeKeyAndVisible()就行
-        }
-    }
-   public  override  func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        viewZoom?.hidden = true
-        print("self is key window\(self.keyWindow)")
-        print("viewZoom is key window \(viewZoom?.keyWindow)")
-        self.viewZoom?.resignKeyWindow()
-
-    }
-    public override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
-         viewZoom?.hidden = true
-        print("self is key window\(self.keyWindow)")
-        print("viewZoom is key window \(viewZoom?.keyWindow)")
-        self.viewZoom?.resignKeyWindow()
-
-    }
-    #endif
+      #endif
 }
 extension UIView{
     public func vcWillMoveToSuperview(subview:UIView?){
@@ -644,7 +595,6 @@ extension CGFloat{
 }
 
 private var NSObject_Name = 0
-private var UIWindow_Zoom = 0
 extension NSObject{
     @objc  var chaosName:String?{
         get{
@@ -657,24 +607,19 @@ extension NSObject{
 }
 
 private var UIWindow_Feature = 0
+
 extension UIWindow{
-    @objc  var viewZoom:ZoomView?{
-        get{
-            return objc_getAssociatedObject(self, &UIWindow_Zoom) as? ZoomView
-        }
-        set{
-            objc_setAssociatedObject(self, &UIWindow_Zoom, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-            //Issue1, 要添加不同的类型的属性,就要设置正确的objc_AssociationPolicy,如果是Class,就要用OBJC_ASSOCIATION_RETAIN_NONATOMIC,Int要用OBJC_ASSOCIATION_ASSIGN,String要用OBJC_ASSOCIATION_COPY_NONATOMIC
-            //不然后可能会造成数据丢失或者其他异常
-        }
-    }
+
 
     @objc var chaosFeature:Int{
             get{
                 return objc_getAssociatedObject(self, &UIWindow_Feature) as! Int
             }
             set{
-                objc_setAssociatedObject(self, &UIWindow_Feature, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_ASSIGN)//注意objc_AssociationPolicy类型一定要正确,不然可能会从内存里丢失
+                objc_setAssociatedObject(self, &UIWindow_Feature, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_ASSIGN)
+                //Issue1, 要添加不同的类型的属性,就要设置正确的objc_AssociationPolicy,如果是Class,就要用OBJC_ASSOCIATION_RETAIN_NONATOMIC,Int要用OBJC_ASSOCIATION_ASSIGN,String要用OBJC_ASSOCIATION_COPY_NONATOMIC
+                //不然后可能会造成数据丢失或者其他异常
+                //注意objc_AssociationPolicy类型一定要正确,不然可能会从内存里丢失
             }
     }
     
