@@ -10,12 +10,15 @@ import UIKit
 
 class ViewController: UIViewController {
     var btn:UIButton?
+    
+    var view1 = UIView()
     override func viewDidLoad() {
-        let a = roundf(23.50)
-        print(a)
+ 
+        
+        
         super.viewDidLoad()
         self.navigationItem.title = "ViewChaos"
-        view.backgroundColor = UIColor.whiteColor()
+       view.backgroundColor = UIColor.whiteColor()
         btn = UIButton(frame: CGRect(x: 10, y: 100, width: 100, height: 30))
         btn?.backgroundColor = UIColor.redColor()
         btn?.setTitle("Next", forState: UIControlState.Normal)
@@ -23,6 +26,10 @@ class ViewController: UIViewController {
         btn?.addTarget(self, action: #selector(ViewController.click(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(btn!)
         
+        view1.frame = CGRect(x: 20, y: 180, width: 200, height: 100)
+        view1.backgroundColor = UIColor(red: 0, green: 1, blue: 0, alpha: 0.5)
+        view1.alpha = 0.5
+        view.addSubview(view1)
 
     }
 

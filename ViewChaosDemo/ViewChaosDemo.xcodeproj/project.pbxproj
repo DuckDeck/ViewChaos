@@ -26,6 +26,7 @@
 		A2E6F0391BEB08680042FC43 /* NextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E6F0381BEB08680042FC43 /* NextViewController.swift */; };
 		A2E6F03B1BEB08770042FC43 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2E6F03A1BEB08770042FC43 /* Main.storyboard */; };
 		AE08A9C91C9A72F7005767E1 /* ZoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE08A9C81C9A72F7005767E1 /* ZoomView.swift */; };
+		AE9509DA1CA6867500931F14 /* DrawView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE9509D91CA6867500931F14 /* DrawView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +51,7 @@
 		A2E6F0381BEB08680042FC43 /* NextViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NextViewController.swift; sourceTree = "<group>"; };
 		A2E6F03A1BEB08770042FC43 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		AE08A9C81C9A72F7005767E1 /* ZoomView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZoomView.swift; sourceTree = "<group>"; };
+		AE9509D91CA6867500931F14 /* DrawView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +120,7 @@
 				A211FECF1BF02A83004A0A29 /* ViewChaos.swift */,
 				A211FED01BF02A83004A0A29 /* ViewChaosInfo.swift */,
 				A211FED31BF03D0C004A0A29 /* ViewNeat.swift */,
+				AE9509D91CA6867500931F14 /* DrawView.swift */,
 			);
 			name = ViewChaos;
 			path = ../ViewChaos;
@@ -205,6 +208,7 @@
 			files = (
 				A2E6F0391BEB08680042FC43 /* NextViewController.swift in Sources */,
 				A211FED11BF02A83004A0A29 /* ViewChaos.swift in Sources */,
+				AE9509DA1CA6867500931F14 /* DrawView.swift in Sources */,
 				A2E6F01C1BEAFF7D0042FC43 /* ViewController.swift in Sources */,
 				A2E6F01A1BEAFF7D0042FC43 /* AppDelegate.swift in Sources */,
 				A211FED41BF03D0C004A0A29 /* ViewNeat.swift in Sources */,

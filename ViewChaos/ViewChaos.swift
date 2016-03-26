@@ -32,6 +32,7 @@ extension UIWindow:UIActionSheetDelegate {
             self.addSubview(viewChaos)
             UIApplication.sharedApplication().applicationSupportsShakeToEdit = true //启用摇一摇功能
             self.chaosFeature = 0
+            self.viewLevel = 0
         }
     }
     
@@ -43,6 +44,9 @@ extension UIWindow:UIActionSheetDelegate {
             //这里放一个菜单
             let menu = UIActionSheet(title: "使用功能", delegate: self, cancelButtonTitle:"取消", destructiveButtonTitle: nil)
             menu.addButtonWithTitle("启用放大镜")
+            menu.addButtonWithTitle("显示边框")
+            menu.addButtonWithTitle("显示透明度")
+            menu.addButtonWithTitle("画画截图")
             menu.showInView(self)
         case ChaosFeature.Zoom.rawValue:
             UIAlertView.setMessage("关闭放大镜").addFirstButton("取消").addSecondButton("确定").alertWithButtonClick({ (buttonIndex, alert) -> Void in
@@ -54,6 +58,23 @@ extension UIWindow:UIActionSheetDelegate {
                             view.removeFromSuperview()
                         }
                     }
+                }
+            })
+        case ChaosFeature.Border.rawValue:
+            UIAlertView.setMessage("关闭边框显示功能").addFirstButton("取消").addSecondButton("确定").alertWithButtonClick({ (buttonIndex, alert) -> Void in
+                if buttonIndex == 1{
+                    Chaos.toast("边框显示功能已关闭")
+                    self.chaosFeature = ChaosFeature.None.rawValue
+                   self.removeBorderView(self)
+                }
+            })
+            
+        case ChaosFeature.Alpha.rawValue:
+            UIAlertView.setMessage("关闭透明显示功能").addFirstButton("取消").addSecondButton("确定").alertWithButtonClick({ (buttonIndex, alert) -> Void in
+                if buttonIndex == 1{
+                    Chaos.toast("透明显示功能已关闭")
+                    self.chaosFeature = ChaosFeature.None.rawValue
+                    self.removeAlphaView(self)
                 }
             })
         default:break
@@ -71,10 +92,81 @@ extension UIWindow:UIActionSheetDelegate {
             self.insertSubview(view, atIndex: 100)
             self.chaosFeature = ChaosFeature.Zoom.rawValue
         }
+        if buttonIndex == 2{
+            //显示甩有视图的边框
+            Chaos.toast("边框显示功能已经启用")
+            self.chaosFeature = ChaosFeature.Border.rawValue
+           showBorderView(self)
+        }
+        if buttonIndex == 3{
+            Chaos.toast("边框显示功能已经启用")
+            self.chaosFeature = ChaosFeature.Alpha.rawValue
+            showAlphaView(self)
+        }
+        if buttonIndex == 3{
+            Chaos.toast("画画截图功能已经启用")
+            self.chaosFeature = ChaosFeature.Draw.rawValue
+            //等会再做
+        }
     }
     
-
+       private  func showBorderView(view:UIView){
+        for v in view.subviews{
+//            print("\(v.dynamicType)")
+//            print(v.frame)
+            //从打印出来数据看好像没有什么问题
+            //这个功能比想像的要简单
+            //Issue10 用Frame是肯定不对的,因为这个只是相对于爹的位置,我们需要一个绝对布局,所以很多的地方可能是错误的
+            //所以要想办法获取到一个绝对位置
+            //使用convertRect:toView方法,有一些是错的,不知道为什么下去了
+            //我知道怎么回事了,因为我在这里是用frame来转换坐标,convertRect方法是两个坐标的相加,用bounds应该就行了
+            let fm = v.convertRect(v.bounds, toView: self)
+//            print(fm)
+            let vBorder = UIView(frame: fm)
+            vBorder.layer.borderWidth = 0.5
+            vBorder.tag = -5000
+            vBorder.layer.borderColor = UIColor.redColor().CGColor
+            self.insertSubview(vBorder, atIndex: 500)
+            showBorderView(v)
+        }
+    }
     
+    private func removeBorderView(view:UIView){
+        for v in view.subviews{
+            removeBorderView(v)
+            if v.tag == -5000{
+               v.removeFromSuperview()
+            }
+        }//第二个功能完成
+    }
+    
+    
+   private func showAlphaView(view:UIView){
+        for v in view.subviews{
+            v.viewLevel = view.viewLevel + 1
+            print("view:\(v.dynamicType) level:\(v.viewLevel) alpha:\(v.alpha)")
+            //Issue11 这个功能目前只能适用于Alpha属性
+            //对于那个对于背景颜色的透明属性是无法完成的,所以用处不算大
+            if v.viewLevel > 4{
+                let fm = v.convertRect(v.bounds, toView: self)
+                let vBorder = UIView(frame: fm)
+                vBorder.tag = -6000
+                vBorder.backgroundColor = UIColor(red: 1, green: 0, blue: 0, alpha: 1 - v.alpha)
+                self.insertSubview(vBorder, atIndex: 600)
+            }
+            showAlphaView(v)
+        }
+    }
+    
+    private func removeAlphaView(view:UIView){
+        for v in view.subviews{
+            removeAlphaView(v)
+            if v.tag == -6000{
+                v.removeFromSuperview()
+            }
+        }
+    }
+
       #endif
 }
 extension UIView{
@@ -130,13 +222,9 @@ class ViewChaos: UIView {
         left = 0
         top = 0
         
-        
         super.init(frame: CGRectZero)
         self.frame = CGRect(x: UIScreen.mainScreen().bounds.width-35, y: 100, width: 30, height: 30)
         self.layer.zPosition = CGFloat(FLT_MAX)
-        
-        
-  
         
         let lbl = UILabel(frame: self.bounds)
         lbl.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleHeight]
@@ -147,13 +235,10 @@ class ViewChaos: UIView {
         self.layer.masksToBounds = true
         self.layer.cornerRadius = 15
         
-        
         let tap = UITapGestureRecognizer(target: self, action: #selector(ViewChaos.tapInfo(_:)))
         lblInfo.userInteractionEnabled = true
         lblInfo.addGestureRecognizer(tap)
         windowInfo.addSubview(lblInfo)
-    
-       
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewChaos.handleTraceView(_:)), name: "handleTraceView", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ViewChaos.handleTraceViewClose(_:)), name: "handleTraceViewClose", object: nil)
@@ -167,9 +252,7 @@ class ViewChaos: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func motionBegan(motion: UIEventSubtype, withEvent event: UIEvent?) {
-        print(1)
-    }
+
     
     
     func handleTraceShow(notif:NSNotification){ //如果关了ViewChaosInfo,就会显示出来
@@ -609,8 +692,6 @@ extension NSObject{
 private var UIWindow_Feature = 0
 
 extension UIWindow{
-
-
     @objc var chaosFeature:Int{
             get{
                 return objc_getAssociatedObject(self, &UIWindow_Feature) as! Int
@@ -622,7 +703,19 @@ extension UIWindow{
                 //注意objc_AssociationPolicy类型一定要正确,不然可能会从内存里丢失
             }
     }
-    
+}
+
+
+private var UIView_Level = 1
+extension UIView{
+    @objc var viewLevel:Int{
+        get{
+            return objc_getAssociatedObject(self, &UIView_Level) as! Int
+        }
+        set{
+            objc_setAssociatedObject(self, &UIView_Level, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_ASSIGN)
+        }
+    }
 }
 
 let VcWillMoveToSuperview = "vcWillMoveToSuperview"

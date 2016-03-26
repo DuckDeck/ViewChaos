@@ -10,6 +10,11 @@ import UIKit
 
 class NextViewController: UIViewController {
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        navigationItem.title = "一个页面"
+    }
+    
     @IBOutlet weak var vMove: UIView!
 
     @IBAction func Click(sender: UIButton) {

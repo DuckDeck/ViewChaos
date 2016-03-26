@@ -923,6 +923,34 @@ extension UIColor{
          else if type == "objc"{
             return "[UIColor colorWithRed:\(red.format(".2f")) green:\(green.format(".2f")) blue: \(blue.format(".2f")) alpha:\(alpha.format(".2f"))]"
         }
+        else if type == "str"{
+            let r = Int(red * 255)
+            let g = Int(green * 255)
+            let b = Int(blue * 255)
+            let a = Int(alpha * 255)
+            var ax = String(format: "%0X", a) as NSString
+            if ax.length == 1
+            {
+                ax = "0\(ax)"
+            }
+            var rx = String(format: "%0X", r) as NSString
+            if rx.length == 1
+            {
+                rx = "0\(rx)"
+            }
+            var gx = String(format: "%0X", g) as NSString
+            if gx.length == 1
+            {
+                gx = "0\(gx)"
+            }
+            var bx = String(format: "%0X", b) as NSString
+            if bx.length == 1
+            {   
+                bx = "0\(bx)"
+            }
+            return "#\(ax)\(rx)\(gx)\(bx)--a\(a)r\(r)g\(g)b\(b)"
+           // return String(format: "%0X", num)
+         }
          else{
             return self.description
         }
