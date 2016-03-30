@@ -67,6 +67,8 @@ class DrawView: UIView {
     
     func clearTraceClick(sender:UIButton){
         clearTrace()
+        btnCaptureScreen.setTitle("启用截屏", forState: UIControlState.Normal)
+        drawMode = .Draw
     }
     
     func clearTrace() {
@@ -89,8 +91,8 @@ class DrawView: UIView {
         if arrTraces?.count > 0
         {
             CGContextBeginPath(ctg)
-            for var i=0; i<arrTraces?.count;i += 1
-            {
+            var i = 0
+            while i < arrTraces?.count {
                 var tempTrace = arrTraces![i]
                 if tempTrace.arrPoints.count > 0
                 {
@@ -108,6 +110,7 @@ class DrawView: UIView {
                     CGContextSetLineWidth(ctg, width)
                     CGContextStrokePath(ctg)
                 }
+                i += 1
             }
         }
         
@@ -162,8 +165,8 @@ class DrawView: UIView {
                     let point = touchPoint.locationInView(self)
                     //怎么找到上一个Point
                     let previousPoint = touchPoint.previousLocationInView(self)
-                    for var i=0;i<arrTraces?.count;i += 1
-                    {
+                    var i = 0
+                    while i < arrTraces?.count {
                         var tempTraces = arrTraces![i]
                         let lastPoint = tempTraces.arrPoints.last
                         if lastPoint == previousPoint
@@ -171,6 +174,7 @@ class DrawView: UIView {
                             arrTraces![i].arrPoints.append(point)
                             break
                         }
+                        i += 1
                     }
                     self .setNeedsDisplay()
                 }
