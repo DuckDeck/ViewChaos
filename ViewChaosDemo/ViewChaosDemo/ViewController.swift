@@ -20,7 +20,7 @@ class ViewController: UIViewController {
         self.navigationItem.title = "ViewChaos"
        view.backgroundColor = UIColor.whiteColor()
         btn = UIButton(frame: CGRect(x: 10, y: 100, width: 100, height: 30))
-        btn?.backgroundColor = UIColor.redColor()
+        btn?.backgroundColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.2)
         btn?.setTitle("Next", forState: UIControlState.Normal)
         btn?.chaosName = "btn"
         btn?.addTarget(self, action: #selector(ViewController.click(_:)), forControlEvents: UIControlEvents.TouchUpInside)

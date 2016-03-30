@@ -955,6 +955,16 @@ extension UIColor{
             return self.description
         }
     }
+    
+    var alpha:Int{
+        var red:CGFloat = 0.0
+        var green:CGFloat = 0.0
+        var blue:CGFloat = 0.0
+        var a:CGFloat = 0.0
+        self.getRed(&red, green: &green, blue: &blue, alpha: &a)
+        return Int(a * 255)
+    }
+    
 }
 
 

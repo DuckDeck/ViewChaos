@@ -8,7 +8,7 @@
 
 import UIKit
 enum ChaosFeature:Int{
-    case None=0,Zoom,Border,Alpha,Draw
+    case None=0,Zoom,Border,Alpha
 }
 extension UIWindow:UIActionSheetDelegate {
     #if DEBUG
@@ -46,7 +46,6 @@ extension UIWindow:UIActionSheetDelegate {
             menu.addButtonWithTitle("启用放大镜")
             menu.addButtonWithTitle("显示边框")
             menu.addButtonWithTitle("显示透明度")
-            menu.addButtonWithTitle("画画截图")
             menu.showInView(self)
         case ChaosFeature.Zoom.rawValue:
             UIAlertView.setMessage("关闭放大镜").addFirstButton("取消").addSecondButton("确定").alertWithButtonClick({ (buttonIndex, alert) -> Void in
@@ -77,7 +76,8 @@ extension UIWindow:UIActionSheetDelegate {
                     self.removeAlphaView(self)
                 }
             })
-        default:break
+            
+         default:break
         }
         
     }
@@ -97,16 +97,15 @@ extension UIWindow:UIActionSheetDelegate {
             Chaos.toast("边框显示功能已经启用")
             self.chaosFeature = ChaosFeature.Border.rawValue
            showBorderView(self)
+            let view = DrawView(frame: CGRectZero)
+            view.tag = -7000
+            self.insertSubview(view, atIndex: 600)
+
         }
         if buttonIndex == 3{
-            Chaos.toast("边框显示功能已经启用")
+            Chaos.toast("透明显示功能已经启用")
             self.chaosFeature = ChaosFeature.Alpha.rawValue
             showAlphaView(self)
-        }
-        if buttonIndex == 3{
-            Chaos.toast("画画截图功能已经启用")
-            self.chaosFeature = ChaosFeature.Draw.rawValue
-            //等会再做
         }
     }
     
@@ -137,6 +136,9 @@ extension UIWindow:UIActionSheetDelegate {
             if v.tag == -5000{
                v.removeFromSuperview()
             }
+            if view.tag == -7000{
+                view.removeFromSuperview()
+            }
         }//第二个功能完成
     }
     
@@ -147,11 +149,20 @@ extension UIWindow:UIActionSheetDelegate {
             print("view:\(v.dynamicType) level:\(v.viewLevel) alpha:\(v.alpha)")
             //Issue11 这个功能目前只能适用于Alpha属性
             //对于那个对于背景颜色的透明属性是无法完成的,所以用处不算大
-            if v.viewLevel > 4{
+            //实际上光用alpha是不够的,这样对于background无法获取
+            //所以在这里在判断
+            if v.viewLevel > 3{
                 let fm = v.convertRect(v.bounds, toView: self)
                 let vBorder = UIView(frame: fm)
                 vBorder.tag = -6000
-                vBorder.backgroundColor = UIColor(red: 1, green: 0, blue: 0, alpha: 1 - v.alpha)
+                var alp = 1 - v.alpha
+                if alp == 0{
+                    //这个时侯获取background的透明度
+                    if let co = v.backgroundColor{
+                        alp = 1 - CGFloat(co.alpha) / 255.0
+                    }
+                }
+                vBorder.backgroundColor = UIColor(red: 1, green: 0, blue: 0, alpha: alp / 2)//除以2更好辨认一点
                 self.insertSubview(vBorder, atIndex: 600)
             }
             showAlphaView(v)
@@ -164,7 +175,7 @@ extension UIWindow:UIActionSheetDelegate {
             if v.tag == -6000{
                 v.removeFromSuperview()
             }
-        }
+        }//第三个功能完成
     }
 
       #endif
