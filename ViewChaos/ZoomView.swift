@@ -176,7 +176,7 @@ class ZoomViewBrace: UIView {
             viewZoom.pointToZoom = point
             viewZoom.hidden = false
             viewZoom.makeKeyAndVisible()
-             lblPixelColor.text = "point:\(point) color :\(viewZoom.currentColor!.format("str"))"
+             lblPixelColor.text = "color :\(viewZoom.currentColor!.format("str")) point:\(point) "
             //这个严重要说明,这个方法应该会将这个Window设成Keywindow,然后原来的那个就不是KeyWindow了,所以调用Xcode主视图查看器就看不到东西了,
             //Issue2 ,使用些功能后会让XCode 的 view hierarchy 功能失效,会变成一片空白,看有没有什么解决的办法
         }
@@ -188,7 +188,7 @@ class ZoomViewBrace: UIView {
             let point = touch.locationInView(self)
            viewZoom.pointToZoom = point
             
-             lblPixelColor.text = "point:\(point) color :\(viewZoom.currentColor!.format("str"))"
+             lblPixelColor.text = "color :\(viewZoom.currentColor!.format("str")) point:\(point) "
             //viewZoom?.makeKeyAndVisible() 这个只要调用一次就行.不然后会有内存问题,所以要注视掉
             //Issue3 用放大镜吃内存问题,已经解决,在这里不再调用makeKeyAndVisible()就行
         }

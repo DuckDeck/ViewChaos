@@ -948,7 +948,7 @@ extension UIColor{
             {   
                 bx = "0\(bx)"
             }
-            return "#\(ax)\(rx)\(gx)\(bx)--a\(a)r\(r)g\(g)b\(b)"
+            return "#\(rx)\(gx)\(bx)--R\(r) G\(g) B\(b)"
            // return String(format: "%0X", num)
          }
          else{
