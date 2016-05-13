@@ -40,6 +40,7 @@
 		AE85E0731CE5B8FC00B242A1 /* chaos_border.gif in Resources */ = {isa = PBXBuildFile; fileRef = AE85E0711CE5B8FC00B242A1 /* chaos_border.gif */; };
 		AE85E0741CE5B8FC00B242A1 /* chaos_capture.gif in Resources */ = {isa = PBXBuildFile; fileRef = AE85E0721CE5B8FC00B242A1 /* chaos_capture.gif */; };
 		AE85E0761CE5B90500B242A1 /* chaos_zoom.gif in Resources */ = {isa = PBXBuildFile; fileRef = AE85E0751CE5B90500B242A1 /* chaos_zoom.gif */; };
+		AE85E0781CE5BB1500B242A1 /* shake_pop_menu.gif in Resources */ = {isa = PBXBuildFile; fileRef = AE85E0771CE5BB1500B242A1 /* shake_pop_menu.gif */; };
 		AE9509DA1CA6867500931F14 /* DrawView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE9509D91CA6867500931F14 /* DrawView.swift */; };
 /* End PBXBuildFile section */
 
@@ -79,6 +80,7 @@
 		AE85E0711CE5B8FC00B242A1 /* chaos_border.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = chaos_border.gif; sourceTree = "<group>"; };
 		AE85E0721CE5B8FC00B242A1 /* chaos_capture.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = chaos_capture.gif; sourceTree = "<group>"; };
 		AE85E0751CE5B90500B242A1 /* chaos_zoom.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = chaos_zoom.gif; sourceTree = "<group>"; };
+		AE85E0771CE5BB1500B242A1 /* shake_pop_menu.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = shake_pop_menu.gif; sourceTree = "<group>"; };
 		AE9509D91CA6867500931F14 /* DrawView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -96,6 +98,7 @@
 		A21EF8BA1C09855C00A09063 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				AE85E0771CE5BB1500B242A1 /* shake_pop_menu.gif */,
 				AE85E0751CE5B90500B242A1 /* chaos_zoom.gif */,
 				AE85E0711CE5B8FC00B242A1 /* chaos_border.gif */,
 				AE85E0721CE5B8FC00B242A1 /* chaos_capture.gif */,
@@ -237,6 +240,7 @@
 				AE85E0691CE5B02900B242A1 /* chaos_control_move2.gif in Resources */,
 				AE85E0701CE5B8F400B242A1 /* chaos_transpancy.gif in Resources */,
 				A21EF8C31C09858200A09063 /* 0.png in Resources */,
+				AE85E0781CE5BB1500B242A1 /* shake_pop_menu.gif in Resources */,
 				AE85E06E1CE5B02900B242A1 /* chaos_view_level2.gif in Resources */,
 				AE85E05F1CE5B02900B242A1 /* chaos_ball_move.gif in Resources */,
 				AE85E0741CE5B8FC00B242A1 /* chaos_capture.gif in Resources */,
