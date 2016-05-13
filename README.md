@@ -40,56 +40,77 @@ Xcode 7.3 and iOS 8.0 the last Swift grammer【Xcode 7.3 and iOS 8.0 最新的Sw
 ##How To Use It 【如何使用】
 * If you install ViewChaos successfully, then run your project, you will see a green ball, and you can move it, the green ball will capture the toppest view and show on the screen's top.【如果你正确得安装了ViewChaos ，那么当你启动项目，你会看见一个绿色的小球，你可以移动它，这个小球会自动抓取位于这个小球最上层上VIew，上面会显示这个VIew的简单信息】
 <br>
-![add -DDEBUG location](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/1.gif)
+![add -DDEBUG location](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/shake_pop_menu.gif)
 <br>
-* Click the green area, you will get a table, which is show this view's information, include it's superView,subView, and constrains(if it exist)
+* this is how to shake to wake ViewChaos feature work. you shake your device, then action sheep come up, the can choose one feature, if you want to quit, just shake again.【这是ViewChaos的摇一摇功能，安装成功后摇动手机就能呼唤出菜单，你可以选择一项功能，如果你想退出，那么再摇就行了】
+
+
+![add -DDEBUG location](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/chaos_zoom.gif)
 <br>
-![add -DDEBUG location](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/2.gif)
+* this is magnifier mode.when you choose this mode, then touch the screen, a magnifer will show the view's detail. and it will capture the point's color, show on the top,.【这是放大镜模式，当你选择选择这项功能，触摸到屏幕后它会放大你点到的位置，是面还会显示该点的颜色】
+
+![add -DDEBUG location](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/chaos_border_1.gif)
+![add -DDEBUG location](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/chaos_border_2.gif)
+* this is border mode.this mode will show all the views's border. and you can capture the screen as well.【这是边框模式，这种种模式可以显示所有View的边框，同时还可以截图】
+
+![add -DDEBUG location](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/chaos_alpha.gif)
+* this is transparence mode.this mode will show all the views's transparence. 【这是透明模式，这种种模式可以显示所有View的透明度，】
+
+
+
+
+![add -DDEBUG location](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/chaos_ball_move.gif)
+* move the V ball, the ball will capture the view below it , and show with boder, 【移动V这个球，它会抓取球下面的View，并且加上边框】
+
+![add -DDEBUG location](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/chaos_view_level1.gif)
+![add -DDEBUG location](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/chaos_view_level2.gif)
+* tap the green area,A table will araise, the table will show all the info about the view. can you can click this view's superview and subview.【点上面的绿色区域，会出现一个表格，这个表格可以显示这个View的所有信息。还可以点subView 和 superView 】
+
+
 <br>
-* The contrain can show the view's constrain. just click it
+![add -DDEBUG location](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/chaos_constrain.gif)
 <br>
-![add -DDEBUG location](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/3.gif)
+* The constrain will show the view's constrain(if it exist),约束可以显示这个view的相关约束，如果存在的话
 <br>
-* it can trace view's frame,center, tag, and bounds..and the change value can show in the table
+![add -DDEBUG location](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/chaos_trace_view.gif)
 <br>
-![add -DDEBUG location](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/4.gif)
+* You can monitor the view's property(frame,center,tag..etc), when you click start, ViewChaos will monitor the view, all the operate will log, and you can check the log in the table. 【你可以监视视图的各种属性，当你点了开始，ViewChaos会监视这个View，所有的操作将被记录下来，并且可以显示在table里】
 <br>
-* Controller view's location
+
+![add -DDEBUG location](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/chaos_control_move.gif)
+![add -DDEBUG location](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/chaos_control_move2.gif)
+
 <br>
-![add -DDEBUG location](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/5.gif)
+* Control view's location, precise mode let you control the view precisely【控制View的位置，精确】
 <br>
-* Change View's size and font size
+![add -DDEBUG location](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/chaos_control_size.gif)
+![add -DDEBUG location](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/chaos_control_size1.gif)
 <br>
-![add -DDEBUG location](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/6.gif)
+* Change View's size and font size【控制View的大小】
 <br>
-* Change's view's border and forground, background and tint color
+![add -DDEBUG location](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/chaos_control_font.gif)
 <br>
-![add -DDEBUG location](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/7.gif)
+* Change View's font size【控制View里的字体大小（如果有的话）】
 <br>
-* Once the set the view to the property, you can click "Code" and it will generate code for you, include Objective-c and swift
+![add -DDEBUG location](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/chaos_control_border.gif)
+![add -DDEBUG location](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/chaos_control_border2.gif)
+<br>
+* Change's view's border 【控制View里的边框】
+<br>
+![add -DDEBUG location](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/chaos_control_color1.gif)
+![add -DDEBUG location](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/chaos_control_color2.gif)
+* Change's view's background,foreground and tintColor 【控制View里的背景色，前景色和主题色】
+<br>
+* Once the set the view to the property, you can click "Code" and it will generate code for you, include Objective-c and swift【一但你设置好了view的各个属性，你可以点code然后它就会为你生成代码，同时包括objective-c代码和swift代码】
 <br>
 ![add -DDEBUG location](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/00.png)
 <br>
-* if you can control the view precise, jusr click Precise, and the view will move 0.5px every 0.3 second.If you want cancel, just click Imprecise
-* The view move speed can changed by set property Scale value. 5 is the fastest, and 1 is very slow.
-* Reset will set the view to the origin status
-* Close will close the control panel
-* Some color porperty, the panel will show a ColorPick button, click this button a ColorPick will show, the can usr it to choose color.
+* if you want to control the view precisely, jusr click Precise, If you want cancel, just click Imprecise【如果你想精确地控制View，就点精确按钮，如果你想取消，就Imprecise就行】
+* The view move speed can changed by set property Scale value. 5 is the fastest, and 1 is very slow.【view的移动速度可以由Scale来决定，5是最快的，1 是最慢的】
+* Reset will set the view to the origin status【重设按钮会将View回复成原来的状态】
+* Close will close the control panel【Close按钮会关闭控制面板】
+* Some color porperty, the panel will show a ColorPick button, click this button a ColorPick will show, the can usr it to choose color.【如果选择民可以改颜色的面板，ColorPick按钮会显示出来。你可以用来修改颜色】
 
 
-##Change Log
-#####0.0.3
-Improve the precise mode. you can use four buttons to control the target.
-#####0.0.2
-Improve the UI, which is the show view table. I make it transparent and when you hit the Superview or the Subviews, the table will not minimize. you can use Hit button to location the target view
-#####0.0.1
-Release the first version
-##Contact 
-Any issue or problem please contact me:3421902@qq.com, I will be happy fix it
-
-
-
-
-##与我联系 
-任何问题或者BUG请直接和我联系3421902@qq.com, 我会乐于帮你解决
-
+##Contact 【联系】
+Any issue or problem please contact me:3421902@qq.com, I will be happy fix it【任何问题或者BUG请直接和我联系3421902@qq.com, 我会乐于帮你解决】
