@@ -31,7 +31,7 @@ Xcode 7.3 and iOS 8.0 the last Swift grammer【Xcode 7.3 and iOS 8.0 最新的Sw
 * step4 just use it! 【第四步：开始使用】
 
 `if you want to use cocopods, just pod 'ViewChaos'`【如果你使用cocopods, 则pod 'ViewChaos'】
-* step1:pod 'ViewChaos', and install it.【】
+* step1:pod 'ViewChaos', and install it.【第一步：pod 'ViewChaos'，再安装就行】
 * step2:select the Pods project, then choose target-> your project -> Build Setting-> serach 'swift compile'-> select 'Other Swift Flags' -> select DeBug option -> add -DDEBUG command (this make it only work in debug mode).【选择Pods项目->选择 target-> ViewChaos -> Build Setting-> 搜索 'swift compile'-> 选择 'Other Swift Flags' -> 选择 DeBug option -> 添加 -DDEBUG command (这个能让此工具仅工Debug模式有效).】
 * step3: just use it!【第三步：开始使用】
 <br>
