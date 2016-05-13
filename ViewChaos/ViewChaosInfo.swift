@@ -296,8 +296,6 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             return
         }
         isTrace = false
-        let btn = tbRight.tableHeaderView! as! UIButton
-        btn.setTitle("Start", forState: UIControlState.Normal)
         viewHit?.removeObserver(self, forKeyPath: "frame")
         viewHit?.removeObserver(self, forKeyPath: "center")
         viewHit?.removeObserver(self, forKeyPath: "superview.frame")
@@ -312,6 +310,11 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         }
         viewHit?.layer.borderColor = viewTrackBorderColor?.CGColor
         viewHit?.layer.borderWidth = viewTrackBorderWith!
+        if tbRight.tableHeaderView == nil {
+            return;
+        }
+        let btn = tbRight.tableHeaderView! as! UIButton
+        btn.setTitle("Start", forState: UIControlState.Normal)
     }
     
     func close(sender:UIButton){

@@ -273,6 +273,10 @@ class ViewChaos: UIView {
         let view = notif.object as! UIView
         self.window?.addSubview(viewBound)
         let p = self.window?.convertRect(view.bounds, fromView: view)
+        if p == nil {
+            Chaos.toast("获取View失败")
+            return
+        }
         viewBound.frame = p!
         UIView.animateWithDuration(0.3, delay: 0, options: [.AllowUserInteraction,.Repeat,.Autoreverse], animations: { () -> Void in
             UIView.setAnimationRepeatCount(2)
