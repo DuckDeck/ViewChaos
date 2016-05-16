@@ -83,12 +83,11 @@ Xcode 7.3 and iOS 8.0 the last Swift grammer【Xcode 7.3 and iOS 8.0 最新的Sw
 <br>
 * Control view's location, precise mode let you control the view precisely【控制View的位置，精确】
 <br>
-![add -DDEBUG location](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/chaos_control_size.gif)
 ![add -DDEBUG location](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/chaos_control_size1.gif)
 <br>
 * Change View's size and font size【控制View的大小】
 <br>
-![add -DDEBUG location](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/chaos_control_font.gif)
+![add -DDEBUG location](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/chaos_control_size.gif)
 <br>
 * Change View's font size【控制View里的字体大小（如果有的话）】
 <br>
