@@ -3,6 +3,7 @@ ViewChaos
 ####下面有中文说明
 ##ViewChaos is a iOS view diagnose tool【ViewChaos是一个iOS UI调试工具】
 ViewChaos is a powerful iOS UI debug tool, It can help you locate the view, find the superView and subView. check the constrains, and trace the view which you want to observe. and the most magical thing is that it can change the view's frame. background&title color, resize the font. change the border color,width and corner radius. at last.it can generate the code,ViewChaos can generate the code which is you adjusted code. you can copy the code to XCode。  until now what make it more powerful is that ViewChaos add shake feature, you can zoom the view and capture the color on the screen, you can also check all the views's border and transparence。 
+
 【ViewChaos是一个强大的IOS UI开发工具，它可以帮助你定位View，找出它的Superview和subview，检查约束，同时也可以追踪你想要观察的View。 其中最神奇的是它可以改变VIew的边框，背景&标题色，改变字体大小，改变边框颜色，厚度和弧度。最后，它还可以生成代码，你可以直接拷贝调整好的代码粘贴到XCode里使用。它太好用了，每个iOS开发者都应该使用这个工具！】
 
 
