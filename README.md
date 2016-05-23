@@ -9,15 +9,24 @@ ViewChaos is a powerful iOS UI debug tool, It can help you locate the view, find
 
 
 ##Key Features【关键特点】
-* No code, you do not need write any code!【不要写代码，你不需要写任何代码】
-* Debug mode. it will automatically disable when you set in release mode.【调试模式，当设为发布模式会自动禁用此功能】
-* Check view's frame, subViews, superViews.【检查VIew的frame, subViews, superViews.】
-* Can see the view's constrains.【可视化View的约束】
-* Trace the view‘s properties, and check memory leak.【追踪VIew，还可以检查内存泄漏】
-* Change the view's property,include frame,size,font,border and background.【改变VIew的属性，包括frame,size,font,border and background】
-* Magnifier mode can zoom the screen and capture the view's color on the screen【放大镜模式可以放大屏幕的实图，还可以获取视图上点的颜色值】
-* Boder mode can show all the views border. and you can capture and save it【边框模式获取所有View的边框并显示出来，还可以截图并保存】
-* Transparence mode can show all the views transparence. you can use it to check thich view is transparence【透明模式可以获取所有View的透明度，你可以用来检查有哪些View是透明的】
+* No code, you do not need write any code!
+* 【不要写代码，你不需要写任何代码】
+* Debug mode. it will automatically disable when you set in release mode.
+* 【调试模式，当设为发布模式会自动禁用此功能】
+* Check view's frame, subViews, superViews.
+* 【检查VIew的frame, subViews, superViews.】
+* Can see the view's constrains.
+* 【可视化View的约束】
+* Trace the view‘s properties, and check memory leak.
+* 【追踪VIew，还可以检查内存泄漏】
+* Change the view's property,include frame,size,font,border and background.
+* 【改变VIew的属性，包括frame,size,font,border and background】
+* Magnifier mode can zoom the screen and capture the view's color on the screen
+* 【放大镜模式可以放大屏幕的实图，还可以获取视图上点的颜色值】
+* Boder mode can show all the views border. and you can capture and save it
+* 【边框模式获取所有View的边框并显示出来，还可以截图并保存】
+* Transparence mode can show all the views transparence. you can use it to check thich view is transparence
+* 【透明模式可以获取所有View的透明度，你可以用来检查有哪些View是透明的】
 
 
 ##Requirements 【系统要求】
