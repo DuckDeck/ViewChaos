@@ -31,7 +31,8 @@ ViewChaos is a powerful iOS UI debug tool, It can help you locate the view, find
 
 ##Requirements 【系统要求】
 
-Xcode 7.3 and iOS 8.0 the last Swift grammer【Xcode 7.3 and iOS 8.0 最新的Swift语法】
+Xcode 7.3 and iOS 8.0 the last Swift grammer
+【Xcode 7.3 and iOS 8.0 最新的Swift语法】
 
 ##Installation(this is very important)【安装，这很重要】
 `if you like to copy the five files(ViewChaos.swift,ViewChaosInfo.swift,ViewNeat.swift，ZoomView.swift,DrawView.swift) to your project to install ViewChaos, please follow these setps bellow:`【如果你想直接Copy这五个文件(ViewChaos.swift,ViewChaosInfo.swift,ViewNeat.swift，ZoomView.swift,DrawView.swift)到你的项目里来安装ViewChaos，请照以下步骤】
