@@ -1,55 +1,9 @@
-#iOS开发技巧系列---ViewChaos我的UI调试之道（效果篇）
+ViewChaos
+===
 ![](http://7xr2ax.com1.z0.glb.clouddn.com/chaos_fitst_Image.jpg)
->首先因为工作较忙，我有快一个月没有更新文章了，现在事情不多了，就给大家献上最重量级的文章。
-本来我是打算写详解KVO这篇文章的，但是我突然看到网络上出现了很多关于KVO的文章，心想于是就算了，就先写这个吧。
-UI调试是每一个APP开发者或者前端开发者必备的技术。相对来说，iOS开发者调试UI是最苦逼的。
+>UI调试是每一个APP开发者或者前端开发者必备的技术。相对来说，iOS开发者调试UI是最苦逼的。
 无论是用Storyboard&XIB或者是纯手写代码实现UI，都要经过修改代码->编译生成->启动APP，进入指定页面后才能看到效果。整个过程需要等待一定的时间。而且反复修改编译后才能达到自己想要的效果，浪费时间。同时如果你是用代码生成UI的话，想要在复杂的页面里找到每个视图控件对应的代码也比较麻烦(目前我的所有项目都是用纯代码写的)。有一天无意中发现了一个叫RunTrace的开源项目[RunTrace](https://github.com/sx1989827/RunTrace)，它是一个IOS动态调试UI的开源项目，做得非常的有新意。并且也能够解决一些用纯代码写UI的疼点。我对这个项目非常有兴趣，我就用Swift重写一次，并且加入了自己的一些功能，使用iOS的UI调试更加方便了。正如标题，它叫[ViewChaos](https://github.com/DuckDeck/ViewChaos)，请大家赏脸给个Star,我将继续写更好的文章和开源项目。
 
-##各平台的UI开发概况
-在这里我简单给大家分析一下各平台的UI开发技术，目前最主要有：HTML&CSS，Winform&WPF,Universal Windows APP, Android,iOS这几个平台和开发技术，
-####Web界面的开发HTML&CSS
-+ Web界面是以HTML标签的形式构建UI，它是HTML语言的最基本的单位。
-+ 用尖括号包围的关键词如<div>来表示UI元素，通常是成对出现。
-+ 如果需要在容器标签里放其他HTML单位，需要放在标签对里面。
-+ 一些HTML元素属性，放在第一个HTML标签里。以键值对的形式存在，比如type = 'text'。
-+ 使用Form来提交表单，Http(HTTPS)协议和服务器通讯。
-+ 通常通过CSS来控制HTML元素的外观。
-+ 通常通过Javescript来控制HTML元素。采用Ajax技术异步通信，实现局部刷新等。
-这里就不给示例了，总是来说前端Web开发博大精深，新的技术框架层出不穷，当一个前端工程师也不容易。
-
-####Windows桌面应用程序开发Winform&WPF
-+ Winform是XP时代的Windows 桌面程序开发技术。
-+ 采用C#语言开发UI和逻辑，没有使用标签语言写UI。
-+ 采用事件驱动方法。
-+ Winform现在基本被淘汰了。
-Winform是上一代的主流桌面应用程序开发开发技术，这个我从来没有用过，现在也基本不再使用了。
-+ WPF是新一代微软图形界面开发技术。它是随着Windows Vista推出的。.NET Framework 3.0的一部分。它提供了统一的编程模型、语言和框架，真正做到了分离界面设计人员与开发人员的工作；同时它提供了全新的多媒体交互用户图形界面。
-+ 采用XAML标签式语言开发UI，可以在Expression Blend可视化设计开发。美工也可以轻易上手。XAML支持DataBind, Data(Item)Template, Style, Storyboard, Rescoure,自定义控件等技术，开发速度快。
-+ 支持事件驱动(Code behind)或者数据驱动(MVVM)开发模式
-+ 使用GC回收垃圾，XMAL和C#将编译成CLR中间运行语言，效率比较低，占用内存大
-WPF的技术理念非常先进，开发过程也非常友好，也可以做出极为绚丽的界面，可是开发出来的应用体积较大，运行效率比较低，占用内存大，所以没有普及开来。(大部分我们常见的桌面应用都是C&C++开发)但是因为开发效率高，所以很多企业内部经常使用该技术。
-
-####Windows 10上的通用应用Universal WIndows APP(UWP)
-+ Universal Windows App（UWP）也就是通用Window App 是微软最新的图形应用开发技术，它是基于WPF技术演进而来的。
-+ UWP继承了所有WPF的优点，还可以使用C++和HTML&Javascript来开发，和WPF编译成中间代码不同，UWP直接将代码编译成机器码直接运行，极大的提高了效率。一次开发编译，可以同时在Windows 10,Windows 10 Mobile, XBOX，物联网IoT设备等其他Windows平台上运行
-+ 采用和iOS APP一样的沙盒机制，一样也有电话本，传感器，地图，推送等API
-+ 采用响应式布局，可以适配任何分辨率等。
-+ 大量使用异步API，保证界面响应为最高级别。
-我开发UWP并不多，但是我接触WPF的时间够长，所以UWP上手毫无压力。相比WPF运行在.NET运行时里，UWP是可以编译成Native Code运行，所以UWP运行效率更高，UI更为流畅。它是目前微软最为主推的开以技术。
-####Android
-+ 略，我不会开发Android
-####iOS
-+ iOS应用是基于Cocoa框架上的，早期的Cocoa是用来开发Mac 应用的，后来加入了Cocoa touch层API用于iOS。
-+ 采用XIB或者Storyboard可视化搭建UI，也可以使用手写纯代码来开发UI。
-+ 采用Objective C 或者 Swift语言开发逻辑。
-+ 在Iphone5 加入多种分辨率后，苹果引入了Autolayout自动布局，它是一种基于约束的，描述性的布局系统。
-+ 默认严格遵守MVC设计模式，现以也可以使用MVVM开发框架。
-+ 采用ARC实现了自动内存管理。
-iOS开发技术还有许多要点，这里就省略了，相信看到这篇文章的人都比较熟悉。
-
-##各平台UI开发小结
-+ 从上面可以看出，对于UI构建，都是采用类HTML语言。一个HTML标签表示一个View元素。它即可以当其他View的容器，也可以当内容或者数据的容器。可以用独立的Style文件来表示样式，也可以直接放在标签的属性里面。每个标签都可以有Name或者id属性来让js或者其他语言直接操作。
-+ iOS其实也和上面的UI开发范式差不多，Storyboard内部其实也是一个XML文件，只不过我们不能直接编辑，只能可视化设计和通过代码操作。
 
 ##手写代码和Stortboard的优劣
 现在iOS UI最主流的UI开发主要分两种，一是用Stroyboard(Xib也可以用，但是已经被Stroyboard取代)，二是用纯代码手写UI，可以对目前最主流的APP包进行分析，参考[xib 使用调研情况](http://blog.csdn.net/libaineu2004/article/details/45488665)，可见目前这两种开发方式都很主流。总的来说，两者有如下优劣势。
