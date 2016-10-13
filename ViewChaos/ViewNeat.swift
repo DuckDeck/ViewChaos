@@ -36,10 +36,10 @@ class ViewNeat: UIView,ColorPickerDelegate {
             if viewControl != nil{
                 originFrame = viewControl!.frame
                 
-                lblViewInfo.text = "The view type is: \(viewControl!.dynamicType)"
+                lblViewInfo.text = "The view type is: \(type(of: viewControl!))"
                 if viewControl! is UIButton{
                     originFont = (viewControl! as! UIButton).titleLabel?.font
-                    originForegroundColor = (viewControl! as! UIButton).titleColorForState(UIControlState.Normal)
+                    originForegroundColor = (viewControl! as! UIButton).titleColor(for: UIControlState())
                 }
                 if viewControl! is UILabel{
                     originFont = (viewControl! as! UILabel).font
@@ -75,10 +75,10 @@ class ViewNeat: UIView,ColorPickerDelegate {
     var originFont:UIFont?;
     var originBorderWidth:CGFloat = 0
     var originCornerRadius:CGFloat = 0
-    var originBorderColor:CGColorRef?
+    var originBorderColor:CGColor?
     var originBackgroundColor:UIColor?
     var originForegroundColor:UIColor?
-    var originTintColor = UIColor.blueColor()
+    var originTintColor = UIColor.blue
     var currentColor:UIColor
     var vRockerArea:UIView
     var vRocker: UIView
@@ -86,7 +86,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
     var scaleX = 1
     var scaleY = 1
     var scale:Int = 1
-    var timer:NSTimer?
+    var timer:Timer?
     var stepScale:UIStepper
     var lblScale:UILabel
     var btnColorChooseCompleted:UIButton?
@@ -107,23 +107,23 @@ class ViewNeat: UIView,ColorPickerDelegate {
         left = 0
         top = 0
         lblViewInfo = UILabel()
-        originFrame = CGRectZero
-        currentColor = UIColor.clearColor()
+        originFrame = CGRect.zero
+        currentColor = UIColor.clear
         stepScale = UIStepper() //需要设置比例,来更精细的调节 
         lblScale = UILabel()
         btnClose = UIButton()
-        btnReset = UIButton(type: UIButtonType.RoundedRect)
+        btnReset = UIButton(type: UIButtonType.roundedRect)
         btnPrecise = UIButton()
         btnUp = UIButton()
         btnDown = UIButton()
         btnLeft = UIButton()
         btnRight = UIButton()
-        super.init(frame:CGRect(x: 0, y: UIScreen.mainScreen().bounds.height - 180, width: UIScreen.mainScreen().bounds.width, height: 180))
+        super.init(frame:CGRect(x: 0, y: UIScreen.main.bounds.height - 180, width: UIScreen.main.bounds.width, height: 180))
         self.backgroundColor = UIColor(red: 0.0, green: 0.898, blue: 0.836, alpha: 0.3)
-        timer = NSTimer.scheduledTimerWithTimeInterval(0.05, target: self, selector: #selector(ViewNeat.timerFire(_:)), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(ViewNeat.timerFire(_:)), userInfo: nil, repeats: true)
         segMenu.frame = CGRect(x: 10, y:self.frame.size.height - 35 , width: self.frame.size.width - 20, height: 30)
-        segMenu.tintColor = UIColor.blackColor()
-        segMenu.addTarget(self, action: #selector(ViewNeat.segClick(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        segMenu.tintColor = UIColor.black
+        segMenu.addTarget(self, action: #selector(ViewNeat.segClick(_:)), for: UIControlEvents.valueChanged)
         if segMenu.selectedSegmentIndex == -1
         {
             segMenu.selectedSegmentIndex = 0
@@ -131,129 +131,129 @@ class ViewNeat: UIView,ColorPickerDelegate {
         addSubview(segMenu)
         
         segItemMenu.frame = CGRect(x: 10, y: 2, width: 150, height: 20)
-        segItemMenu.hidden = true
-        segItemMenu.tintColor = UIColor.blackColor()
+        segItemMenu.isHidden = true
+        segItemMenu.tintColor = UIColor.black
         segItemMenu.selectedSegmentIndex = 0
-        segItemMenu.addTarget(self, action: #selector(ViewNeat.segItemClick(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        segItemMenu.addTarget(self, action: #selector(ViewNeat.segItemClick(_:)), for: UIControlEvents.valueChanged)
         addSubview(segItemMenu)
         
         vRockerArea.frame = CGRect(x: 10, y: 30, width: 100, height: 100)
         vRockerArea.layer.borderWidth = 0.5
-        vRockerArea.layer.borderColor = UIColor.blackColor().CGColor
+        vRockerArea.layer.borderColor = UIColor.black.cgColor
         addSubview(vRockerArea)
         
         vRocker.frame  =  CGRect(x: vRockerArea.frame.size.width / 2 - 20, y: vRockerArea.frame.size.height / 2 - 20, width: 40, height: 40)
-        vRocker.layer.borderColor = UIColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 0.5).CGColor
+        vRocker.layer.borderColor = UIColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 0.5).cgColor
         vRocker.layer.borderWidth = 0.5
         vRocker.layer.cornerRadius = 20
         vRocker.clipsToBounds = true
-        vRocker.backgroundColor = UIColor.redColor()
+        vRocker.backgroundColor = UIColor.red
         vRockerArea.addSubview(vRocker)
         
         
         btnUp.frame = CGRect(x: vRockerArea.frame.size.width / 2 - 15, y: 0, width: 30, height: 30)
-        btnUp.setTitle("⬆︎", forState: UIControlState.Normal)
-        btnUp.setTitleColor(UIColor.redColor(), forState: UIControlState.Normal)
+        btnUp.setTitle("⬆︎", for: UIControlState())
+        btnUp.setTitleColor(UIColor.red, for: UIControlState())
         btnUp.tag = 100
-        btnUp.layer.borderColor = UIColor.redColor().CGColor
+        btnUp.layer.borderColor = UIColor.red.cgColor
         btnUp.layer.borderWidth = 1
-        btnUp.titleLabel?.font = UIFont.systemFontOfSize(20)
+        btnUp.titleLabel?.font = UIFont.systemFont(ofSize: 20)
         vRockerArea.addSubview(btnUp)
         btnDown.frame = CGRect(x: vRockerArea.frame.size.width / 2 - 15, y: vRockerArea.frame.size.height - 30, width: 30, height: 30)
-        btnDown.setTitle("⬇︎", forState: UIControlState.Normal)
-        btnDown.setTitleColor(UIColor.redColor(), forState: UIControlState.Normal)
+        btnDown.setTitle("⬇︎", for: UIControlState())
+        btnDown.setTitleColor(UIColor.red, for: UIControlState())
         btnDown.tag = 101
-        btnDown.layer.borderColor = UIColor.redColor().CGColor
+        btnDown.layer.borderColor = UIColor.red.cgColor
         btnDown.layer.borderWidth = 1
-        btnDown.titleLabel?.font = UIFont.systemFontOfSize(20)
+        btnDown.titleLabel?.font = UIFont.systemFont(ofSize: 20)
         vRockerArea.addSubview(btnDown)
         btnLeft.frame = CGRect(x: 0, y: vRockerArea.frame.size.height / 2 - 15, width: 30, height: 30)
-        btnLeft.setTitle("⬅︎", forState: UIControlState.Normal)
-        btnLeft.setTitleColor(UIColor.redColor(), forState: UIControlState.Normal)
+        btnLeft.setTitle("⬅︎", for: UIControlState())
+        btnLeft.setTitleColor(UIColor.red, for: UIControlState())
         btnLeft.tag = 102
-        btnLeft.layer.borderColor = UIColor.redColor().CGColor
+        btnLeft.layer.borderColor = UIColor.red.cgColor
         btnLeft.layer.borderWidth = 1
-        btnLeft.titleLabel?.font = UIFont.systemFontOfSize(20)
+        btnLeft.titleLabel?.font = UIFont.systemFont(ofSize: 20)
         vRockerArea.addSubview(btnLeft)
         btnRight.frame = CGRect(x: vRockerArea.frame.size.width - 30, y:  vRockerArea.frame.size.height / 2 - 15, width: 30, height: 30)
-        btnRight.setTitle("➡︎", forState: UIControlState.Normal)
-        btnRight.setTitleColor(UIColor.redColor(), forState: UIControlState.Normal)
+        btnRight.setTitle("➡︎", for: UIControlState())
+        btnRight.setTitleColor(UIColor.red, for: UIControlState())
         btnRight.tag = 103
-        btnRight.layer.borderColor = UIColor.redColor().CGColor
+        btnRight.layer.borderColor = UIColor.red.cgColor
         btnRight.layer.borderWidth = 1
-        btnRight.titleLabel?.font = UIFont.systemFontOfSize(20)
+        btnRight.titleLabel?.font = UIFont.systemFont(ofSize: 20)
         vRockerArea.addSubview(btnRight)
-        btnUp.addTarget(self, action: #selector(ViewNeat.oper(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-        btnDown.addTarget(self, action: #selector(ViewNeat.oper(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-        btnLeft.addTarget(self, action: #selector(ViewNeat.oper(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-        btnRight.addTarget(self, action: #selector(ViewNeat.oper(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        btnUp.addTarget(self, action: #selector(ViewNeat.oper(_:)), for: UIControlEvents.touchUpInside)
+        btnDown.addTarget(self, action: #selector(ViewNeat.oper(_:)), for: UIControlEvents.touchUpInside)
+        btnLeft.addTarget(self, action: #selector(ViewNeat.oper(_:)), for: UIControlEvents.touchUpInside)
+        btnRight.addTarget(self, action: #selector(ViewNeat.oper(_:)), for: UIControlEvents.touchUpInside)
         setOperButtonsVisible(false)
         
         
-        lblViewInfo.frame = CGRect(x: CGRectGetMaxX(vRockerArea.frame) + 10 , y: 70, width: self.frame.size.width - CGRectGetMaxX(vRockerArea.frame) - 20, height: 60)
-        lblViewInfo.font = UIFont.systemFontOfSize(13)
+        lblViewInfo.frame = CGRect(x: vRockerArea.frame.maxX + 10 , y: 70, width: self.frame.size.width - vRockerArea.frame.maxX - 20, height: 60)
+        lblViewInfo.font = UIFont.systemFont(ofSize: 13)
         lblViewInfo.numberOfLines = 0
         addSubview(lblViewInfo)
         
         btnColorChooseCompleted = UIButton(frame: CGRect(x: frame.size.width - 70, y: 5, width: 70, height: 27))
-        btnColorChooseCompleted?.setTitle("ColorPick", forState: UIControlState.Normal)
-        btnColorChooseCompleted?.addTarget(self, action: #selector(ViewNeat.chooseColor(_:)), forControlEvents: UIControlEvents.TouchUpInside)
-        btnColorChooseCompleted?.hidden = true
+        btnColorChooseCompleted?.setTitle("ColorPick", for: UIControlState())
+        btnColorChooseCompleted?.addTarget(self, action: #selector(ViewNeat.chooseColor(_:)), for: UIControlEvents.touchUpInside)
+        btnColorChooseCompleted?.isHidden = true
         btnColorChooseCompleted?.layer.borderWidth = 0.5
-        btnColorChooseCompleted?.layer.borderColor = UIColor.blackColor().CGColor
-        btnColorChooseCompleted?.titleLabel?.font = UIFont.systemFontOfSize(13)
+        btnColorChooseCompleted?.layer.borderColor = UIColor.black.cgColor
+        btnColorChooseCompleted?.titleLabel?.font = UIFont.systemFont(ofSize: 13)
         addSubview(btnColorChooseCompleted!)
         
         btnClose.frame = CGRect(x: self.frame.size.width - 50, y: 40, width: 45, height: 27)
-        btnClose.setTitle("Close", forState: UIControlState.Normal)
+        btnClose.setTitle("Close", for: UIControlState())
         btnClose.layer.borderWidth  = 0.5
-        btnClose.titleLabel?.font = UIFont.systemFontOfSize(13)
-        btnClose.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
-        btnClose.addTarget(self, action: #selector(ViewNeat.close(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        btnClose.titleLabel?.font = UIFont.systemFont(ofSize: 13)
+        btnClose.setTitleColor(UIColor.black, for: UIControlState())
+        btnClose.addTarget(self, action: #selector(ViewNeat.close(_:)), for: UIControlEvents.touchUpInside)
         addSubview(btnClose)
         
         btnReset.frame = CGRect(x: self.frame.size.width - 100, y: 40, width: 40, height: 27)
-        btnReset.setTitle("Reset", forState: UIControlState.Normal)
+        btnReset.setTitle("Reset", for: UIControlState())
         btnReset.layer.borderWidth  = 0.5
-        btnReset.titleLabel?.font = UIFont.systemFontOfSize(13)
-        btnReset.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
-        btnReset.addTarget(self, action: #selector(ViewNeat.reset(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        btnReset.titleLabel?.font = UIFont.systemFont(ofSize: 13)
+        btnReset.setTitleColor(UIColor.black, for: UIControlState())
+        btnReset.addTarget(self, action: #selector(ViewNeat.reset(_:)), for: UIControlEvents.touchUpInside)
         addSubview(btnReset)
         
-        stepScale.frame = CGRect(x: CGRectGetMaxX(vRockerArea.frame) + 8, y: 40, width: 94, height: 20)
+        stepScale.frame = CGRect(x: vRockerArea.frame.maxX + 8, y: 40, width: 94, height: 20)
         stepScale.maximumValue = 5
         stepScale.minimumValue = 1
         stepScale.value = 5
-        stepScale.tintColor = UIColor.blackColor()
-        stepScale.addTarget(self, action: #selector(ViewNeat.scaleChange(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        stepScale.tintColor = UIColor.black
+        stepScale.addTarget(self, action: #selector(ViewNeat.scaleChange(_:)), for: UIControlEvents.valueChanged)
         stepScale.stepValue = 1
         scale = Int(stepScale.value)
         addSubview(stepScale)
         
-        lblScale.frame = CGRect(x: CGRectGetMaxX(vRockerArea.frame) + 8, y: 20, width: 60, height: 20)
+        lblScale.frame = CGRect(x: vRockerArea.frame.maxX + 8, y: 20, width: 60, height: 20)
         lblScale.text = "Scale:\(scale)"
-        lblScale.font = UIFont.systemFontOfSize(12)
-        lblScale.textColor = UIColor.blackColor()
+        lblScale.font = UIFont.systemFont(ofSize: 12)
+        lblScale.textColor = UIColor.black
         addSubview(lblScale)
         btnPrecise.frame = CGRect(x: btnColorChooseCompleted!.frame.origin.x-65, y: 5, width: 62, height: 27)
-        btnPrecise.setTitle("Precise", forState: UIControlState.Normal)
+        btnPrecise.setTitle("Precise", for: UIControlState())
         btnPrecise.layer.borderWidth  = 0.5
-        btnPrecise.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
-        btnPrecise.titleLabel?.font = UIFont.systemFontOfSize(13)
-        btnPrecise.addTarget(self, action: #selector(ViewNeat.precise(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        btnPrecise.setTitleColor(UIColor.black, for: UIControlState())
+        btnPrecise.titleLabel?.font = UIFont.systemFont(ofSize: 13)
+        btnPrecise.addTarget(self, action: #selector(ViewNeat.precise(_:)), for: UIControlEvents.touchUpInside)
         addSubview(btnPrecise)
     }
 
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         let touch = touches.first
-        if let point =  touch?.locationInView(vRocker)
+        if let point =  touch?.location(in: vRocker)
         {
             if point.x > 0 && point.x < vRocker.frame.size.width && point.y > 0 && point.y < vRocker.frame.size.height{
                 isTouch = true
                 left = Float(point.x)
                 top = Float(point.y)
-                if timer!.valid{
+                if timer!.isValid{
                     timer?.fire()
                     timer?.resumeChaosTimer()
                 }
@@ -261,13 +261,13 @@ class ViewNeat: UIView,ColorPickerDelegate {
         }
     }
     
-    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         if !isTouch
         {
             return
         }
         let touch = touches.first
-        if let point = touch?.locationInView(vRockerArea){
+        if let point = touch?.location(in: vRockerArea){
             var newFrame = CGRect(x: point.x - CGFloat(left), y: point.y - CGFloat(top), width: vRocker.frame.size.width, height: vRocker.frame.size.height)
             if newFrame.origin.x <= 0{
                 newFrame.origin.x = 0
@@ -291,44 +291,44 @@ class ViewNeat: UIView,ColorPickerDelegate {
         }
     }
     
-    override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
+    override func touchesCancelled(_ touches: Set<UITouch>?, with event: UIEvent?) {
         isTouch = false
         timer?.pauseChaosTimer()
-        UIView.animateWithDuration(0.2, animations: { () -> Void in
+        UIView.animate(withDuration: 0.2, animations: { () -> Void in
             self.vRocker.frame = CGRect(x: self.vRockerArea.frame.size.width / 2 - 20, y: self.vRockerArea.frame.size.height / 2 - 20, width: 40, height: 40)
-            }) { (finished) -> Void in
+            }, completion: { (finished) -> Void in
                 
-        }
+        }) 
     }
     
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
           isTouch = false
         timer?.pauseChaosTimer()
-        UIView.animateWithDuration(0.2, animations: { () -> Void in
+        UIView.animate(withDuration: 0.2, animations: { () -> Void in
              self.vRocker.frame = CGRect(x: self.vRockerArea.frame.size.width / 2 - 20, y: self.vRockerArea.frame.size.height / 2 - 20, width: 40, height: 40)
-            }) { (finished) -> Void in
+            }, completion: { (finished) -> Void in
                 
-        }
+        }) 
         
     }
     
-    func setOperButtonsVisible(visible:Bool){
+    func setOperButtonsVisible(_ visible:Bool){
         if(visible){
-            btnUp.hidden = false
-            btnDown.hidden = false
-            btnLeft.hidden = false
-            btnRight.hidden = false
-            vRocker.hidden = true
+            btnUp.isHidden = false
+            btnDown.isHidden = false
+            btnLeft.isHidden = false
+            btnRight.isHidden = false
+            vRocker.isHidden = true
         }
         else{
-            btnUp.hidden = true
-            btnDown.hidden = true
-            btnLeft.hidden = true
-            btnRight.hidden = true
-            vRocker.hidden = false
+            btnUp.isHidden = true
+            btnDown.isHidden = true
+            btnLeft.isHidden = true
+            btnRight.isHidden = true
+            vRocker.isHidden = false
         }
     }
-    func oper(sender:UIButton){
+    func oper(_ sender:UIButton){
         switch sender.tag{
         case 100:
             scaleY = -1
@@ -347,7 +347,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
         operationView()
     }
     
-    func timerFire(sender:NSTimer){
+    func timerFire(_ sender:Timer){
         if !isTouch{
             return
         }
@@ -365,19 +365,19 @@ class ViewNeat: UIView,ColorPickerDelegate {
         switch(neatType){
         case .location:
             viewControl!.frame = CGRect(x: viewControl!.frame.origin.x + CGFloat(scaleX) * operatonScale, y: viewControl!.frame.origin.y + CGFloat(scaleY) * operatonScale, width: viewControl!.frame.size.width, height: viewControl!.frame.size.height)
-            lblViewInfo.text = "\(viewControl!.dynamicType) l:\(viewControl!.frame.origin.x) t:\(viewControl!.frame.origin.y) w:\(viewControl!.frame.size.width) h:\(viewControl!.frame.size.height)"
+            lblViewInfo.text = "\(type(of: viewControl!)) l:\(viewControl!.frame.origin.x) t:\(viewControl!.frame.origin.y) w:\(viewControl!.frame.size.width) h:\(viewControl!.frame.size.height)"
         case .size:
             switch neatSizeType{
             case.topLeft:
                 let newFrame = CGRect(x: viewControl!.frame.origin.x + CGFloat(scaleX) * operatonScale, y: viewControl!.frame.origin.y + CGFloat(scaleY) * operatonScale, width: viewControl!.frame.size.width, height: viewControl!.frame.size.height)
-                let newWidth = CGRectGetMaxX(viewControl!.frame) - newFrame.origin.x
-                let newHeight = CGRectGetMaxY(viewControl!.frame) - newFrame.origin.y
+                let newWidth = viewControl!.frame.maxX - newFrame.origin.x
+                let newHeight = viewControl!.frame.maxY - newFrame.origin.y
                 if newWidth <= CGFloat(0.0) || newHeight <= CGFloat(0.0)
                 {
                     return
                 }
                 viewControl!.frame = CGRect(x: newFrame.origin.x, y: newFrame.origin.y, width: newWidth, height: newHeight)
-                lblViewInfo.text = "\(viewControl!.dynamicType) l:\(viewControl!.frame.origin.x) t:\(viewControl!.frame.origin.y) w:\(viewControl!.frame.size.width) h:\(viewControl!.frame.size.height)"
+                lblViewInfo.text = "\(type(of: viewControl!)) l:\(viewControl!.frame.origin.x) t:\(viewControl!.frame.origin.y) w:\(viewControl!.frame.size.width) h:\(viewControl!.frame.size.height)"
             case .rightBottom:
                 let newWidth = viewControl!.frame.size.width + CGFloat(scaleX) * operatonScale
                 let newHeight = viewControl!.frame.size.height + CGFloat(scaleY) * operatonScale
@@ -386,7 +386,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
                     return
                 }
                 viewControl!.frame = CGRect(x: viewControl!.frame.origin.x, y: viewControl!.frame.origin.y, width: newWidth, height: newHeight)
-                lblViewInfo.text = "\(viewControl!.dynamicType) l:\(viewControl!.frame.origin.x) t:\(viewControl!.frame.origin.y) w:\(viewControl!.frame.size.width) h:\(viewControl!.frame.size.height)"
+                lblViewInfo.text = "\(type(of: viewControl!)) l:\(viewControl!.frame.origin.x) t:\(viewControl!.frame.origin.y) w:\(viewControl!.frame.size.width) h:\(viewControl!.frame.size.height)"
             }
         case .font:
             if viewControl! is UILabel{
@@ -396,8 +396,8 @@ class ViewNeat: UIView,ColorPickerDelegate {
                 {
                     return
                 }
-                lbl.font = UIFont.systemFontOfSize(newSize)
-                lblViewInfo.text = "\(viewControl!.dynamicType) FontSize: \(newSize)"
+                lbl.font = UIFont.systemFont(ofSize: newSize)
+                lblViewInfo.text = "\(type(of: viewControl!)) FontSize: \(newSize)"
             }
             if viewControl! is UIButton{
                 let btn = viewControl! as! UIButton
@@ -407,8 +407,8 @@ class ViewNeat: UIView,ColorPickerDelegate {
                     {
                         return
                     }
-                    btn.titleLabel?.font = UIFont.systemFontOfSize(newSize)
-                    lblViewInfo.text = "\(viewControl!.dynamicType) FontSize: \(newSize)"
+                    btn.titleLabel?.font = UIFont.systemFont(ofSize: newSize)
+                    lblViewInfo.text = "\(type(of: viewControl!)) FontSize: \(newSize)"
                 }
             }
             if viewControl! is UITextField{
@@ -419,8 +419,8 @@ class ViewNeat: UIView,ColorPickerDelegate {
                     {
                         return
                     }
-                    txt.font = UIFont.systemFontOfSize(newSize)
-                    lblViewInfo.text = "\(viewControl!.dynamicType) FontSize: \(newSize)"
+                    txt.font = UIFont.systemFont(ofSize: newSize)
+                    lblViewInfo.text = "\(type(of: viewControl!)) FontSize: \(newSize)"
                 }
             }
             if viewControl! is UITextView{
@@ -431,8 +431,8 @@ class ViewNeat: UIView,ColorPickerDelegate {
                     {
                         return
                     }
-                    txt.font = UIFont.systemFontOfSize(newSize)
-                    lblViewInfo.text = "\(viewControl!.dynamicType) FontSize: \(newSize)"
+                    txt.font = UIFont.systemFont(ofSize: newSize)
+                    lblViewInfo.text = "\(type(of: viewControl!)) FontSize: \(newSize)"
                 }
             }
         case .border:
@@ -443,7 +443,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
                     return
                 }
                 viewControl!.layer.borderWidth = newWidth
-                lblViewInfo.text = "\(viewControl!.dynamicType) BorderWidth: \(newWidth)"
+                lblViewInfo.text = "\(type(of: viewControl!)) BorderWidth: \(newWidth)"
             case.borderColor: break
             case.cornerRadius:
                 let newCornerRadius = viewControl!.layer.cornerRadius  - CGFloat(scaleY) * operatonScale
@@ -451,7 +451,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
                     return
                 }
                 viewControl!.layer.cornerRadius = newCornerRadius
-                lblViewInfo.text = "\(viewControl!.dynamicType) CornerRadius: \(newCornerRadius)"
+                lblViewInfo.text = "\(type(of: viewControl!)) CornerRadius: \(newCornerRadius)"
             }
         default: break
         }
@@ -465,81 +465,81 @@ class ViewNeat: UIView,ColorPickerDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func segClick(sender:UISegmentedControl){
+    func segClick(_ sender:UISegmentedControl){
         if viewControl == nil{
             Chaos.toast("VIew have released")
             return
         }
-        btnColorChooseCompleted?.hidden = true
-        btnColorChooseCompleted?.setTitle("ColorPick", forState: UIControlState.Normal)
+        btnColorChooseCompleted?.isHidden = true
+        btnColorChooseCompleted?.setTitle("ColorPick", for: UIControlState())
         vColorPicker?.delegate = nil
         vColorPicker?.removeFromSuperview()
         switch sender.selectedSegmentIndex{
             case 0: neatType = .location
-            segItemMenu.hidden = true
+            segItemMenu.isHidden = true
             case 1:neatType = .size
-            lblViewInfo.text = "\(viewControl!.dynamicType) l:\(viewControl!.frame.origin.x) t:\(viewControl!.frame.origin.y) w:\(viewControl!.frame.size.width) h:\(viewControl!.frame.size.height)"
-            segItemMenu.hidden = false
+            lblViewInfo.text = "\(type(of: viewControl!)) l:\(viewControl!.frame.origin.x) t:\(viewControl!.frame.origin.y) w:\(viewControl!.frame.size.width) h:\(viewControl!.frame.size.height)"
+            segItemMenu.isHidden = false
             if segItemMenu.numberOfSegments == 3{
-                segItemMenu.removeSegmentAtIndex(2, animated: false)
+                segItemMenu.removeSegment(at: 2, animated: false)
             }
-            segItemMenu.setTitle("LeftTop", forSegmentAtIndex: 0)
-            segItemMenu.setTitle("RightBottom", forSegmentAtIndex: 1)
+            segItemMenu.setTitle("LeftTop", forSegmentAt: 0)
+            segItemMenu.setTitle("RightBottom", forSegmentAt: 1)
             neatSizeType = .topLeft
             segItemMenu.selectedSegmentIndex = 0
-            lblViewInfo.text = "\(viewControl!.dynamicType) l:\(viewControl!.frame.origin.x) t:\(viewControl!.frame.origin.y) w:\(viewControl!.frame.size.width) h:\(viewControl!.frame.size.height)"
+            lblViewInfo.text = "\(type(of: viewControl!)) l:\(viewControl!.frame.origin.x) t:\(viewControl!.frame.origin.y) w:\(viewControl!.frame.size.width) h:\(viewControl!.frame.size.height)"
             case 2:neatType = .font
-            segItemMenu.hidden = true
+            segItemMenu.isHidden = true
             if let fontSize = getFont(){
-                lblViewInfo.text = "\(viewControl!.dynamicType) font:\(fontSize)"
+                lblViewInfo.text = "\(type(of: viewControl!)) font:\(fontSize)"
             }
             case 3:neatType = .border
-            segItemMenu.hidden = false
+            segItemMenu.isHidden = false
             if segItemMenu.numberOfSegments == 2{
-                segItemMenu.insertSegmentWithTitle("Radius", atIndex: 2, animated: false)
+                segItemMenu.insertSegment(withTitle: "Radius", at: 2, animated: false)
             }
             else if segItemMenu.numberOfSegments == 3{
-                segItemMenu.setTitle("Radius", forSegmentAtIndex: 2)
+                segItemMenu.setTitle("Radius", forSegmentAt: 2)
             }
-            segItemMenu.setTitle("Color", forSegmentAtIndex: 0)
-            segItemMenu.setTitle("Border", forSegmentAtIndex: 1)
+            segItemMenu.setTitle("Color", forSegmentAt: 0)
+            segItemMenu.setTitle("Border", forSegmentAt: 1)
             segItemMenu.selectedSegmentIndex = 1
             neatBorderType = .borderWidth
-            lblViewInfo.text = "\(viewControl!.dynamicType) BorderWidth: \(viewControl!.layer.borderWidth)"
+            lblViewInfo.text = "\(type(of: viewControl!)) BorderWidth: \(viewControl!.layer.borderWidth)"
             case 4:neatType = .color
-            segItemMenu.hidden = false
+            segItemMenu.isHidden = false
             if segItemMenu.numberOfSegments == 3{
-                 segItemMenu.setTitle("Tint", forSegmentAtIndex: 2)
+                 segItemMenu.setTitle("Tint", forSegmentAt: 2)
             }
             else if (segItemMenu.numberOfSegments == 2)
             {
-                segItemMenu.insertSegmentWithTitle("Tint", atIndex: 2, animated: false)
+                segItemMenu.insertSegment(withTitle: "Tint", at: 2, animated: false)
             }
-            segItemMenu.setTitle("Fore", forSegmentAtIndex: 0)
-            segItemMenu.setTitle("Back", forSegmentAtIndex: 1)
+            segItemMenu.setTitle("Fore", forSegmentAt: 0)
+            segItemMenu.setTitle("Back", forSegmentAt: 1)
             segItemMenu.selectedSegmentIndex = 1
             neatColorType = .backGround
-            btnColorChooseCompleted?.hidden = false
+            btnColorChooseCompleted?.isHidden = false
             if let color = viewControl!.backgroundColor{
-                btnColorChooseCompleted?.setTitleColor(color, forState: UIControlState.Normal)
+                btnColorChooseCompleted?.setTitleColor(color, for: UIControlState())
                 currentColor = color
-                lblViewInfo.text = "\(viewControl!.dynamicType) BackGroundColor: \(color.format("swift"))"
+                lblViewInfo.text = "\(type(of: viewControl!)) BackGroundColor: \(color.format("swift"))"
             }
             case 5:neatType = .code
-            segItemMenu.hidden = true
+            segItemMenu.isHidden = true
             generateCode()
             default: break
         }
 
     }
     
-    func segItemClick(sender:UISegmentedControl){
+    func segItemClick(_ sender:UISegmentedControl){
         if viewControl == nil{
             Chaos.toast("VIew have released")
             return
         }
-        btnColorChooseCompleted?.hidden = true
-        btnColorChooseCompleted?.setTitle("ColorPick", forState: UIControlState.Normal)
+        btnColorChooseCompleted?.isHidden = true
+        btnColorChooseCompleted?.setTitle("ColorPick", for: UIControlState())
         vColorPicker?.delegate = nil
         vColorPicker?.removeFromSuperview()
         switch neatType{
@@ -552,10 +552,10 @@ class ViewNeat: UIView,ColorPickerDelegate {
         case .border:
             switch sender.selectedSegmentIndex{
             case 0: neatBorderType = .borderColor
-                btnColorChooseCompleted?.hidden = false
+                btnColorChooseCompleted?.isHidden = false
                 if let color = viewControl!.layer.borderColor{
-                    btnColorChooseCompleted?.setTitleColor(UIColor(CGColor: color), forState: UIControlState.Normal)
-                    currentColor = UIColor(CGColor: color)
+                    btnColorChooseCompleted?.setTitleColor(UIColor(cgColor: color), for: UIControlState())
+                    currentColor = UIColor(cgColor: color)
                 
                 }
             case 1: neatBorderType = .borderWidth  //第一次调度BorderWidth不管用
@@ -568,33 +568,33 @@ class ViewNeat: UIView,ColorPickerDelegate {
             case 0: neatColorType = .foreGround
                 //只有有字体的才是
                 if viewControl! is UIButton{
-                    btnColorChooseCompleted?.hidden = false
+                    btnColorChooseCompleted?.isHidden = false
                     let btn = viewControl! as! UIButton
-                    if let color = btn.titleColorForState(UIControlState.Normal){
-                        btnColorChooseCompleted?.setTitleColor(color, forState: UIControlState.Normal)
+                    if let color = btn.titleColor(for: UIControlState()){
+                        btnColorChooseCompleted?.setTitleColor(color, for: UIControlState())
                         currentColor = color
                     }
                 }
                 else if viewControl! is UILabel{
-                    btnColorChooseCompleted?.hidden = false
+                    btnColorChooseCompleted?.isHidden = false
                     let lbl = viewControl! as! UILabel
                     let color = lbl.textColor
-                    btnColorChooseCompleted?.setTitleColor(color, forState: UIControlState.Normal)
-                    currentColor = color
+                    btnColorChooseCompleted?.setTitleColor(color, for: UIControlState())
+                    currentColor = color!
                 }
                 else if viewControl! is UITextField{
-                    btnColorChooseCompleted?.hidden = false
+                    btnColorChooseCompleted?.isHidden = false
                     let txt = viewControl! as! UITextField
                     if   let color = txt.textColor{
-                        btnColorChooseCompleted?.setTitleColor(color, forState: UIControlState.Normal)
+                        btnColorChooseCompleted?.setTitleColor(color, for: UIControlState())
                         currentColor = color
                     }
               }
                 else if viewControl! is UITextView{
-                    btnColorChooseCompleted?.hidden = false
+                    btnColorChooseCompleted?.isHidden = false
                     let txt = viewControl! as! UITextView
                     if   let color = txt.textColor{
-                        btnColorChooseCompleted?.setTitleColor(color, forState: UIControlState.Normal)
+                        btnColorChooseCompleted?.setTitleColor(color, for: UIControlState())
                         currentColor = color
                     }
                 }
@@ -602,15 +602,15 @@ class ViewNeat: UIView,ColorPickerDelegate {
                      Chaos.toast("Only contain text UIView can change foreground color")
                 }
             case 1: neatColorType = .backGround
-                btnColorChooseCompleted?.hidden = false
+                btnColorChooseCompleted?.isHidden = false
                 if let color = viewControl!.backgroundColor{
-                    btnColorChooseCompleted?.setTitleColor(color, forState: UIControlState.Normal)
+                    btnColorChooseCompleted?.setTitleColor(color, for: UIControlState())
                     currentColor = color
                     }
             case 2: neatColorType = .tintColor
-                    btnColorChooseCompleted?.hidden = false
+                    btnColorChooseCompleted?.isHidden = false
                     if let color = viewControl!.tintColor{
-                        btnColorChooseCompleted?.setTitleColor(color, forState: UIControlState.Normal)
+                        btnColorChooseCompleted?.setTitleColor(color, for: UIControlState())
                         currentColor = color
                     }
                 break
@@ -622,18 +622,18 @@ class ViewNeat: UIView,ColorPickerDelegate {
         
     }
     
-    func colorSelectedChanged(color: UIColor) {
+    func colorSelectedChanged(_ color: UIColor) {
         if viewControl == nil{
             Chaos.toast("VIew have released")
             return
         }
-        btnColorChooseCompleted?.setTitleColor(color, forState: UIControlState.Normal)
+        btnColorChooseCompleted?.setTitleColor(color, for: UIControlState())
         switch neatType{
         case .border:
             switch neatBorderType{
-            case.borderColor: viewControl!.layer.borderColor = color.CGColor
-            btnColorChooseCompleted?.setTitleColor(color, forState: UIControlState.Normal)
-                lblViewInfo.text = "\(viewControl!.dynamicType) CornerRadius: \(color.format("swift"))"
+            case.borderColor: viewControl!.layer.borderColor = color.cgColor
+            btnColorChooseCompleted?.setTitleColor(color, for: UIControlState())
+                lblViewInfo.text = "\(type(of: viewControl!)) CornerRadius: \(color.format("swift"))"
             default : break
             }
         case .color:
@@ -641,57 +641,57 @@ class ViewNeat: UIView,ColorPickerDelegate {
             case .foreGround:
                 if viewControl! is UIButton{
                     let btn = viewControl! as! UIButton
-                    btn.setTitleColor(color, forState: UIControlState.Normal)
-                    lblViewInfo.text = "\(viewControl!.dynamicType) TitleColor: \(color.format("swift"))"
+                    btn.setTitleColor(color, for: UIControlState())
+                    lblViewInfo.text = "\(type(of: viewControl!)) TitleColor: \(color.format("swift"))"
                 }
                 else if viewControl! is UILabel{
                     let lbl = viewControl! as! UILabel
                    lbl.textColor = color
-                    lblViewInfo.text = "\(viewControl!.dynamicType) TextColor: \(color.format("swift"))"
+                    lblViewInfo.text = "\(type(of: viewControl!)) TextColor: \(color.format("swift"))"
                 }
                 else if viewControl! is UITextField{
                     let txt = viewControl! as! UITextField
                     txt.textColor = color
-                    lblViewInfo.text = "\(viewControl!.dynamicType) TextColor: \(color.format("swift")))"
+                    lblViewInfo.text = "\(type(of: viewControl!)) TextColor: \(color.format("swift")))"
                 }
                 else if viewControl! is UITextView{
                     let txt = viewControl! as! UITextView
                     txt.textColor = color
-                    lblViewInfo.text = "\(viewControl!.dynamicType) TextColor: \(color.format("swift"))"
+                    lblViewInfo.text = "\(type(of: viewControl!)) TextColor: \(color.format("swift"))"
                 }
             case.backGround:
                 viewControl!.backgroundColor = color
-                lblViewInfo.text = "\(viewControl!.dynamicType) BackGroundColor: \(color.format("swift"))"
+                lblViewInfo.text = "\(type(of: viewControl!)) BackGroundColor: \(color.format("swift"))"
             case .tintColor:
                 viewControl!.tintColor = color
-                lblViewInfo.text = "\(viewControl!.dynamicType) TintColor: \(color.format("swift"))"
+                lblViewInfo.text = "\(type(of: viewControl!)) TintColor: \(color.format("swift"))"
             }
             break
         default: break
         }
     }
     
-    func chooseColor(sender:UIButton){
-        let title = sender.titleForState(UIControlState.Normal)
+    func chooseColor(_ sender:UIButton){
+        let title = sender.title(for: UIControlState())
         if title == "ColorPick"{
-            vColorPicker = ChaosColorPicker(frame: CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.width, height: 250), color: currentColor)
-            vColorPicker?.frame = CGRect(x: 0, y: UIScreen.mainScreen().bounds.height - self.frame.size.height - vColorPicker!.frame.size.height , width: UIScreen.mainScreen().bounds.width, height: vColorPicker!.frame.size.height)
+            vColorPicker = ChaosColorPicker(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 250), color: currentColor)
+            vColorPicker?.frame = CGRect(x: 0, y: UIScreen.main.bounds.height - self.frame.size.height - vColorPicker!.frame.size.height , width: UIScreen.main.bounds.width, height: vColorPicker!.frame.size.height)
             vColorPicker?.delegate = self
             vColorPicker?.layer.zPosition = CGFloat(FLT_MAX)
             self.window?.addSubview(vColorPicker!)
-            sender.setTitle("Completed", forState: UIControlState.Normal)
+            sender.setTitle("Completed", for: UIControlState())
         }
         else{
-             sender.setTitle("ColorPick", forState: UIControlState.Normal)
+             sender.setTitle("ColorPick", for: UIControlState())
             vColorPicker?.delegate = nil
             vColorPicker?.removeFromSuperview()
         }
     }
     
-    func precise(sender:UIButton){
-         let title = sender.titleForState(UIControlState.Normal)!
+    func precise(_ sender:UIButton){
+         let title = sender.title(for: UIControlState())!
         if title == "Precise"{
-            sender.setTitle("Imprecise", forState: UIControlState.Normal)
+            sender.setTitle("Imprecise", for: UIControlState())
             timer?.pauseChaosTimer()
             setOperButtonsVisible(true)
             neatPreciseMode = .precise
@@ -704,7 +704,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
             
         }
         else{
-            sender.setTitle("Precise", forState: UIControlState.Normal)
+            sender.setTitle("Precise", for: UIControlState())
             timer?.resumeChaosTimer()
             setOperButtonsVisible(false)
             neatPreciseMode = .normal
@@ -715,19 +715,19 @@ class ViewNeat: UIView,ColorPickerDelegate {
         }
     }
     
-    func scaleChange(sender:UIStepper){
+    func scaleChange(_ sender:UIStepper){
         scale = Int(sender.value)
         let showScaleValue = neatPreciseMode == .normal ? CGFloat(scale) : (CGFloat(scale) / 10.0)
       //  lblScale.text = "Scale:\(showScaleValue.format("00.00"))"
           lblScale.text = "Scale:\(showScaleValue)"
     }
     
-    func reset(sender:UIButton){
+    func reset(_ sender:UIButton){
         if viewControl != nil{
             viewControl?.frame = originFrame
             if viewControl! is UIButton{
                (viewControl! as! UIButton).titleLabel?.font = originFont
-                (viewControl! as! UIButton).setTitleColor(originForegroundColor, forState: UIControlState.Normal)
+                (viewControl! as! UIButton).setTitleColor(originForegroundColor, for: UIControlState())
             }
             if viewControl! is UILabel{
                  (viewControl! as! UILabel).font = originFont
@@ -749,8 +749,8 @@ class ViewNeat: UIView,ColorPickerDelegate {
         }
     }
     
-    func close(sender:UIButton){
-       NSNotificationCenter.defaultCenter().postNotificationName("handleTraceViewClose", object: nil)
+    func close(_ sender:UIButton){
+       NotificationCenter.default.post(name: Notification.Name(rawValue: "handleTraceViewClose"), object: nil)
     }
     
     func generateCode(){
@@ -764,7 +764,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
         if viewControl!.chaosName != nil{
             viewName = viewControl!.chaosName!
         }
-        print("let \(viewName) = \(viewControl!.dynamicType)()")
+        print("let \(viewName) = \(type(of: viewControl!))()")
         print("\(viewName).frame = CGRect(x: \(viewControl!.frame.origin.x), y: \(viewControl!.frame.origin.y), width: \(viewControl!.frame.size.width), height:\(viewControl!.frame.size.width))")
         if viewControl! is UIButton{
             let btn = viewControl! as! UIButton
@@ -772,7 +772,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
             {
                 print("\(viewName).titleLabel?.font = UIFont.systemFontOfSize(\(fontSize))")
             }
-            if let color = btn.titleColorForState(UIControlState.Normal)
+            if let color = btn.titleColor(for: UIControlState())
             {
                 print("\(viewName).setTitleColor(\(color.format("swift")), forState: UIControlState.Normal)") //颜色需要format
             }
@@ -781,7 +781,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
             let lbl = viewControl! as! UILabel
             print("\(viewName).font = UIFont.systemFontOfSize(\(lbl.font.pointSize.format(".1f")))")
             let color = lbl.textColor
-            print("\(viewName).textColor = \(color.format("swift"))") //颜色需要format
+            print("\(viewName).textColor = \(color?.format("swift"))") //颜色需要format
         }
         else if viewControl! is UITextField{
             let txt = viewControl! as! UITextField
@@ -804,7 +804,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
         viewControl!.tintColor = viewControl!.backgroundColor
         viewControl!.layer.borderWidth = viewControl!.layer.borderWidth
         if let borderColor = viewControl!.layer.borderColor{
-            print("\(viewName).layer.borderColor = \(UIColor(CGColor: borderColor).format("swift")).CGColor")
+            print("\(viewName).layer.borderColor = \(UIColor(cgColor: borderColor).format("swift")).CGColor")
         }
         print("\(viewName).layer.borderWidth = \(viewControl!.layer.borderWidth.format("0.1f"))")
         print("\(viewName).layer.cornerRadius = \(viewControl!.layer.cornerRadius.format("0.1f"))")
@@ -817,7 +817,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
         print("\n")
         print("\n")
         print("Begin generate Objective -C code-------------------------------------:")
-        print("\(viewControl!.dynamicType)*  \(viewName) = [\(viewControl!.dynamicType) new];")
+        print("\(type(of: viewControl!))*  \(viewName) = [\(type(of: viewControl!)) new];")
         print("\(viewName).frame =  CGRectMake(\(viewControl!.frame.origin.x), \(viewControl!.frame.origin.y), \(viewControl!.frame.size.width), \(viewControl!.frame.size.width));")
         if viewControl! is UIButton{
             let btn = viewControl! as! UIButton
@@ -825,7 +825,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
             {
                 print("\(viewName).titleLabel.font = [UIFont systemFontOfSize:\(fontSize)];")
             }
-            if let color = btn.titleColorForState(UIControlState.Normal)
+            if let color = btn.titleColor(for: UIControlState())
             {
                 print("[\(viewName) setTitleColor:\(color.format("objc")) forState:UIControlStateNormal];") //颜色需要format
             }
@@ -834,7 +834,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
             let lbl = viewControl! as! UILabel
             print("\(viewName).font = [UIFont systemFontOfSize:\(lbl.font.pointSize.format(".1f"))];")
             let color = lbl.textColor
-            print("\(viewName).textColor = \(color.format("objc"));") //颜色需要format
+            print("\(viewName).textColor = \(color?.format("objc"));") //颜色需要format
         }
         else if viewControl! is UITextField{
             let txt = viewControl! as! UITextField
@@ -856,7 +856,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
         }
   
         if let borderColor = viewControl!.layer.borderColor{
-            print("\(viewName).layer.borderColor = \(UIColor(CGColor: borderColor).format("objc")).CGColor;")
+            print("\(viewName).layer.borderColor = \(UIColor(cgColor: borderColor).format("objc")).CGColor;")
         }
         print("\(viewName).layer.borderWidth = \(viewControl!.layer.borderWidth.format("0.1f"));")
         print("\(viewName).layer.cornerRadius = \(viewControl!.layer.cornerRadius.format("0.1f"));")
@@ -893,25 +893,25 @@ class ViewNeat: UIView,ColorPickerDelegate {
     }
 }
 
-extension NSTimer{
+extension Timer{
     func pauseChaosTimer(){ //这样可以尽量不导致冲突
-        if !self.valid
+        if !self.isValid
         {
             return
         }
-        self.fireDate = NSDate.distantFuture()
+        self.fireDate = Date.distantFuture
     }
     
     func resumeChaosTimer(){
-        if !self.valid
+        if !self.isValid
         {
             return
         }
-        self.fireDate = NSDate()
+        self.fireDate = Date()
     }
 }
 extension UIColor{
-    func format(type:String)->String{
+    func format(_ type:String)->String{
         var red:CGFloat = 0.0
         var green:CGFloat = 0.0
         var blue:CGFloat = 0.0
@@ -931,22 +931,22 @@ extension UIColor{
             var ax = String(format: "%0X", a) as NSString
             if ax.length == 1
             {
-                ax = "0\(ax)"
+                ax = "0\(ax)" as NSString
             }
             var rx = String(format: "%0X", r) as NSString
             if rx.length == 1
             {
-                rx = "0\(rx)"
+                rx = "0\(rx)" as NSString
             }
             var gx = String(format: "%0X", g) as NSString
             if gx.length == 1
             {
-                gx = "0\(gx)"
+                gx = "0\(gx)" as NSString
             }
             var bx = String(format: "%0X", b) as NSString
             if bx.length == 1
             {   
-                bx = "0\(bx)"
+                bx = "0\(bx)" as NSString
             }
             return "#\(rx)\(gx)\(bx)--R\(r) G\(g) B\(b)"
            // return String(format: "%0X", num)

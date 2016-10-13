@@ -11,22 +11,22 @@ import UIKit
 class ZoomView: UIWindow {
     
     var imgCapture:UIImage?
-    var imgCaptureData:UnsafeMutablePointer<CUnsignedChar> = nil
-    var imgSize = CGSizeZero
+    var imgCaptureData:UnsafeMutablePointer<CUnsignedChar>? = nil
+    var imgSize = CGSize.zero
     var currentColor:UIColor?
     
     weak  var viewToZoom:UIView?
     {
         didSet{
             if let v = viewToZoom{
-            UIGraphicsBeginImageContextWithOptions(UIScreen.mainScreen().bounds.size, true, 0)//这个应该是设定一个区域
-                v.layer.renderInContext(UIGraphicsGetCurrentContext()!)//将整个View渲染到Context里
+            UIGraphicsBeginImageContextWithOptions(UIScreen.main.bounds.size, true, 0)//这个应该是设定一个区域
+                v.layer.render(in: UIGraphicsGetCurrentContext()!)//将整个View渲染到Context里
                 imgCapture = UIGraphicsGetImageFromCurrentImageContext()
-                let imgRef = imgCapture?.CGImage
-                var context: CGContextRef?
+                let imgRef = imgCapture?.cgImage
+                var context: CGContext?
                 let colorSpace:CGColorSpace?
-                let pixelWidth = CGImageGetWidth(imgRef!)
-                let pixelHight = CGImageGetHeight(imgRef!)
+                let pixelWidth = imgRef!.width
+                let pixelHight = imgRef!.height
                 let bitmapBytesPerRow = pixelWidth * 4
                 let bitmapByteCount = bitmapBytesPerRow * pixelHight
                 colorSpace = CGColorSpaceCreateDeviceRGB()
@@ -39,19 +39,19 @@ class ZoomView: UIWindow {
                     print("Memory not allocated!")
                     
                 }
-                context = CGBitmapContextCreate(bitmapData, pixelWidth, pixelHight, 8, bitmapBytesPerRow, colorSpace, 2)
+                context = CGContext(data: bitmapData, width: pixelWidth, height: pixelHight, bitsPerComponent: 8, bytesPerRow: bitmapBytesPerRow, space: colorSpace!, bitmapInfo: 2)
                 if context == nil{
                     //freelocale(bitmapData)
                     print("Context not created!")
                     
                 }
-                let w:CGFloat = CGFloat(CGImageGetWidth(imgRef!))
-                let h = CGFloat(CGImageGetHeight(imgRef!))
+                let w:CGFloat = CGFloat(imgRef!.width)
+                let h = CGFloat(imgRef!.height)
                 imgSize.width = w
                 imgSize.height = h
                 let imgRect = CGRect(x: 0, y: 0, width: w, height: h)
-                CGContextDrawImage(context!, imgRect, imgRef)
-                let data = CGBitmapContextGetData(context!)
+                context!.draw(imgRef!, in: imgRect)
+                let data = context!.data
                 imgCaptureData = UnsafeMutablePointer<CUnsignedChar>(data)
             }
         }
@@ -63,11 +63,11 @@ class ZoomView: UIWindow {
             if let point = pointToZoom{
                 self.center = CGPoint(x: point.x, y: point.y)
                 let offset:Int = Int(4 * ((imgSize.width * round(point.y*2)) + round(point.x*2)))
-                let a =  imgCaptureData[offset].toIntMax()
-                let r = imgCaptureData[offset + 1].toIntMax()
-                let g = imgCaptureData[offset + 2].toIntMax()
-                let b = imgCaptureData[offset + 3].toIntMax()
-                currentColor = UIColor(red:CGFloat(r) / 255.0, green: CGFloat(g) / 255.0, blue: CGFloat(b) / 255.0, alpha: CGFloat(a) / 255.0)
+                let a =  imgCaptureData?[offset].toIntMax()
+                let r = imgCaptureData?[offset + 1].toIntMax()
+                let g = imgCaptureData?[offset + 2].toIntMax()
+                let b = imgCaptureData?[offset + 3].toIntMax()
+                currentColor = UIColor(red:CGFloat(r!) / 255.0, green: CGFloat(g!) / 255.0, blue: CGFloat(b!) / 255.0, alpha: CGFloat(a!) / 255.0)
                 print("point:\(point) the color is :\(currentColor?.format("swift"))")
                 //大功基本告成,我再加个Lable来显示就行
                 
@@ -95,7 +95,7 @@ class ZoomView: UIWindow {
         //因为不能直接访问,所以这里基本采用发通知的方式来设置一些东西
         self.frame = CGRect(x: 0, y: 0, width: 120, height: 120)
         self.layer.borderWidth = 1
-        self.layer.borderColor = UIColor.lightGrayColor().CGColor
+        self.layer.borderColor = UIColor.lightGray.cgColor
         self.layer.cornerRadius = 60
         self.layer.masksToBounds = true
         self.windowLevel = UIWindowLevelAlert
@@ -110,15 +110,15 @@ class ZoomView: UIWindow {
         self.contentLayer = CALayer()
         self.contentLayer?.frame = self.bounds
         self.contentLayer?.delegate = self
-        self.contentLayer?.contentsScale = UIScreen.mainScreen().scale
+        self.contentLayer?.contentsScale = UIScreen.main.scale
         self.layer.addSublayer(self.contentLayer!)
     }
     
-    override func drawLayer(layer: CALayer, inContext ctx: CGContext) { //使用这个方法会导致占用内存,而且不能释放,以后再想办法 ,
-        CGContextTranslateCTM(ctx, self.frame.size.width / 2, self.frame.size.height / 2)
-        CGContextScaleCTM(ctx, 1.5, 1.5)
-        CGContextTranslateCTM(ctx, -1 * self.pointToZoom!.x, -1 * self.pointToZoom!.y)
-        self.viewToZoom?.layer.renderInContext(ctx)
+    override func draw(_ layer: CALayer, in ctx: CGContext) { //使用这个方法会导致占用内存,而且不能释放,以后再想办法 ,
+        ctx.translateBy(x: self.frame.size.width / 2, y: self.frame.size.height / 2)
+        ctx.scaleBy(x: 1.5, y: 1.5)
+        ctx.translateBy(x: -1 * self.pointToZoom!.x, y: -1 * self.pointToZoom!.y)
+        self.viewToZoom?.layer.render(in: ctx)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -134,18 +134,18 @@ class ZoomView: UIWindow {
 
 
 class ZoomViewBrace: UIView {
-    var viewZoom = ZoomView(frame: CGRectZero)
+    var viewZoom = ZoomView(frame: CGRect.zero)
     var lblPixelColor = UILabel()
 //    var img:UIImageView = UIImageView()
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.frame = UIScreen.mainScreen().bounds
+        self.frame = UIScreen.main.bounds
         
-        lblPixelColor.frame = CGRect(x: 0, y: 14, width: UIScreen.mainScreen().bounds.size.width, height: 22)
+        lblPixelColor.frame = CGRect(x: 0, y: 14, width: UIScreen.main.bounds.size.width, height: 22)
         lblPixelColor.backgroundColor = UIColor(red: 0.0, green: 0.898, blue: 0.836, alpha: 0.7)
-        lblPixelColor.textColor = UIColor.blackColor()
+        lblPixelColor.textColor = UIColor.black
         lblPixelColor.numberOfLines = 2
-        lblPixelColor.font = UIFont.systemFontOfSize(10)
+        lblPixelColor.font = UIFont.systemFont(ofSize: 10)
         addSubview(lblPixelColor)
         
 //        img.frame = CGRect(x: UIScreen.mainScreen().bounds.size.width / 2, y: UIScreen.mainScreen().bounds.size.height / 2, width: UIScreen.mainScreen().bounds.size.width / 2, height: UIScreen.mainScreen().bounds.size.height / 2)
@@ -160,7 +160,7 @@ class ZoomViewBrace: UIView {
     }
     
     
-     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         //Issue 5如果是的ViewController里的View,是可以触发这个事件的,现在问题是APP里面外面的View是作为容器,里面是有很多View的,这些View不会触发
         //事件,所以放大镜就失效了
         //这个问题需要解决,如果是放大镜,那么就不能让里面的所有View响应事件,
@@ -168,13 +168,13 @@ class ZoomViewBrace: UIView {
         //所以我现在用这个就解决问题了
         //但是界面上所有东西都失灵了,为了用放大镜,这也是没办法的事件
         if let touch = touches.first{
-            let point = touch.locationInView(self)
+            let point = touch.location(in: self)
             if viewZoom.viewToZoom == nil{
-                viewZoom.viewToZoom = UIApplication.sharedApplication().keyWindow
+                viewZoom.viewToZoom = UIApplication.shared.keyWindow
 //                img.image = viewZoom.imgCapture
             }
             viewZoom.pointToZoom = point
-            viewZoom.hidden = false
+            viewZoom.isHidden = false
             viewZoom.makeKeyAndVisible()
              lblPixelColor.text = "color :\(viewZoom.currentColor!.format("str")) point:\(point) "
             //这个严重要说明,这个方法应该会将这个Window设成Keywindow,然后原来的那个就不是KeyWindow了,所以调用Xcode主视图查看器就看不到东西了,
@@ -182,10 +182,10 @@ class ZoomViewBrace: UIView {
         }
     }
     
-     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
 
         if let touch = touches.first{
-            let point = touch.locationInView(self)
+            let point = touch.location(in: self)
            viewZoom.pointToZoom = point
             
              lblPixelColor.text = "color :\(viewZoom.currentColor!.format("str")) point:\(point) "
@@ -193,14 +193,14 @@ class ZoomViewBrace: UIView {
             //Issue3 用放大镜吃内存问题,已经解决,在这里不再调用makeKeyAndVisible()就行
         }
     }
-      override  func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        viewZoom.hidden = true
-        self.viewZoom.resignKeyWindow()
+      override  func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        viewZoom.isHidden = true
+        self.viewZoom.resignKey()
         
     }
-     override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
-        viewZoom.hidden = true
-        self.viewZoom.resignKeyWindow()
+     override func touchesCancelled(_ touches: Set<UITouch>?, with event: UIEvent?) {
+        viewZoom.isHidden = true
+        self.viewZoom.resignKey()
         
     }
 
@@ -209,20 +209,20 @@ class ZoomViewBrace: UIView {
 
 
 extension UIImage{
-    func getPixelColor(point:CGPoint)->UIColor?{
+    func getPixelColor(_ point:CGPoint)->UIColor?{
         var color:UIColor?
         if point.x > self.size.width || point.y > self.size.height{
             return color
         }
-        let imgRef = self.CGImage
+        let imgRef = self.cgImage
         if imgRef == nil{
             return color
         }
         
-        var context: CGContextRef?
+        var context: CGContext?
         let colorSpace:CGColorSpace?
-        let pixelWidth = CGImageGetWidth(imgRef!)
-        let pixelHight = CGImageGetHeight(imgRef!)
+        let pixelWidth = imgRef!.width
+        let pixelHight = imgRef!.height
         let bitmapBytesPerRow = pixelWidth * 4
         let bitmapByteCount = bitmapBytesPerRow * pixelHight
         colorSpace = CGColorSpaceCreateDeviceRGB()
@@ -235,17 +235,17 @@ extension UIImage{
             print("Memory not allocated!")
             return color
         }
-        context = CGBitmapContextCreate(bitmapData, pixelWidth, pixelHight, 8, bitmapBytesPerRow, colorSpace, 2)
+        context = CGContext(data: bitmapData, width: pixelWidth, height: pixelHight, bitsPerComponent: 8, bytesPerRow: bitmapBytesPerRow, space: colorSpace!, bitmapInfo: 2)
         if context == nil{
             //freelocale(bitmapData)
             print("Context not created!")
             return color
         }
-        let w:CGFloat = CGFloat(CGImageGetWidth(imgRef!))
-        let h = CGFloat(CGImageGetHeight(imgRef!))
+        let w:CGFloat = CGFloat(imgRef!.width)
+        let h = CGFloat(imgRef!.height)
         let imgRect = CGRect(x: 0, y: 0, width: w, height: h)
-        CGContextDrawImage(context!, imgRect, imgRef)
-        let data = CGBitmapContextGetData(context!)
+        context!.draw(imgRef!, in: imgRect)
+        let data = context!.data
         let info = UnsafeMutablePointer<CUnsignedChar>(data)
         let offset:Int = Int(4 * ((w * round(point.x)) + round(point.x)))
         let a =  info[offset]

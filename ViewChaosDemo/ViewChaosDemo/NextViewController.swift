@@ -17,7 +17,7 @@ class NextViewController: UIViewController {
     
     @IBOutlet weak var vMove: UIView!
 
-    @IBAction func Click(sender: UIButton) {
+    @IBAction func Click(_ sender: UIButton) {
          vMove.frame = CGRect(x: vMove.frame.origin.x, y: vMove.frame.origin.y + 5, width: vMove.frame.size.width, height: vMove.frame.size.height)
     }
 

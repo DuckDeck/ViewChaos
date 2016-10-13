@@ -45,9 +45,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		A211FECF1BF02A83004A0A29 /* ViewChaos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewChaos.swift; path = /Users/StanHu/Documents/ViewChaos/ViewChaos/ViewChaos.swift; sourceTree = "<absolute>"; };
-		A211FED01BF02A83004A0A29 /* ViewChaosInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewChaosInfo.swift; path = /Users/StanHu/Documents/ViewChaos/ViewChaos/ViewChaosInfo.swift; sourceTree = "<absolute>"; };
-		A211FED31BF03D0C004A0A29 /* ViewNeat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewNeat.swift; path = /Users/StanHu/Documents/ViewChaos/ViewChaos/ViewNeat.swift; sourceTree = "<absolute>"; };
+		A211FECF1BF02A83004A0A29 /* ViewChaos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewChaos.swift; path = /Users/stanhu/Desktop/Git/ViewChaos/ViewChaos/ViewChaos.swift; sourceTree = "<absolute>"; };
+		A211FED01BF02A83004A0A29 /* ViewChaosInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewChaosInfo.swift; path = /Users/stanhu/Desktop/Git/ViewChaos/ViewChaos/ViewChaosInfo.swift; sourceTree = "<absolute>"; };
+		A211FED31BF03D0C004A0A29 /* ViewNeat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewNeat.swift; path = /Users/stanhu/Desktop/Git/ViewChaos/ViewChaos/ViewNeat.swift; sourceTree = "<absolute>"; };
 		A21EF8BB1C09858200A09063 /* 0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 0.png; sourceTree = "<group>"; };
 		A21EF8CB1C09897700A09063 /* 00.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 00.png; sourceTree = "<group>"; };
 		A2E6F0161BEAFF7D0042FC43 /* ViewChaosDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ViewChaosDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -198,11 +198,12 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0710;
-				LastUpgradeCheck = 0710;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = Qfq;
 				TargetAttributes = {
 					A2E6F0151BEAFF7D0042FC43 = {
 						CreatedOnToolsVersion = 7.1;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -304,8 +305,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -348,8 +351,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -368,6 +373,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -382,6 +388,7 @@
 				OTHER_SWIFT_FLAGS = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = Tyrant.ViewChaosDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -395,6 +402,7 @@
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = Tyrant.ViewChaosDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

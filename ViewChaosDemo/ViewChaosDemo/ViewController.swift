@@ -18,12 +18,12 @@ class ViewController: UIViewController {
         
         super.viewDidLoad()
         self.navigationItem.title = "ViewChaos"
-       view.backgroundColor = UIColor.whiteColor()
+       view.backgroundColor = UIColor.white
         btn = UIButton(frame: CGRect(x: 10, y: 100, width: 100, height: 30))
         btn?.backgroundColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.2)
-        btn?.setTitle("Next", forState: UIControlState.Normal)
+        btn?.setTitle("Next", for: UIControlState())
         btn?.chaosName = "btn"
-        btn?.addTarget(self, action: #selector(ViewController.click(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        btn?.addTarget(self, action: #selector(ViewController.click(_:)), for: UIControlEvents.touchUpInside)
         view.addSubview(btn!)
         
         view1.frame = CGRect(x: 20, y: 180, width: 200, height: 100)
@@ -35,10 +35,10 @@ class ViewController: UIViewController {
 
 
     
-    func click(sender:UIButton)
+    func click(_ sender:UIButton)
     {
-        let story = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
-        let next = story.instantiateViewControllerWithIdentifier("next")
+        let story = UIStoryboard(name: "Main", bundle: Bundle.main)
+        let next = story.instantiateViewController(withIdentifier: "next")
         self.navigationController?.pushViewController(next, animated: true)
     }
     
