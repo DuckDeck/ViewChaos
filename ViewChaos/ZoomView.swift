@@ -52,7 +52,8 @@ class ZoomView: UIWindow {
                 let imgRect = CGRect(x: 0, y: 0, width: w, height: h)
                 context!.draw(imgRef!, in: imgRect)
                 let data = context!.data
-                imgCaptureData = UnsafeMutablePointer<CUnsignedChar>(data)
+                 imgCaptureData = data!.assumingMemoryBound(to: CUnsignedChar.self)
+                //imgCaptureData = UnsafeMutablePointer<CUnsignedChar>(data)
             }
         }
     }
@@ -246,7 +247,9 @@ extension UIImage{
         let imgRect = CGRect(x: 0, y: 0, width: w, height: h)
         context!.draw(imgRef!, in: imgRect)
         let data = context!.data
-        let info = UnsafeMutablePointer<CUnsignedChar>(data)
+       // let info = UnsafeMutablePointer<CUnsignedChar>(data)
+        
+        let info = data!.assumingMemoryBound(to: CUnsignedChar.self)
         let offset:Int = Int(4 * ((w * round(point.x)) + round(point.x)))
         let a =  info[offset]
         let r = info[offset + 1]

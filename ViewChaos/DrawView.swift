@@ -152,16 +152,14 @@ class DrawView: UIView {
         if drawMode == .draw{
             for touch in touches
             {
-                if let  touchPoint:UITouch = touch
-                {
-                    let point = touchPoint.location(in: self)
-                    var trace = Trace()
-                    trace.arrPoints = Array<CGPoint>()
-                    trace.arrPoints.append(point)
-                    trace.color = UIColor.red
-                    trace.thickness = 1
-                    arrTraces?.append(trace)
-                }
+                 let  touchPoint:UITouch = touch
+                let point = touchPoint.location(in: self)
+                var trace = Trace()
+                trace.arrPoints = Array<CGPoint>()
+                trace.arrPoints.append(point)
+                trace.color = UIColor.red
+                trace.thickness = 1
+                arrTraces?.append(trace)
                 self.setNeedsDisplay()
             }
          
@@ -180,24 +178,22 @@ class DrawView: UIView {
         if drawMode == .draw{
             for touch in touches
             {
-                if let  touchPoint:UITouch = touch
-                {
-                    let point = touchPoint.location(in: self)
-                    //怎么找到上一个Point
-                    let previousPoint = touchPoint.previousLocation(in: self)
-                    var i = 0
-                    while i < arrTraces?.count {
-                        var tempTraces = arrTraces![i]
-                        let lastPoint = tempTraces.arrPoints.last
-                        if lastPoint == previousPoint
-                        {
-                            arrTraces![i].arrPoints.append(point)
-                            break
-                        }
-                        i += 1
+                let  touchPoint:UITouch = touch
+                let point = touchPoint.location(in: self)
+                //怎么找到上一个Point
+                let previousPoint = touchPoint.previousLocation(in: self)
+                var i = 0
+                while i < arrTraces?.count {
+                    var tempTraces = arrTraces![i]
+                    let lastPoint = tempTraces.arrPoints.last
+                    if lastPoint == previousPoint
+                    {
+                        arrTraces![i].arrPoints.append(point)
+                        break
                     }
-                    self .setNeedsDisplay()
+                    i += 1
                 }
+                self .setNeedsDisplay()
             }
         }
         else{

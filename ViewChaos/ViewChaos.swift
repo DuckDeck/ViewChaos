@@ -16,7 +16,8 @@ extension UIWindow:UIActionSheetDelegate {
         struct UIWindow_SwizzleToken {
             init() {
                 Chaos.hookMethod(UIWindow.self, originalSelector: #selector(UIWindow.makeKeyAndVisible), swizzleSelector: #selector(UIWindow.vcMakeKeyAndVisible))
-                Chaos.hookMethod(UIView.self, originalSelector: #selector(UIView.willMoveToSuperview(_:)), swizzleSelector: #selector(UIView.vcWillMoveToSuperview(_:)))
+                Chaos.hookMethod(UIView.self, originalSelector: #selector(UIView.willMove(toSuperview:)), swizzleSelector: #selector(UIView.vcWillMoveToSuperview(_:)))
+
                 Chaos.hookMethod(UIView.self, originalSelector: #selector(UIView.willRemoveSubview(_:)), swizzleSelector: #selector(UIView.vcWillRemoveSubview(_:)))
                 Chaos.hookMethod(UIView.self, originalSelector: #selector(UIView.didAddSubview(_:)), swizzleSelector: #selector(UIView.vcDidAddSubview(_:)))
             }
@@ -25,7 +26,7 @@ extension UIWindow:UIActionSheetDelegate {
                 return sharedInstance
             }
         }
-        var u = UIWindow_SwizzleToken.shareWindow
+        _ = UIWindow_SwizzleToken.shareWindow
     
     }
     
@@ -51,17 +52,41 @@ extension UIWindow:UIActionSheetDelegate {
         }
     }
     
-    open override func motionBegan(_ motion: UIEventSubtype, with event: UIEvent?) {
-        
+     open override func motionBegan(_ motion: UIEventSubtype, with event: UIEvent?) {
         switch self.chaosFeature
         {
             case ChaosFeature.none.rawValue:
             //这里放一个菜单
-            let menu = UIActionSheet(title: "使用功能", delegate: self, cancelButtonTitle:"取消", destructiveButtonTitle: nil)
-            menu.addButton(withTitle: "启用放大镜")
-            menu.addButton(withTitle: "显示边框")
-            menu.addButton(withTitle: "显示透明度")
-            menu.show(in: self)
+            let alert = UIAlertController(title: "使用功能", message: nil, preferredStyle: .actionSheet)
+            let action1 = UIAlertAction(title: "启用放大镜", style: .default, handler: { (action) in
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: setZoomViewWork), object: nil)
+                Chaos.toast("放大镜已经启用")
+                let view = ZoomViewBrace(frame: CGRect())
+                view.tag = -1000
+                self.insertSubview(view, at: 100)
+                self.chaosFeature = ChaosFeature.zoom.rawValue
+            })
+            let action2 = UIAlertAction(title: "显示边框", style: .default, handler: { (action) in
+                Chaos.toast("边框显示功能已经启用")
+                self.chaosFeature = ChaosFeature.border.rawValue
+                self.showBorderView(view: self)
+                let view = DrawView(frame: CGRect())
+                view.tag = -7000
+                self.insertSubview(view, at: 600)
+
+            })
+            let action3 = UIAlertAction(title: "显示透明度", style: .default, handler: { (action) in
+                Chaos.toast("透明显示功能已经启用")
+                self.chaosFeature = ChaosFeature.alpha.rawValue
+                self.showAlphaView(view: self)
+
+            })
+            let action4 = UIAlertAction(title: "取消", style: .cancel, handler: nil)
+            alert.addAction(action1)
+            alert.addAction(action2)
+            alert.addAction(action3)
+            alert.addAction(action4)
+            self.rootViewController?.present(alert, animated: true, completion: nil)
         case ChaosFeature.zoom.rawValue:
             UIAlertView.setMessage("关闭放大镜").addFirstButton("取消").addSecondButton("确定").alertWithButtonClick({ (buttonIndex, alert) -> Void in
                 if buttonIndex == 1{
@@ -99,6 +124,7 @@ extension UIWindow:UIActionSheetDelegate {
     
     
     public func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
+        
         if buttonIndex == 1{
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: setZoomViewWork), object: nil)
             Chaos.toast("放大镜已经启用")
@@ -484,7 +510,7 @@ class ViewChaos: UIView {
     override func touchesCancelled(_ touches: Set<UITouch>?, with event: UIEvent?) {
         isTouch = false
         viewBound.removeFromSuperview()
-        Chaos.delay(1.5) { () -> () in
+        let _ = Chaos.delay(1.5) { () -> () in
             UIView.animate(withDuration: 0.5, animations: { () -> Void in
                 self.windowInfo.alpha = 0
                 }, completion: { (finished) -> Void in
@@ -496,7 +522,7 @@ class ViewChaos: UIView {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         isTouch = false
         viewBound.removeFromSuperview()
-        Chaos.delay(1.5) { () -> () in
+       let _ = Chaos.delay(1.5) { () -> () in
             UIView.animate(withDuration: 0.5, animations: { () -> Void in
                 self.windowInfo.alpha = 0
                 }, completion: { (finished) -> Void in
@@ -719,31 +745,47 @@ extension NSObject{
     }
 }
 
-private var UIWindow_Feature = 0
+private var UIWindow_Feature = "UIWindow_Feature"
 
 extension UIWindow{
     @objc var chaosFeature:Int{
             get{
-                return objc_getAssociatedObject(self, &UIWindow_Feature) as! Int
+                let v = objc_getAssociatedObject(self, &UIWindow_Feature)
+                if let str =  v as? String{
+                    if let n = Int(str)
+                    {
+                        return n
+                    }
+                }
+                return 0
+            //    return objc_getAssociatedObject(self, &UIWindow_Feature) as! Int
             }
             set{
-                objc_setAssociatedObject(self, &UIWindow_Feature, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_ASSIGN)
+                objc_setAssociatedObject(self, &UIWindow_Feature, "\(newValue)", objc_AssociationPolicy.OBJC_ASSOCIATION_COPY_NONATOMIC)
                 //Issue1, 要添加不同的类型的属性,就要设置正确的objc_AssociationPolicy,如果是Class,就要用OBJC_ASSOCIATION_RETAIN_NONATOMIC,Int要用OBJC_ASSOCIATION_ASSIGN,String要用OBJC_ASSOCIATION_COPY_NONATOMIC
                 //不然后可能会造成数据丢失或者其他异常
                 //注意objc_AssociationPolicy类型一定要正确,不然可能会从内存里丢失
+                //Issue 12: 在最新的Swift3里面，好像不能保存Int到AssociatedObject里面，反正每次都取不出来。我换成STRING 就OK了
             }
     }
 }
 
 
-private var UIView_Level = 1
+private var UIView_Level = "UIView_Level"
 extension UIView{
     @objc var viewLevel:Int{
         get{
-            return objc_getAssociatedObject(self, &UIView_Level) as! Int
+            let v = objc_getAssociatedObject(self, &UIView_Level)
+            if let str =  v as? String{
+                if let n = Int(str)
+                {
+                    return n
+                }
+            }
+            return 0
         }
         set{
-            objc_setAssociatedObject(self, &UIView_Level, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_ASSIGN)
+            objc_setAssociatedObject(self, &UIView_Level, "\(newValue)", objc_AssociationPolicy.OBJC_ASSOCIATION_COPY_NONATOMIC)
         }
     }
 }
