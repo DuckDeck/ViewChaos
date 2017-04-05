@@ -69,7 +69,7 @@ class ZoomView: UIWindow {
                 let g = imgCaptureData?[offset + 2].toIntMax()
                 let b = imgCaptureData?[offset + 3].toIntMax()
                 currentColor = UIColor(red:CGFloat(r!) / 255.0, green: CGFloat(g!) / 255.0, blue: CGFloat(b!) / 255.0, alpha: CGFloat(a!) / 255.0)
-                print("point:\(point) the color is :\(currentColor?.format("swift"))")
+                print("point:\(point) the color is :\(String(describing: currentColor?.format("swift")))")
                 //大功基本告成,我再加个Lable来显示就行
                 
                 

@@ -10,25 +10,66 @@ import UIKit
 enum ChaosFeature:Int{
     case none=0,zoom,border,alpha
 }
+
+protocol SelfAware:class {
+    static func awake()
+}
+
+class NothingToSeeHere{
+    static func harmlessFunction(){
+        let typeCount = Int(objc_getClassList(nil, 0))
+        let  types = UnsafeMutablePointer<AnyClass?>.allocate(capacity: typeCount)
+        let autoreleaseintTypes = AutoreleasingUnsafeMutablePointer<AnyClass?>(types)
+        objc_getClassList(autoreleaseintTypes, Int32(typeCount))
+        for index in 0 ..< typeCount{
+            (types[index] as? SelfAware.Type)?.awake()
+        }
+        types.deallocate(capacity: typeCount)
+    }
+}
+
+extension UIApplication{
+    private static let runOnce:Void = {
+        NothingToSeeHere.harmlessFunction()
+    }()
+    
+    open override var next: UIResponder?{
+        UIApplication.runOnce
+        return super.next
+    }
+}
+
+class ViewChaosStart: SelfAware {
+    static func awake() {
+          #if DEBUG
+            Chaos.hookMethod(UIWindow.self, originalSelector: #selector(UIWindow.makeKeyAndVisible), swizzleSelector: #selector(UIWindow.vcMakeKeyAndVisible))
+            Chaos.hookMethod(UIView.self, originalSelector: #selector(UIView.willMove(toSuperview:)), swizzleSelector: #selector(UIView.vcWillMoveToSuperview(_:)))
+            
+            Chaos.hookMethod(UIView.self, originalSelector: #selector(UIView.willRemoveSubview(_:)), swizzleSelector: #selector(UIView.vcWillRemoveSubview(_:)))
+            Chaos.hookMethod(UIView.self, originalSelector: #selector(UIView.didAddSubview(_:)), swizzleSelector: #selector(UIView.vcDidAddSubview(_:)))
+         #endif
+    }
+}
+
 extension UIWindow:UIActionSheetDelegate {
     #if DEBUG
-    open override  class func initialize(){
-        struct UIWindow_SwizzleToken {
-            init() {
-                Chaos.hookMethod(UIWindow.self, originalSelector: #selector(UIWindow.makeKeyAndVisible), swizzleSelector: #selector(UIWindow.vcMakeKeyAndVisible))
-                Chaos.hookMethod(UIView.self, originalSelector: #selector(UIView.willMove(toSuperview:)), swizzleSelector: #selector(UIView.vcWillMoveToSuperview(_:)))
-
-                Chaos.hookMethod(UIView.self, originalSelector: #selector(UIView.willRemoveSubview(_:)), swizzleSelector: #selector(UIView.vcWillRemoveSubview(_:)))
-                Chaos.hookMethod(UIView.self, originalSelector: #selector(UIView.didAddSubview(_:)), swizzleSelector: #selector(UIView.vcDidAddSubview(_:)))
-            }
-            static  let sharedInstance = UIWindow_SwizzleToken()
-            static var shareWindow: UIWindow_SwizzleToken {
-                return sharedInstance
-            }
-        }
-        _ = UIWindow_SwizzleToken.shareWindow
+//    open override  class func initialize(){
+//        struct UIWindow_SwizzleToken {
+//            init() {
+//                Chaos.hookMethod(UIWindow.self, originalSelector: #selector(UIWindow.makeKeyAndVisible), swizzleSelector: #selector(UIWindow.vcMakeKeyAndVisible))
+//                Chaos.hookMethod(UIView.self, originalSelector: #selector(UIView.willMove(toSuperview:)), swizzleSelector: #selector(UIView.vcWillMoveToSuperview(_:)))
+//
+//                Chaos.hookMethod(UIView.self, originalSelector: #selector(UIView.willRemoveSubview(_:)), swizzleSelector: #selector(UIView.vcWillRemoveSubview(_:)))
+//                Chaos.hookMethod(UIView.self, originalSelector: #selector(UIView.didAddSubview(_:)), swizzleSelector: #selector(UIView.vcDidAddSubview(_:)))
+//            }
+//            static  let sharedInstance = UIWindow_SwizzleToken()
+//            static var shareWindow: UIWindow_SwizzleToken {
+//                return sharedInstance
+//            }
+//        }
+//        _ = UIWindow_SwizzleToken.shareWindow
     
-    }
+//    }
     
 //    static var onceToken:dispatch_once_t = 0
 //    }
@@ -259,7 +300,7 @@ class ViewChaos: UIView {
         viewBound.layer.masksToBounds = true
         viewBound.layer.borderWidth = 3
         viewBound.layer.borderColor = UIColor.black.cgColor //View的边界黑色,这个应该可以切换
-        viewBound.layer.zPosition = CGFloat(FLT_MAX)
+        viewBound.layer.zPosition = CGFloat(Float.greatestFiniteMagnitude)
         windowInfo = UIWindow(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
         windowInfo.backgroundColor = UIColor(red: 0.0, green: 0.898, blue: 0.836, alpha: 0.7)
         windowInfo.isHidden = true
@@ -276,7 +317,7 @@ class ViewChaos: UIView {
         
         super.init(frame: CGRect.zero)
         self.frame = CGRect(x: UIScreen.main.bounds.width-35, y: 100, width: 30, height: 30)
-        self.layer.zPosition = CGFloat(FLT_MAX)
+        self.layer.zPosition = CGFloat(Float.greatestFiniteMagnitude)
         
         let lbl = UILabel(frame: self.bounds)
         lbl.autoresizingMask = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleHeight]
@@ -355,7 +396,7 @@ class ViewChaos: UIView {
                 else{
                     self.viewNeat = ViewNeat()
                     self.viewNeat?.viewControl = view;
-                    self.viewNeat?.layer.zPosition = CGFloat(FLT_MAX)
+                    self.viewNeat?.layer.zPosition = CGFloat(Float.greatestFiniteMagnitude)
                     self.window?.addSubview(self.viewNeat!);
                 }
         }
@@ -435,7 +476,7 @@ class ViewChaos: UIView {
                 viewToBound.layer.masksToBounds = true
                 viewToBound.layer.borderWidth = 3
                 viewToBound.layer.borderColor = UIColor.red.cgColor
-                viewToBound.layer.zPosition = CGFloat(FLT_MAX)
+                viewToBound.layer.zPosition = CGFloat(Float.greatestFiniteMagnitude)
                 self.window?.addSubview(viewToBound)
                 let p = self.window?.convert((viewTo?.bounds)!, from: viewTo)
                 viewToBound.frame = p!
@@ -457,7 +498,7 @@ class ViewChaos: UIView {
         }
         viewChaosInfo = ViewChaosInfo()
         viewChaosInfo?.bounds = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width - 20, height: viewChaosInfo!.bounds.size.height)
-        viewChaosInfo?.layer.zPosition = CGFloat(FLT_MAX)
+        viewChaosInfo?.layer.zPosition = CGFloat(Float.greatestFiniteMagnitude)
         viewChaosInfo?.viewHit = viewTouch
         self.window?.addSubview(viewChaosInfo!)
         viewChaosInfo?.center = self.window!.center

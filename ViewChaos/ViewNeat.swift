@@ -677,7 +677,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
             vColorPicker = ChaosColorPicker(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 250), color: currentColor)
             vColorPicker?.frame = CGRect(x: 0, y: UIScreen.main.bounds.height - self.frame.size.height - vColorPicker!.frame.size.height , width: UIScreen.main.bounds.width, height: vColorPicker!.frame.size.height)
             vColorPicker?.delegate = self
-            vColorPicker?.layer.zPosition = CGFloat(FLT_MAX)
+            vColorPicker?.layer.zPosition = CGFloat(Float.greatestFiniteMagnitude)
             self.window?.addSubview(vColorPicker!)
             sender.setTitle("Completed", for: UIControlState())
         }
@@ -781,7 +781,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
             let lbl = viewControl! as! UILabel
             print("\(viewName).font = UIFont.systemFontOfSize(\(lbl.font.pointSize.format(".1f")))")
             let color = lbl.textColor
-            print("\(viewName).textColor = \(color?.format("swift"))") //颜色需要format
+            print("\(viewName).textColor = \(String(describing: color?.format("swift")))") //颜色需要format
         }
         else if viewControl! is UITextField{
             let txt = viewControl! as! UITextField
@@ -834,7 +834,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
             let lbl = viewControl! as! UILabel
             print("\(viewName).font = [UIFont systemFontOfSize:\(lbl.font.pointSize.format(".1f"))];")
             let color = lbl.textColor
-            print("\(viewName).textColor = \(color?.format("objc"));") //颜色需要format
+            print("\(viewName).textColor = \(String(describing: color?.format("objc")));") //颜色需要format
         }
         else if viewControl! is UITextField{
             let txt = viewControl! as! UITextField

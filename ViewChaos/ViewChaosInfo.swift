@@ -667,8 +667,8 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             var dict = [String:AnyObject]()
             dict["Key"] = "Frame Change" as AnyObject?
             dict["Time"] = Chaos.currentDate(nil) as AnyObject?
-            dict["OldValue"] = "l:\(oldFrame?.origin.x.format(".1f")) t:\(oldFrame?.origin.y.format(".1f")) w:\(oldFrame?.origin.x.format(".1f")) :h\(oldFrame?.origin.x.format(".1f"))" as AnyObject?
-            dict["NewValue"] = "l:\(newFrame?.origin.x.format(".1f")) t:\(newFrame?.origin.y.format(".1f")) w:\(newFrame?.origin.x.format(".1f")) h:\(newFrame?.origin.x.format(".1f"))" as AnyObject?
+            dict["OldValue"] = "l:\(String(describing: oldFrame?.origin.x.format(".1f"))) t:\(String(describing: oldFrame?.origin.y.format(".1f"))) w:\(String(describing: oldFrame?.origin.x.format(".1f"))) :h\(String(describing: oldFrame?.origin.x.format(".1f")))" as AnyObject?
+            dict["NewValue"] = "l:\(String(describing: newFrame?.origin.x.format(".1f"))) t:\(String(describing: newFrame?.origin.y.format(".1f"))) w:\(String(describing: newFrame?.origin.x.format(".1f"))) h:\(String(describing: newFrame?.origin.x.format(".1f")))" as AnyObject?
             arrTrace?.append(dict)
         }
         else if keyPath == " center"{
@@ -681,8 +681,8 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             var dict = [String:AnyObject]()
             dict["Key"] = "Center Change" as AnyObject?
             dict["Time"] = Chaos.currentDate(nil) as AnyObject?
-            dict["OldValue"] = "l:\(oldCenter?.x.format(".1f")) t:\(oldCenter?.y.format(".1f"))" as AnyObject?
-            dict["NewValue"] = "l:\(newCenter?.x.format(".1f")) t:\(newCenter?.y.format(".1f"))" as AnyObject?
+            dict["OldValue"] = "l:\(String(describing: oldCenter?.x.format(".1f"))) t:\(String(describing: oldCenter?.y.format(".1f")))" as AnyObject?
+            dict["NewValue"] = "l:\(String(describing: newCenter?.x.format(".1f"))) t:\(String(describing: newCenter?.y.format(".1f")))" as AnyObject?
             arrTrace?.append(dict)
         }
         else if keyPath == "superview.frame"{
@@ -695,8 +695,8 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             var dict = [String:AnyObject]()
             dict["Key"] = "Superview Frame Change" as AnyObject?
             dict["Time"] = Chaos.currentDate(nil) as AnyObject?
-            dict["OldValue"] = "l:\(oldFrame?.origin.x.format(".1f")) t:\(oldFrame?.origin.y.format(".1f")) w:\(oldFrame?.origin.x.format(".1f")) :h\(oldFrame?.origin.x.format(".1f"))" as AnyObject?
-            dict["NewValue"] = "l:\(newFrame?.origin.x.format(".1f")) t:\(newFrame?.origin.y.format(".1f")) w:\(newFrame?.origin.x.format(".1f")) h:\(newFrame?.origin.x.format(".1f"))" as AnyObject?
+            dict["OldValue"] = "l:\(String(describing: oldFrame?.origin.x.format(".1f"))) t:\(String(describing: oldFrame?.origin.y.format(".1f"))) w:\(String(describing: oldFrame?.origin.x.format(".1f"))) :h\(String(describing: oldFrame?.origin.x.format(".1f")))" as AnyObject?
+            dict["NewValue"] = "l:\(String(describing: newFrame?.origin.x.format(".1f"))) t:\(String(describing: newFrame?.origin.y.format(".1f"))) w:\(String(describing: newFrame?.origin.x.format(".1f"))) h:\(String(describing: newFrame?.origin.x.format(".1f")))" as AnyObject?
             dict["SuperView"] = "\(type(of: (object! as! UIView).superview))" as AnyObject?
             arrTrace?.append(dict)
         }
@@ -740,8 +740,8 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             var dict = [String:AnyObject]()
             dict["Key"] = "Bounds Change" as AnyObject?
             dict["Time"] = Chaos.currentDate(nil) as AnyObject?
-            dict["OldValue"] = "l:\(oldFrame?.origin.x.format(".1f")) t:\(oldFrame?.origin.y.format(".1f")) w:\(oldFrame?.origin.x.format(".1f")) :h\(oldFrame?.origin.x.format(".1f"))" as AnyObject?
-            dict["NewValue"] = "l:\(newFrame?.origin.x.format(".1f")) t:\(newFrame?.origin.y.format(".1f")) w:\(newFrame?.origin.x.format(".1f")) h:\(newFrame?.origin.x.format(".1f"))" as AnyObject?
+            dict["OldValue"] = "l:\(String(describing: oldFrame?.origin.x.format(".1f"))) t:\(String(describing: oldFrame?.origin.y.format(".1f"))) w:\(String(describing: oldFrame?.origin.x.format(".1f"))) :h\(String(describing: oldFrame?.origin.x.format(".1f")))" as AnyObject?
+            dict["NewValue"] = "l:\(String(describing: newFrame?.origin.x.format(".1f"))) t:\(String(describing: newFrame?.origin.y.format(".1f"))) w:\(String(describing: newFrame?.origin.x.format(".1f"))) h:\(String(describing: newFrame?.origin.x.format(".1f")))" as AnyObject?
             arrTrace?.append(dict)
         }
         else if keyPath == "contentSize"{
@@ -754,8 +754,8 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             var dict = [String:AnyObject]()
             dict["Key"] = "ContentSize Change" as AnyObject?
             dict["Time"] = Chaos.currentDate(nil) as AnyObject?
-            dict["OldValue"] = "w:\(oldSize?.width.format(".1f")) h:\(oldSize?.height.format(".1f"))" as AnyObject?
-            dict["NewValue"] = "w:\(newSize?.width.format(".1f")) h:\(newSize?.height.format(".1f"))" as AnyObject?
+            dict["OldValue"] = "w:\(String(describing: oldSize?.width.format(".1f"))) h:\(String(describing: oldSize?.height.format(".1f")))" as AnyObject?
+            dict["NewValue"] = "w:\(String(describing: newSize?.width.format(".1f"))) h:\(String(describing: newSize?.height.format(".1f")))" as AnyObject?
             arrTrace?.append(dict)
         }
         else if keyPath == "contentOffset"{
@@ -768,8 +768,8 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             var dict = [String:AnyObject]()
             dict["Key"] = "ContentOffset Change" as AnyObject?
             dict["Time"] = Chaos.currentDate(nil) as AnyObject?
-            dict["OldValue"] = "l:\(oldOffset?.x.format(".1f")) t:\(oldOffset?.y.format(".1f"))" as AnyObject?
-            dict["NewValue"] = "l:\(newOffset?.x.format(".1f")) t:\(newOffset?.y.format(".1f"))" as AnyObject?
+            dict["OldValue"] = "l:\(String(describing: oldOffset?.x.format(".1f"))) t:\(String(describing: oldOffset?.y.format(".1f")))" as AnyObject?
+            dict["NewValue"] = "l:\(String(describing: newOffset?.x.format(".1f"))) t:\(String(describing: newOffset?.y.format(".1f")))" as AnyObject?
             arrTrace?.append(dict)
         }
         else if keyPath == "contentInset"{
@@ -781,8 +781,8 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             var dict = [String:AnyObject]()
             dict["Key"] = "ContentInset Change" as AnyObject?
             dict["Time"] = Chaos.currentDate(nil) as AnyObject?
-            dict["OldValue"] = "l:\(oldEdge?.left.format(".1f")) t:\(oldEdge?.top.format(".1f")) r:\(oldEdge?.right.format(".1f")) b:\(oldEdge?.bottom.format(".1f"))" as AnyObject?
-            dict["NewValue"] = "l:\(newEdge?.left.format(".1f")) t:\(newEdge?.top.format(".1f")) r:\(newEdge?.right.format(".1f")) :b\(newEdge?.bottom.format(".1f"))" as AnyObject?
+            dict["OldValue"] = "l:\(String(describing: oldEdge?.left.format(".1f"))) t:\(String(describing: oldEdge?.top.format(".1f"))) r:\(String(describing: oldEdge?.right.format(".1f"))) b:\(String(describing: oldEdge?.bottom.format(".1f")))" as AnyObject?
+            dict["NewValue"] = "l:\(String(describing: newEdge?.left.format(".1f"))) t:\(String(describing: newEdge?.top.format(".1f"))) r:\(String(describing: newEdge?.right.format(".1f"))) :b\(String(describing: newEdge?.bottom.format(".1f")))" as AnyObject?
             arrTrace?.append(dict)
         }
         tbRight .reloadData()
@@ -1184,7 +1184,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
     func heightForTraceCell(_ index:IndexPath,width:CGFloat)->CGFloat{
         var str,strDetail:String
         let dic = arrTrace![(index as NSIndexPath).row]
-        str  = "\(dic["Key"]!)(\(dic["Time"])!)"
+        str  = "\(dic["Key"]!)(\(String(describing: dic["Time"]))!)"
         strDetail = "from \(dic["OldValue"]!) to \(dic["NewValue"]!)"
         if (dic["Key"] as! String) == "superview.frame"{
             strDetail = (dic["Superview"]! as! String) + strDetail
