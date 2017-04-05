@@ -11,7 +11,7 @@ enum ChaosFeature:Int{
     case none=0,zoom,border,alpha
 }
 
-protocol SelfAware:class {
+public protocol SelfAware:class {
     static func awake()
 }
 
@@ -68,7 +68,7 @@ extension UIWindow:UIActionSheetDelegate {
 //            }
 //        }
 //        _ = UIWindow_SwizzleToken.shareWindow
-    
+//    
 //    }
     
 //    static var onceToken:dispatch_once_t = 0
