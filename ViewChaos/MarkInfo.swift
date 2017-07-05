@@ -47,8 +47,8 @@ struct Interval {
 struct FrameObject {
     var frame:CGRect
     var attachedView:UIView
-    var topInjectedObjs:[Line]
-    var leftInjectedObjs:[Line]
+    var topInjectedObjs:[Line]?
+    var leftInjectedObjs:[Line]?
 }
 
 protocol AbstractView {
