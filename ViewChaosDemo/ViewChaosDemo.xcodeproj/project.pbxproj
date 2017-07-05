@@ -42,6 +42,8 @@
 		AE85E0761CE5B90500B242A1 /* chaos_zoom.gif in Resources */ = {isa = PBXBuildFile; fileRef = AE85E0751CE5B90500B242A1 /* chaos_zoom.gif */; };
 		AE85E0781CE5BB1500B242A1 /* shake_pop_menu.gif in Resources */ = {isa = PBXBuildFile; fileRef = AE85E0771CE5BB1500B242A1 /* shake_pop_menu.gif */; };
 		AE9509DA1CA6867500931F14 /* DrawView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE9509D91CA6867500931F14 /* DrawView.swift */; };
+		AEF4BDC61F0C71E900D22223 /* MarkInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEF4BDC51F0C71E900D22223 /* MarkInfo.swift */; };
+		AEF4BDC81F0C780800D22223 /* MarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEF4BDC71F0C780800D22223 /* MarkView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -82,6 +84,8 @@
 		AE85E0751CE5B90500B242A1 /* chaos_zoom.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = chaos_zoom.gif; sourceTree = "<group>"; };
 		AE85E0771CE5BB1500B242A1 /* shake_pop_menu.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = shake_pop_menu.gif; sourceTree = "<group>"; };
 		AE9509D91CA6867500931F14 /* DrawView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawView.swift; sourceTree = "<group>"; };
+		AEF4BDC51F0C71E900D22223 /* MarkInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarkInfo.swift; sourceTree = "<group>"; };
+		AEF4BDC71F0C780800D22223 /* MarkView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarkView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,6 +170,8 @@
 				A211FED01BF02A83004A0A29 /* ViewChaosInfo.swift */,
 				A211FED31BF03D0C004A0A29 /* ViewNeat.swift */,
 				AE9509D91CA6867500931F14 /* DrawView.swift */,
+				AEF4BDC51F0C71E900D22223 /* MarkInfo.swift */,
+				AEF4BDC71F0C780800D22223 /* MarkView.swift */,
 			);
 			name = ViewChaos;
 			path = ../ViewChaos;
@@ -276,7 +282,9 @@
 				A2E6F01A1BEAFF7D0042FC43 /* AppDelegate.swift in Sources */,
 				A211FED41BF03D0C004A0A29 /* ViewNeat.swift in Sources */,
 				A211FED21BF02A83004A0A29 /* ViewChaosInfo.swift in Sources */,
+				AEF4BDC81F0C780800D22223 /* MarkView.swift in Sources */,
 				AE08A9C91C9A72F7005767E1 /* ZoomView.swift in Sources */,
+				AEF4BDC61F0C71E900D22223 /* MarkInfo.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
