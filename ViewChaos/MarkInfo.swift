@@ -7,7 +7,7 @@
 //
 
 import UIKit
-struct Line{
+struct Line:Equatable{
     var point1:ShortPoint
     var point2:ShortPoint
     init(point1:ShortPoint,point2:ShortPoint) {
@@ -25,6 +25,13 @@ struct Line{
             return sqrt(pow(abs(point1.point.x-point2.point.x), 2)+pow(abs(point1.point.y-point2.point.y), 2))
         }
     }
+    
+    public static func ==(lhs: Line, rhs: Line) -> Bool{
+        if lhs.point1 == rhs.point1 && lhs.point2 == rhs.point2 {
+            return true
+        }
+        return false
+    }
 }
 struct ShortPoint :Equatable{
     var point:CGPoint
@@ -32,6 +39,13 @@ struct ShortPoint :Equatable{
     init(x:CGFloat,y:CGFloat,handle:CGFloat) {
         self.point = CGPoint(x: x, y: y)
         self.handle = handle
+    }
+
+    public static func ==(lhs: ShortPoint, rhs: ShortPoint) -> Bool{
+        if lhs.point == rhs.point && lhs.handle == rhs.handle {
+            return true
+        }
+        return false
     }
 }
 
@@ -63,4 +77,8 @@ protocol AbstractView {
 
 class BorderAttachView:UIView,AbstractView{
     
+}
+
+extension Array{
+  //  func remove(obj:Element) ->Element {}
 }

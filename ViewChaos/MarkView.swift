@@ -46,11 +46,11 @@ class MarkView {
         // 查找重复的射入line
         // hLine:Y的差值小于某个值，leftInjectedObjs->取最小一条
         // vLine:X的差值小于某个值，topInjectedObjs->取最小一条
-        let minValue = 5
+        let minValue:CGFloat = 5
         for obj in arrViewFrameObjs{
-            {
+        //    {
                 // 排序：Y值：从大到小
-                obj.leftInjectedObjs.sort({ (a, b) -> Bool in
+                obj.leftInjectedObjs.sorted(by: { (a, b) -> Bool in
                     return a.point1.point.y > b.point1.point.y
                 })
                 var i = 0
@@ -69,10 +69,10 @@ class MarkView {
                         }
                     }
                 }
-            }
-            {
+      //      }
+     //       {
                     
-            }
+       //     }
         }
     }
     
