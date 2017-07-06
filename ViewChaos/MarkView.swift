@@ -48,7 +48,6 @@ class MarkView {
         // vLine:X的差值小于某个值，topInjectedObjs->取最小一条
         let minValue:CGFloat = 5
         for obj in arrViewFrameObjs{
-        //    {
                 // 排序：Y值：从大到小
                 obj.leftInjectedObjs.sorted(by: { (a, b) -> Bool in
                     return a.point1.point.y > b.point1.point.y
@@ -64,15 +63,34 @@ class MarkView {
                         compareLine = obj.leftInjectedObjs[i+1]
                         if abs(baseLine!.point1.point.y - compareLine!.point1.point.y) < minValue{
                             if baseLine!.lineWidth > compareLine!.lineWidth{
-                                // 
+                                arrLines.removeWith(condition: { (l) -> Bool in
+                                    l == baseLine!
+                                })
+                                baseLine = compareLine
                             }
+                            else{
+                                arrLines.removeWith(condition: { (l) -> Bool in
+                                    l == compareLine!
+                                })
+                            }
+                           
+                        }
+                        else{
+                            baseLine = compareLine
                         }
                     }
+                    i = i + 1
                 }
-      //      }
-     //       {
-                    
-       //     }
+   
+            
+             obj.topInjectedObjs.sorted(by: { (a, b) -> Bool in
+                  return a.point1.point.x > b.point1.point.x
+             })
+            
+             var j = 0
+            
+            
+            
         }
     }
     

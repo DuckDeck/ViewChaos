@@ -80,5 +80,18 @@ class BorderAttachView:UIView,AbstractView{
 }
 
 extension Array{
-  //  func remove(obj:Element) ->Element {}
+    mutating func removeWith(condition:((_ obj:Element)->Bool)) {
+        var index = [Int]()
+        var i = 0
+        for item in self{
+            if condition(item){
+                index.append(i)
+            }
+            i = i + 1
+        }
+        for j in 0...i{
+            self.remove(at: j)
+        }
+    }
+    
 }
