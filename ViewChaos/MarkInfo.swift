@@ -7,7 +7,7 @@
 //
 
 import UIKit
-struct Line {
+struct Line{
     var point1:ShortPoint
     var point2:ShortPoint
     init(point1:ShortPoint,point2:ShortPoint) {
@@ -26,7 +26,7 @@ struct Line {
         }
     }
 }
-struct ShortPoint {
+struct ShortPoint :Equatable{
     var point:CGPoint
     var handle:CGFloat
     init(x:CGFloat,y:CGFloat,handle:CGFloat) {
@@ -47,8 +47,14 @@ struct Interval {
 struct FrameObject {
     var frame:CGRect
     var attachedView:UIView
-    var topInjectedObjs:[Line]?
-    var leftInjectedObjs:[Line]?
+    var topInjectedObjs:[Line]
+    var leftInjectedObjs:[Line]
+    init(frame:CGRect,attachedView:UIView) {
+        self.frame = frame
+        self.attachedView = attachedView
+        topInjectedObjs = [Line]()
+        leftInjectedObjs = [Line]()
+    }
 }
 
 protocol AbstractView {
