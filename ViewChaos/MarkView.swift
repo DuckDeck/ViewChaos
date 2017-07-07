@@ -47,11 +47,9 @@ class MarkView {
         // hLine:Y的差值小于某个值，leftInjectedObjs->取最小一条
         // vLine:X的差值小于某个值，topInjectedObjs->取最小一条
         let minValue:CGFloat = 5
-        for obj in arrViewFrameObjs{
+        for var obj in arrViewFrameObjs{
                 // 排序：Y值：从大到小
-                obj.leftInjectedObjs.sorted(by: { (a, b) -> Bool in
-                    return a.point1.point.y > b.point1.point.y
-                })
+                obj.leftInjectedObjs =  obj.leftInjectedObjs.sorted{$0.point1.point.y > $1.point1.point.y}
                 var i = 0
                 var baseLine:Line?
                 var compareLine:Line?
@@ -83,15 +81,40 @@ class MarkView {
                 }
    
             
-             obj.topInjectedObjs.sorted(by: { (a, b) -> Bool in
-                  return a.point1.point.x > b.point1.point.x
-             })
+             obj.topInjectedObjs =  obj.topInjectedObjs.sorted{$0.point1.point.y > $1.point1.point.y}
             
              var j = 0
-            
-            
+            var baseLine2:Line?
+            var compareLine2:Line?
+            if obj.topInjectedObjs.count > 0 {
+                baseLine2 = obj.topInjectedObjs[0]
+            }
+            while j < obj.topInjectedObjs.count {
+                if j+1 < obj.topInjectedObjs.count{
+                    compareLine2 = obj.topInjectedObjs[j+1]
+                    if abs(baseLine2!.point1.point.x - compareLine2!.point1.point.x) < minValue{
+                        if baseLine2!.lineWidth > compareLine2!.lineWidth {
+                            arrLines.removeWith(condition: { (l) -> Bool in
+                                l == baseLine2!
+                            })
+                            baseLine2 = compareLine2
+                        }
+                        else{
+                            arrLines.removeWith(condition: { (l) -> Bool in
+                                l == compareLine2!
+                            })
+                        }
+                    }
+                    else{
+                        baseLine2 = compareLine2
+                    }
+                }
+                j = j + 1
+            }
             
         }
+        
+        
     }
     
     
