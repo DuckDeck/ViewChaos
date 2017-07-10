@@ -21,7 +21,7 @@ class MarkView {
                     continue
                 }
             }
-            var frameObject = FrameObject(frame: sub.frame, attachedView: sub)
+            let frameObject = FrameObject(frame: sub.frame, attachedView: sub)
             arrViewFrameObjs.append(frameObject)
         }
         var arrLines = [Line]()
@@ -83,7 +83,7 @@ class MarkView {
             
              obj.topInjectedObjs =  obj.topInjectedObjs.sorted{$0.point1.point.y > $1.point1.point.y}
             
-             var j = 0
+            var j = 0
             var baseLine2:Line?
             var compareLine2:Line?
             if obj.topInjectedObjs.count > 0 {
@@ -113,8 +113,8 @@ class MarkView {
             }
             
         }
-        
-        
+        let taggintView = TaggingView(frame: view.bounds, lines: arrLines)
+        view.addSubview(taggintView)
     }
     
     
