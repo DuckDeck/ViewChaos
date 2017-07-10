@@ -8,7 +8,32 @@
 
 import UIKit
 class MarkView {
-    static func showingTaggingView(view:UIView){
+    
+    static func removeTaggView(view:UIView){
+        for v in view.subviews{
+            if v is AbstractView{
+                v.removeFromSuperview()
+            }
+        }
+    }
+    
+    static func recursiveRemoveTagView(view:UIView){
+        removeTaggView(view: view)
+        for v in view.subviews{
+            recursiveRemoveTagView(view: v)
+        }
+    }
+    
+    static func recursiveShowTagView(view:UIView){
+        if !(view is AbstractView) {
+            showTaggingView(view: view)
+        }
+        for v in view.subviews{
+            recursiveShowTagView(view: v)
+        }
+    }
+    
+    static func showTaggingView(view:UIView){
         registerBorderTestView(view: view)
         var arrViewFrameObjs = [FrameObject]()
         let subViews = view.subviews
@@ -117,7 +142,6 @@ class MarkView {
         view.addSubview(taggintView)
     }
     
-    
     static func verticalLine(frameObj1:FrameObject,frameObj2:FrameObject)->Line?{
         if frameObj1.frame.origin.y + frameObj1.frame.size.height >= frameObj2.frame.origin.y{
             return nil
@@ -152,7 +176,6 @@ class MarkView {
         let line = Line(point1: ShortPoint(x:obj1RightX,y:pointY,handle:handle), point2: ShortPoint(x:obj2LeftX,y:pointY,handle:handle))
         return line
     }
-    
     
     static func approperiatePoint(interval1:Interval,interval2:Interval, handle:inout CGFloat)->CGFloat{
         let MINHandleValue:CGFloat = 20

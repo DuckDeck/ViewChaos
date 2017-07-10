@@ -8,7 +8,7 @@
 
 import UIKit
 enum ChaosFeature:Int{
-    case none=0,zoom,border,alpha
+    case none=0,zoom,border,alpha,mark
 }
 
 public protocol SelfAware:class {
@@ -120,13 +120,18 @@ extension UIWindow:UIActionSheetDelegate {
                 Chaos.toast("透明显示功能已经启用")
                 self.chaosFeature = ChaosFeature.alpha.rawValue
                 self.showAlphaView(view: self)
-
             })
-            let action4 = UIAlertAction(title: "取消", style: .cancel, handler: nil)
+            let action4 = UIAlertAction(title: "标记界面", style: .default, handler: { (action) in
+                Chaos.toast("标记界面功能已经启用")
+                self.chaosFeature = ChaosFeature.mark.rawValue
+                self.showAlphaView(view: self)
+            })
+            let action5 = UIAlertAction(title: "取消", style: .cancel, handler: nil)
             alert.addAction(action1)
             alert.addAction(action2)
             alert.addAction(action3)
             alert.addAction(action4)
+             alert.addAction(action5)
             self.rootViewController?.present(alert, animated: true, completion: nil)
         case ChaosFeature.zoom.rawValue:
             UIAlertView.setMessage("关闭放大镜").addFirstButton("取消").addSecondButton("确定").alertWithButtonClick({ (buttonIndex, alert) -> Void in
@@ -158,9 +163,16 @@ extension UIWindow:UIActionSheetDelegate {
                 }
             })
             
+        case ChaosFeature.mark.rawValue:
+            UIAlertView.setMessage("关闭标记界面功能").addFirstButton("取消").addSecondButton("确定").alertWithButtonClick({ (buttonIndex, alert) -> Void in
+                if buttonIndex == 1{
+                    Chaos.toast("标记界面功能已关闭")
+                    self.chaosFeature = ChaosFeature.none.rawValue
+                    MarkView.recursiveRemoveTagView(view: self)
+                }
+            })
          default:break
         }
-        
     }
     
     
@@ -182,16 +194,20 @@ extension UIWindow:UIActionSheetDelegate {
             let view = DrawView(frame: CGRect())
             view.tag = -7000
             self.insertSubview(view, at: 600)
-
         }
         if buttonIndex == 3{
             Chaos.toast("透明显示功能已经启用")
             self.chaosFeature = ChaosFeature.alpha.rawValue
             showAlphaView(view: self)
         }
+        if buttonIndex == 3 {
+            Chaos.toast("标记界面功能已经启用")
+            self.chaosFeature = ChaosFeature.mark.rawValue
+            MarkView.recursiveShowTagView(view: self)
+        }
     }
     
-       private  func showBorderView(view:UIView){
+    private  func showBorderView(view:UIView){
         for v in view.subviews{
 //            print("\(v.dynamicType)")
 //            print(v.frame)
