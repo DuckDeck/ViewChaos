@@ -11,11 +11,10 @@ import UIKit
 class ViewController: UIViewController {
     var btn:UIButton?
     
+    var btnShowMark = UIButton(frame: CGRect(x: 10, y: 20, width: 80, height: 30))
+    
     var view1 = UIView()
     override func viewDidLoad() {
- 
-        
-        
         super.viewDidLoad()
         self.navigationItem.title = "ViewChaos"
        view.backgroundColor = UIColor.white
@@ -26,14 +25,23 @@ class ViewController: UIViewController {
         btn?.addTarget(self, action: #selector(ViewController.click(_:)), for: UIControlEvents.touchUpInside)
         view.addSubview(btn!)
         
+      
+        
         view1.frame = CGRect(x: 20, y: 180, width: 200, height: 100)
         view1.backgroundColor = UIColor(red: 0, green: 1, blue: 0, alpha: 0.5)
         view1.alpha = 0.5
         view.addSubview(view1)
-
+        
+        btnShowMark.backgroundColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.6)
+        btnShowMark.setTitle("mark", for: .normal)
+        btnShowMark.addTarget(self, action: #selector(ViewController.showMark(_:)), for: .touchUpInside)
+        view1.addSubview(btnShowMark)
     }
 
 
+    func showMark(_ sender:UIButton){
+        MarkView.showTaggingView(view: view1)
+    }
     
     func click(_ sender:UIButton)
     {

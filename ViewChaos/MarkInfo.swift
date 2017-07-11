@@ -93,7 +93,7 @@ class TaggingView: UIView,AbstractView {
     
      convenience init(frame: CGRect,lines:[Line]) {
         self.init(frame: frame)
-        backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.5)
+        backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.05)
         self.lines = lines
     }
     
@@ -116,7 +116,7 @@ class TaggingView: UIView,AbstractView {
             context.strokePath()
             let str = String.init(format: "%.0f px", line.lineWidth)
             let position = CGRect(x: line.centerPoint.x - 15, y: line.centerPoint.y - 6, width: 30, height: 16)
-             (str as NSString).draw(in: position, withAttributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 7),NSForegroundColorAttributeName:UIColor.red,NSBackgroundColorAttributeName:UIColor(red: 1, green: 1, blue: 1, alpha: 0.5)])
+             (str as NSString).draw(in: position, withAttributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 7),NSForegroundColorAttributeName:UIColor.red,NSBackgroundColorAttributeName:UIColor(red: 1, green: 1, blue: 0, alpha: 0.5)])
         }
     }
     

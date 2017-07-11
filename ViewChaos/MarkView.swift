@@ -25,7 +25,7 @@ class MarkView {
     }
     
     static func recursiveShowTagView(view:UIView){
-        if !(view is AbstractView) {
+        if !(view is AbstractView) && !(view is UIWindow) {
             showTaggingView(view: view)
         }
         for v in view.subviews{

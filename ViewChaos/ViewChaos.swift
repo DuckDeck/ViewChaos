@@ -124,7 +124,7 @@ extension UIWindow:UIActionSheetDelegate {
             let action4 = UIAlertAction(title: "标记界面", style: .default, handler: { (action) in
                 Chaos.toast("标记界面功能已经启用")
                 self.chaosFeature = ChaosFeature.mark.rawValue
-                self.showAlphaView(view: self)
+                MarkView.recursiveShowTagView(view: self)
             })
             let action5 = UIAlertAction(title: "取消", style: .cancel, handler: nil)
             alert.addAction(action1)
@@ -175,38 +175,7 @@ extension UIWindow:UIActionSheetDelegate {
         }
     }
     
-    
-    public func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
-        
-        if buttonIndex == 1{
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: setZoomViewWork), object: nil)
-            Chaos.toast("放大镜已经启用")
-            let view = ZoomViewBrace(frame: CGRect())
-            view.tag = -1000
-            self.insertSubview(view, at: 100)
-            self.chaosFeature = ChaosFeature.zoom.rawValue
-        }
-        if buttonIndex == 2{
-            //显示甩有视图的边框
-            Chaos.toast("边框显示功能已经启用")
-            self.chaosFeature = ChaosFeature.border.rawValue
-           showBorderView(view: self)
-            let view = DrawView(frame: CGRect())
-            view.tag = -7000
-            self.insertSubview(view, at: 600)
-        }
-        if buttonIndex == 3{
-            Chaos.toast("透明显示功能已经启用")
-            self.chaosFeature = ChaosFeature.alpha.rawValue
-            showAlphaView(view: self)
-        }
-        if buttonIndex == 3 {
-            Chaos.toast("标记界面功能已经启用")
-            self.chaosFeature = ChaosFeature.mark.rawValue
-            MarkView.recursiveShowTagView(view: self)
-        }
-    }
-    
+
     private  func showBorderView(view:UIView){
         for v in view.subviews{
 //            print("\(v.dynamicType)")
