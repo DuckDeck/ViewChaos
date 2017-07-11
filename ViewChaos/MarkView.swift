@@ -9,6 +9,8 @@
 import UIKit
 class MarkView {
     
+    static var isHintToast = false
+    
     static func removeTaggView(view:UIView){
         for v in view.subviews{
             if v is AbstractView{
@@ -34,6 +36,10 @@ class MarkView {
     }
     
     static func showTaggingView(view:UIView){
+        if !isHintToast {
+            Chaos.toast("开启标记功能，双击标记的View可以删除标记")
+            isHintToast = true
+        }
         registerBorderTestView(view: view)
         var arrViewFrameObjs = [FrameObject]()
         let subViews = view.subviews
@@ -139,6 +145,11 @@ class MarkView {
             
         }
         let taggintView = TaggingView(frame: view.bounds, lines: arrLines)
+        taggintView.attachedView = view
+        taggintView.isUserInteractionEnabled = true
+        let tap = UITapGestureRecognizer(target: self, action: #selector(MarkView.doubleTap(gesture:)))
+        tap.numberOfTapsRequired = 2
+        taggintView.addGestureRecognizer(tap)
         view.addSubview(taggintView)
     }
     
@@ -231,4 +242,15 @@ class MarkView {
         view.addSubview(topBorderView)
         view.addSubview(bottomBorderView)
     }
+    
+    @objc static func doubleTap(gesture:UITapGestureRecognizer)  {
+        guard let v = gesture.view as? TaggingView else {
+           return
+        }
+        if let att = v.attachedView{
+            MarkView.recursiveRemoveTagView(view: att)
+        }
+        v.removeFromSuperview()
+    }
+    
 }

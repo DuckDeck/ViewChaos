@@ -40,7 +40,7 @@ class ViewController: UIViewController {
 
 
     func showMark(_ sender:UIButton){
-        MarkView.showTaggingView(view: view1)
+        MarkView.showTaggingView(view: view)
     }
     
     func click(_ sender:UIButton)

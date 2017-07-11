@@ -81,6 +81,8 @@ class BorderAttachView:UIView,AbstractView{
 
 class TaggingView: UIView,AbstractView {
     
+    weak var attachedView:UIView?
+    
     var lines:[Line]?
     
     override init(frame: CGRect) {
@@ -115,7 +117,7 @@ class TaggingView: UIView,AbstractView {
             context.addLine(to: line.point2.point)
             context.strokePath()
             let str = String.init(format: "%.0f px", line.lineWidth)
-            let position = CGRect(x: line.centerPoint.x - 15, y: line.centerPoint.y - 6, width: 30, height: 16)
+            let position = CGRect(x: line.centerPoint.x - 15 < 0 ? 0 :  line.centerPoint.x - 15 , y: line.centerPoint.y - 6 < 0 ? 0 : line.centerPoint.y - 6 , width: 30, height: 16)
              (str as NSString).draw(in: position, withAttributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 7),NSForegroundColorAttributeName:UIColor.red,NSBackgroundColorAttributeName:UIColor(red: 1, green: 1, blue: 0, alpha: 0.5)])
         }
     }
