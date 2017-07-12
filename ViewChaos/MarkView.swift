@@ -6,17 +6,25 @@
 //  Copyright © 2017 Qfq. All rights reserved.
 //
 
+
+
 import UIKit
 class MarkView {
-    
-    static var isHintToast = false
-    
     static func removeTaggView(view:UIView){
         for v in view.subviews{
             if v is AbstractView{
                 v.removeFromSuperview()
             }
         }
+    }
+    
+    static func isMarked(view:UIView){
+        for v in view.subviews{
+            if v is AbstractView {
+                return true
+            }
+        }
+        return false
     }
     
     static func recursiveRemoveTagView(view:UIView){
@@ -36,10 +44,6 @@ class MarkView {
     }
     
     static func showTaggingView(view:UIView){
-        if !isHintToast {
-            Chaos.toast("开启标记功能，双击标记的View可以删除标记")
-            isHintToast = true
-        }
         registerBorderTestView(view: view)
         var arrViewFrameObjs = [FrameObject]()
         let subViews = view.subviews
@@ -249,6 +253,7 @@ class MarkView {
         }
         if let att = v.attachedView{
             MarkView.recursiveRemoveTagView(view: att)
+            att.window?.chaosFeature = ChaosFeature.none.rawValue
         }
         v.removeFromSuperview()
     }

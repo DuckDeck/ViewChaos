@@ -122,7 +122,7 @@ extension UIWindow:UIActionSheetDelegate {
                 self.showAlphaView(view: self)
             })
             let action4 = UIAlertAction(title: "标记界面", style: .default, handler: { (action) in
-                Chaos.toast("标记界面功能已经启用")
+                Chaos.toast("标记界面功能已经启用,双击标记界面可取消此功能")
                 self.chaosFeature = ChaosFeature.mark.rawValue
                 MarkView.recursiveShowTagView(view: self)
             })
@@ -271,6 +271,7 @@ extension UIView{
 class ViewChaos: UIView {
     var isTouch:Bool //是否下在触摸中
     var left,top:Float  //右 上
+    weak var previousViewTouch:UIView?
     weak var viewTouch:UIView?
     var viewBound:UIView  //显示抓去View的边界
     var windowInfo:UIWindow
@@ -363,7 +364,6 @@ class ViewChaos: UIView {
     }
     
     func controlTraceShow(_ notif:Notification){
-        
         let view = notif.object as! UIView
         self.window?.addSubview(viewBound)
         let p = self.window?.convert(view.bounds, from: view)
@@ -507,6 +507,18 @@ class ViewChaos: UIView {
         {
             let fm = self.window?.convert(view.bounds, from: view)
             viewTouch = view
+            //todo  need handle the tah show  
+            if previousViewTouch == nil{
+//                if previousViewTouch != view {
+//                    previousViewTouch = view
+//                    MarkView.showTaggingView(view: view)
+//                }
+//                else{
+//                    MarkView.removeTaggView(view: view)
+//                }
+                
+            }
+            
             viewBound.frame = fm!
             self.window?.addSubview(viewBound)
             lblInfo.text = "\(type(of: view)) l:\(view.frame.origin.x.format(".1f"))t:\(view.frame.origin.y.format(".1f"))w:\(view.frame.size.width.format(".1f"))h:\(view.frame.size.height.format(".1f"))"
@@ -518,7 +530,6 @@ class ViewChaos: UIView {
         {
             return
         }
-        
         let touch = touches.first
         let point = touch?.location(in: self.window)
         self.frame = CGRect(x: point!.x - CGFloat(left), y: point!.y - CGFloat(top), width: self.frame.size.width, height: self.frame.size.height)//这是为了精准定位.,要处理当前点到top和left的位移
