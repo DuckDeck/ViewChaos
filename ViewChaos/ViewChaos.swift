@@ -507,18 +507,16 @@ class ViewChaos: UIView {
         {
             let fm = self.window?.convert(view.bounds, from: view)
             viewTouch = view
-            //todo  need handle the tah show  
-            if previousViewTouch == nil{
-//                if previousViewTouch != view {
-//                    previousViewTouch = view
-//                    MarkView.showTaggingView(view: view)
-//                }
-//                else{
-//                    MarkView.removeTaggView(view: view)
-//                }
-                
+            //todo  need handle the tag show
+            //开始按下时不存在换view这和情况
+            //按下只调用一次
+            if !MarkView.isMarked(view: view){
+                //issue12 因为添加了TaggingView后，TaggingView是在最上面的，所以用这个球获取下面的view就没有用了，所以这个功能看起来是无效的，
+                MarkView.showSuperTaggingView(view: view)
             }
-            
+            if previousViewTouch == nil {
+                previousViewTouch = view
+            }
             viewBound.frame = fm!
             self.window?.addSubview(viewBound)
             lblInfo.text = "\(type(of: view)) l:\(view.frame.origin.x.format(".1f"))t:\(view.frame.origin.y.format(".1f"))w:\(view.frame.size.width.format(".1f"))h:\(view.frame.size.height.format(".1f"))"
@@ -537,6 +535,11 @@ class ViewChaos: UIView {
         {
             let fm = self.window?.convert(view.bounds, from: view)
             viewTouch = view
+            if previousViewTouch != view {
+                MarkView.removeSuperTaggingView(view: previousViewTouch!)
+                MarkView.showSuperTaggingView(view: view)
+                previousViewTouch = view
+            }
             viewBound.frame = fm!
             lblInfo.text = "\(type(of: view)) l:\(view.frame.origin.x.format(".1f"))t:\(view.frame.origin.y.format(".1f"))w:\(view.frame.size.width.format(".1f"))h:\(view.frame.size.height.format(".1f"))"
             windowInfo.alpha = 1
@@ -546,6 +549,8 @@ class ViewChaos: UIView {
     
     override func touchesCancelled(_ touches: Set<UITouch>?, with event: UIEvent?) {
         isTouch = false
+        MarkView.removeSuperTaggingView(view: previousViewTouch!)
+        previousViewTouch = nil
         viewBound.removeFromSuperview()
         let _ = Chaos.delay(1.5) { () -> () in
             UIView.animate(withDuration: 0.5, animations: { () -> Void in
@@ -558,6 +563,8 @@ class ViewChaos: UIView {
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         isTouch = false
+        MarkView.removeSuperTaggingView(view: previousViewTouch!)
+        previousViewTouch = nil
         viewBound.removeFromSuperview()
        let _ = Chaos.delay(1.5) { () -> () in
             UIView.animate(withDuration: 0.5, animations: { () -> Void in
@@ -604,10 +611,12 @@ class ViewChaos: UIView {
             pt.y += (view as! UIScrollView).contentOffset.y
         }
         if view.point(inside: point, with: nil) && !view.isHidden && view.alpha > 0.01 && view != viewBound && !view.isDescendant(of: self){//这里的判断很重要.
-            arrViewHit.append(view)
-            for subView in view.subviews{
-                let subPoint = CGPoint(x: point.x - subView.frame.origin.x , y: point.y - subView.frame.origin.y)
-                hitTest(subView, point: subPoint)
+            if !(view is AbstractView) {//issue12 在这里过滤掉AbstractView就行，就可以是获取最上面的AbstractView了
+                arrViewHit.append(view)
+                for subView in view.subviews{
+                    let subPoint = CGPoint(x: point.x - subView.frame.origin.x , y: point.y - subView.frame.origin.y)
+                    hitTest(subView, point: subPoint)
+                }
             }
         }//四个条件,当前触摸的点一定要在要抓的View里面,View不能是隐藏的或者透明的,View不是我们用于定位的边界View,同时也不是我们用于定位的View.也就是说isDescendantOfView
     }

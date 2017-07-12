@@ -18,7 +18,7 @@ class MarkView {
         }
     }
     
-    static func isMarked(view:UIView){
+    static func isMarked(view:UIView)->Bool{
         for v in view.subviews{
             if v is AbstractView {
                 return true
@@ -42,6 +42,30 @@ class MarkView {
             recursiveShowTagView(view: v)
         }
     }
+    
+    static func showSuperTaggingView(view:UIView){
+        guard let superView = view.superview else {
+            return
+        }
+        //issue13 这里不能就这样直接调用这个方法，因为会获取下面在其他view.需要写特定的方法
+        
+        showTaggingView(view: superView)
+        for v in superView.subviews{
+            if v == view{
+                 showTaggingView(view: v)
+            }
+            
+        }
+    }
+    
+    static func removeSuperTaggingView(view:UIView){
+        guard let superView = view.superview else {
+            return
+        }
+       recursiveRemoveTagView(view: superView)
+    }
+
+    
     
     static func showTaggingView(view:UIView){
         registerBorderTestView(view: view)

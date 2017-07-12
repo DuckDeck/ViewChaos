@@ -45,6 +45,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
     var tbLeft:UITableView
     var tbRight:UITableView
     var btnBack:UIButton
+    var swMark:UISwitch
     var btnMinimize:UIButton
     var type:tbType = .general
     var arrSuperView:[ViewChaosObject]?
@@ -69,6 +70,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         tbRight = UITableView()
         btnClose = UIButton()
         btnBack = UIButton()
+        swMark = UISwitch()
         lblCurrentView = UILabel()
         btnHit = UIButton()
         btnControl = UIButton()
@@ -97,7 +99,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         btnBack.setTitleColor(UIColor.orange, for: UIControlState())
         btnBack.addTarget(self, action: #selector(ViewChaosInfo.back(_:)), for: UIControlEvents.touchUpInside)
         addSubview(btnBack)
-        btnHit.frame = CGRect(x: btnBack.frame.origin.x - 45, y: 5, width: 45, height: 22)
+        btnHit.frame = CGRect(x: btnBack.frame.origin.x - 35, y: 5, width: 35, height: 22)
         btnHit.setTitle("Hit", for: UIControlState())
         btnHit.titleLabel?.font = UIFont.systemFont(ofSize: 13)
         btnHit.setTitleColor(UIColor.orange, for: UIControlState())
@@ -109,6 +111,9 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         btnControl.setTitleColor(UIColor.orange, for: UIControlState())
         btnControl.addTarget(self, action: #selector(ViewChaosInfo.control(_:)), for: UIControlEvents.touchUpInside)
         addSubview(btnControl)
+        swMark.frame = CGRect(x: btnControl.frame.origin.x - 50, y: 0, width: 45, height: 22)
+        swMark.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
+        addSubview(swMark)
         
         let lblCurrent = UILabel(frame: CGRect(x: 2, y: 5, width: 100, height: 22))
         lblCurrent.text = "Current View:"
@@ -130,8 +135,6 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
     override convenience init(frame: CGRect) {
         self.init()
     }
-    
-    
     
     override func willMove(toWindow newWindow: UIWindow?) {
         if let _ = newWindow{
@@ -199,9 +202,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                 tbRight.tableFooterView = UIView()
             }
         }
-        
     }
-    
     
     func handleRemoveView(_ notif:Notification){
         let view = notif.object as! UIView
@@ -230,8 +231,6 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             lblCurrentView.text = lblCurrentView.text! + "has removed"
         }
     }
-    
-    
     
     func initView(_ view:UIView,back:Bool){
         stopTrace()
