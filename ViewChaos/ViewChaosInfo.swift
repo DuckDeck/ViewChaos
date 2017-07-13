@@ -46,6 +46,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
     var tbRight:UITableView
     var btnBack:UIButton
     var swMark:UISwitch
+    var lblMark:UILabel
     var btnMinimize:UIButton
     var type:tbType = .general
     var arrSuperView:[ViewChaosObject]?
@@ -71,6 +72,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         btnClose = UIButton()
         btnBack = UIButton()
         swMark = UISwitch()
+        lblMark = UILabel()
         lblCurrentView = UILabel()
         btnHit = UIButton()
         btnControl = UIButton()
@@ -113,7 +115,16 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         addSubview(btnControl)
         swMark.frame = CGRect(x: btnControl.frame.origin.x - 50, y: 0, width: 45, height: 22)
         swMark.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
+        let isMark =  UserDefaults.standard.bool(forKey: "chaosMark")
+        swMark.isOn = isMark
+        swMark.addTarget(self, action: #selector(ViewChaosInfo.switchMark(sender:)), for: .valueChanged)
         addSubview(swMark)
+        
+        lblMark.frame = CGRect(x: swMark.frame.origin.x - 40, y: 5, width: 40, height: 22)
+        lblMark.text = "Mark"
+        lblMark.textColor = UIColor.white
+        lblMark.font = UIFont.systemFont(ofSize: 13)
+        addSubview(lblMark)
         
         let lblCurrent = UILabel(frame: CGRect(x: 2, y: 5, width: 100, height: 22))
         lblCurrent.text = "Current View:"
@@ -134,6 +145,13 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
     
     override convenience init(frame: CGRect) {
         self.init()
+    }
+    
+    func switchMark(sender:UISwitch)  {
+        let def = UserDefaults.standard
+        def.set(sender.isOn, forKey: "chaosMark")
+        def.synchronize()
+        NotificationCenter.default.post(name:Notification.Name(rawValue: "handleShowMark"), object: sender.isOn)
     }
     
     override func willMove(toWindow newWindow: UIWindow?) {

@@ -279,6 +279,7 @@ class ViewChaos: UIView {
     var viewChaosInfo:ViewChaosInfo?
     var viewNeat:ViewNeat?
     var arrViewHit:[UIView]
+    var isMark = false
     init() {
         isTouch = false
         arrViewHit = [UIView]()
@@ -325,6 +326,7 @@ class ViewChaos: UIView {
         NotificationCenter.default.addObserver(self, selector: #selector(ViewChaos.handleTraceAddSubView(_:)), name: NSNotification.Name(rawValue: "handleTraceAddSubView"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(ViewChaos.handleTraceShow(_:)), name: NSNotification.Name(rawValue: "handleTraceShow"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(ViewChaos.controlTraceShow(_:)), name: NSNotification.Name(rawValue: controlTraceView), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ViewChaos.handleShowMark(_:)), name: NSNotification.Name(rawValue: "handleShowMark"), object: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -353,6 +355,10 @@ class ViewChaos: UIView {
                 self.viewBound.removeFromSuperview()
                 self.viewBound.alpha = 1
             }
+    }
+    
+    func handleShowMark(_ notif:Notification)  {
+         isMark = notif.object as! Bool
     }
     
     func handleTraceViewClose(_ notif:Notification){
@@ -510,13 +516,16 @@ class ViewChaos: UIView {
             //todo  need handle the tag show
             //开始按下时不存在换view这和情况
             //按下只调用一次
-            if !MarkView.isMarked(view: view){
-                //issue12 因为添加了TaggingView后，TaggingView是在最上面的，所以用这个球获取下面的view就没有用了，所以这个功能看起来是无效的，
-                MarkView.showSuperTaggingView(view: view)
+            if isMark {
+                if !MarkView.isMarked(view: view){
+                    //issue12 因为添加了TaggingView后，TaggingView是在最上面的，所以用这个球获取下面的view就没有用了，所以这个功能看起来是无效的，
+                    MarkView.showSuperTaggingView(view: view)
+                }
+                if previousViewTouch == nil {
+                    previousViewTouch = view
+                }
             }
-            if previousViewTouch == nil {
-                previousViewTouch = view
-            }
+         
             viewBound.frame = fm!
             self.window?.addSubview(viewBound)
             lblInfo.text = "\(type(of: view)) l:\(view.frame.origin.x.format(".1f"))t:\(view.frame.origin.y.format(".1f"))w:\(view.frame.size.width.format(".1f"))h:\(view.frame.size.height.format(".1f"))"
@@ -535,11 +544,14 @@ class ViewChaos: UIView {
         {
             let fm = self.window?.convert(view.bounds, from: view)
             viewTouch = view
-            if previousViewTouch != view {
-                MarkView.removeSuperTaggingView(view: previousViewTouch!)
-                MarkView.showSuperTaggingView(view: view)
-                previousViewTouch = view
+            if isMark {
+                if previousViewTouch != view {
+                    MarkView.removeSuperTaggingView(view: previousViewTouch!)
+                    MarkView.showSuperTaggingView(view: view)
+                    previousViewTouch = view
+                }
             }
+            
             viewBound.frame = fm!
             lblInfo.text = "\(type(of: view)) l:\(view.frame.origin.x.format(".1f"))t:\(view.frame.origin.y.format(".1f"))w:\(view.frame.size.width.format(".1f"))h:\(view.frame.size.height.format(".1f"))"
             windowInfo.alpha = 1
@@ -549,8 +561,10 @@ class ViewChaos: UIView {
     
     override func touchesCancelled(_ touches: Set<UITouch>?, with event: UIEvent?) {
         isTouch = false
-        MarkView.removeSuperTaggingView(view: previousViewTouch!)
-        previousViewTouch = nil
+        if isMark {
+            MarkView.removeSuperTaggingView(view: previousViewTouch!)
+            previousViewTouch = nil
+        }
         viewBound.removeFromSuperview()
         let _ = Chaos.delay(1.5) { () -> () in
             UIView.animate(withDuration: 0.5, animations: { () -> Void in
@@ -563,8 +577,10 @@ class ViewChaos: UIView {
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         isTouch = false
-        MarkView.removeSuperTaggingView(view: previousViewTouch!)
-        previousViewTouch = nil
+        if isMark {
+            MarkView.removeSuperTaggingView(view: previousViewTouch!)
+            previousViewTouch = nil
+        }
         viewBound.removeFromSuperview()
        let _ = Chaos.delay(1.5) { () -> () in
             UIView.animate(withDuration: 0.5, animations: { () -> Void in
