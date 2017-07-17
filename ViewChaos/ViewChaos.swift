@@ -279,7 +279,7 @@ class ViewChaos: UIView {
     var viewChaosInfo:ViewChaosInfo?
     var viewNeat:ViewNeat?
     var arrViewHit:[UIView]
-    var isMark = false
+    var isMark =  UserDefaults.standard.bool(forKey: "chaosMark")
     init() {
         isTouch = false
         arrViewHit = [UIView]()
