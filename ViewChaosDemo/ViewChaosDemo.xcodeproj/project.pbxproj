@@ -19,8 +19,6 @@
 		A2E6F0391BEB08680042FC43 /* NextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E6F0381BEB08680042FC43 /* NextViewController.swift */; };
 		A2E6F03B1BEB08770042FC43 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2E6F03A1BEB08770042FC43 /* Main.storyboard */; };
 		AE08A9C91C9A72F7005767E1 /* ZoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE08A9C81C9A72F7005767E1 /* ZoomView.swift */; };
-		AE6D052A1F1C7EFE000884EE /* shake.gif in Resources */ = {isa = PBXBuildFile; fileRef = AE6D05291F1C7EFE000884EE /* shake.gif */; };
-		AE6D052C1F1C7F05000884EE /* mark.gif in Resources */ = {isa = PBXBuildFile; fileRef = AE6D052B1F1C7F05000884EE /* mark.gif */; };
 		AE85E05E1CE5B02900B242A1 /* chaos_alpha.gif in Resources */ = {isa = PBXBuildFile; fileRef = AE85E04D1CE5B02900B242A1 /* chaos_alpha.gif */; };
 		AE85E05F1CE5B02900B242A1 /* chaos_ball_move.gif in Resources */ = {isa = PBXBuildFile; fileRef = AE85E04E1CE5B02900B242A1 /* chaos_ball_move.gif */; };
 		AE85E0601CE5B02900B242A1 /* chaos_border_1.gif in Resources */ = {isa = PBXBuildFile; fileRef = AE85E04F1CE5B02900B242A1 /* chaos_border_1.gif */; };
@@ -63,8 +61,6 @@
 		A2E6F0381BEB08680042FC43 /* NextViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NextViewController.swift; sourceTree = "<group>"; };
 		A2E6F03A1BEB08770042FC43 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		AE08A9C81C9A72F7005767E1 /* ZoomView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZoomView.swift; sourceTree = "<group>"; };
-		AE6D05291F1C7EFE000884EE /* shake.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = shake.gif; sourceTree = "<group>"; };
-		AE6D052B1F1C7F05000884EE /* mark.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = mark.gif; sourceTree = "<group>"; };
 		AE85E04D1CE5B02900B242A1 /* chaos_alpha.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = chaos_alpha.gif; sourceTree = "<group>"; };
 		AE85E04E1CE5B02900B242A1 /* chaos_ball_move.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = chaos_ball_move.gif; sourceTree = "<group>"; };
 		AE85E04F1CE5B02900B242A1 /* chaos_border_1.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = chaos_border_1.gif; sourceTree = "<group>"; };
@@ -106,8 +102,6 @@
 		A21EF8BA1C09855C00A09063 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
-				AE6D052B1F1C7F05000884EE /* mark.gif */,
-				AE6D05291F1C7EFE000884EE /* shake.gif */,
 				AE85E0771CE5BB1500B242A1 /* shake_pop_menu.gif */,
 				AE85E0751CE5B90500B242A1 /* chaos_zoom.gif */,
 				AE85E0711CE5B8FC00B242A1 /* chaos_border.gif */,
@@ -249,7 +243,6 @@
 				AE85E06D1CE5B02900B242A1 /* chaos_view_level1.gif in Resources */,
 				AE85E0621CE5B02900B242A1 /* chaos_constrain.gif in Resources */,
 				AE85E0641CE5B02900B242A1 /* chaos_control_border2.gif in Resources */,
-				AE6D052A1F1C7EFE000884EE /* shake.gif in Resources */,
 				AE85E0601CE5B02900B242A1 /* chaos_border_1.gif in Resources */,
 				AE85E06B1CE5B02900B242A1 /* chaos_control_size1.gif in Resources */,
 				AE85E06C1CE5B02900B242A1 /* chaos_trace_view.gif in Resources */,
@@ -260,7 +253,6 @@
 				AE85E06E1CE5B02900B242A1 /* chaos_view_level2.gif in Resources */,
 				AE85E05F1CE5B02900B242A1 /* chaos_ball_move.gif in Resources */,
 				AE85E0741CE5B8FC00B242A1 /* chaos_capture.gif in Resources */,
-				AE6D052C1F1C7F05000884EE /* mark.gif in Resources */,
 				AE85E0761CE5B90500B242A1 /* chaos_zoom.gif in Resources */,
 				AE85E05E1CE5B02900B242A1 /* chaos_alpha.gif in Resources */,
 				AE85E0651CE5B02900B242A1 /* chaos_control_color1.gif in Resources */,
