@@ -121,8 +121,6 @@ class TaggingView: UIView,AbstractView {
              (str as NSString).draw(in: position, withAttributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 7),NSForegroundColorAttributeName:UIColor.red,NSBackgroundColorAttributeName:UIColor(red: 1, green: 1, blue: 0, alpha: 0.5)])
         }
     }
-    
- 
 }
 
 extension Array{

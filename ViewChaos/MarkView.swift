@@ -49,13 +49,8 @@ class MarkView {
         }
         //issue13 这里不能就这样直接调用这个方法，因为会获取下面在其他view.需要写特定的方法
         
-        showTaggingView(view: superView)
-        for v in superView.subviews{
-            if v == view{
-                 showTaggingView(view: v)
-            }
-            
-        }
+      //  showTaggingView(view: superView)
+        showTaggingView(view: superView, withView: view)
     }
     
     static func removeSuperTaggingView(view:UIView){
@@ -66,6 +61,160 @@ class MarkView {
     }
 
     
+   static func showTaggingView(view:UIView,withView:UIView)  {
+        registerBorderTestView(view: view)
+        var arrViewFrameObjs = [FrameObject]()
+        let subViews = view.subviews
+
+        for sub in subViews{
+            if !(sub is AbstractView ){
+                if sub.alpha < 0.01 {
+                    continue
+                }
+                if sub.frame.size.width < 2 {
+                    continue
+                }
+                if isNerbaer(view1: withView, view2: sub) {
+                    continue
+                }
+            }
+            //获取到附近关系是个很关键的点
+            
+            let frameObject = FrameObject(frame: sub.frame, attachedView: sub)
+            arrViewFrameObjs.append(frameObject)
+        }
+        var arrLines = [Line]()
+        for sourceFrameObj in arrViewFrameObjs{
+            for var targetFrameObj in arrViewFrameObjs{
+                if sourceFrameObj.attachedView is AbstractView && targetFrameObj.attachedView is AbstractView {
+                    continue
+                }
+                let hLine = horizontalLine(frameObj1: sourceFrameObj, frameObj2: targetFrameObj)
+                //判断两个view之间有没有中间view, 可以从这根水平线入手
+                if hLine != nil {
+                    arrLines.append(hLine!)
+                    targetFrameObj.leftInjectedObjs.append(hLine!)
+                }
+                let vLine = verticalLine(frameObj1: sourceFrameObj, frameObj2: targetFrameObj)
+                if vLine != nil{
+                    arrLines.append(vLine!)
+                    targetFrameObj.topInjectedObjs.append(vLine!)
+                }
+            }
+        }
+        
+        // 查找重复的射入line
+        // hLine:Y的差值小于某个值，leftInjectedObjs->取最小一条
+        // vLine:X的差值小于某个值，topInjectedObjs->取最小一条
+        let minValue:CGFloat = 5
+        for var obj in arrViewFrameObjs{
+            // 排序：Y值：从大到小
+            obj.leftInjectedObjs =  obj.leftInjectedObjs.sorted{$0.point1.point.y > $1.point1.point.y}
+            var i = 0
+            var baseLine:Line?
+            var compareLine:Line?
+            if obj.leftInjectedObjs.count > 0{
+                baseLine = obj.leftInjectedObjs[i]
+            }
+            while i < obj.leftInjectedObjs.count{
+                if i + 1 < obj.leftInjectedObjs.count{
+                    compareLine = obj.leftInjectedObjs[i+1]
+                    if abs(baseLine!.point1.point.y - compareLine!.point1.point.y) < minValue{
+                        if baseLine!.lineWidth > compareLine!.lineWidth{
+                            arrLines.removeWith(condition: { (l) -> Bool in
+                                l == baseLine!
+                            })
+                            baseLine = compareLine
+                        }
+                        else{
+                            arrLines.removeWith(condition: { (l) -> Bool in
+                                l == compareLine!
+                            })
+                        }
+                        
+                    }
+                    else{
+                        baseLine = compareLine
+                    }
+                }
+                i = i + 1
+            }
+            
+            
+            obj.topInjectedObjs =  obj.topInjectedObjs.sorted{$0.point1.point.y > $1.point1.point.y}
+            
+            var j = 0
+            var baseLine2:Line?
+            var compareLine2:Line?
+            if obj.topInjectedObjs.count > 0 {
+                baseLine2 = obj.topInjectedObjs[0]
+            }
+            while j < obj.topInjectedObjs.count {
+                if j+1 < obj.topInjectedObjs.count{
+                    compareLine2 = obj.topInjectedObjs[j+1]
+                    if abs(baseLine2!.point1.point.x - compareLine2!.point1.point.x) < minValue{
+                        if baseLine2!.lineWidth > compareLine2!.lineWidth {
+                            arrLines.removeWith(condition: { (l) -> Bool in
+                                l == baseLine2!
+                            })
+                            baseLine2 = compareLine2
+                        }
+                        else{
+                            arrLines.removeWith(condition: { (l) -> Bool in
+                                l == compareLine2!
+                            })
+                        }
+                    }
+                    else{
+                        baseLine2 = compareLine2
+                    }
+                }
+                j = j + 1
+            }
+            
+        }
+        let taggintView = TaggingView(frame: view.bounds, lines: arrLines)
+        taggintView.attachedView = view
+        taggintView.isUserInteractionEnabled = true
+        let tap = UITapGestureRecognizer(target: self, action: #selector(MarkView.doubleTap(gesture:)))
+        tap.numberOfTapsRequired = 2
+        taggintView.addGestureRecognizer(tap)
+        view.addSubview(taggintView)
+    }
+    
+    //并不是看最近，而是看中间有没有view档住，这个会比较 麻烦
+    //返回一个值，看两个view之间有没有其他的view,有表示true 没有表示false
+    static func isNerbaer(view1:UIView,view2:UIView) ->Bool{
+        if view1.superview != view2.superview{
+            return true
+        }
+        if view1 == view2{
+            return true
+        }
+        if view1 is AbstractView || view2 is AbstractView{
+            return false
+        }
+        let fm1 = view1.frame
+        let fm2 = view2.frame
+        for sub in view1.superview!.subviews{
+            if sub == view1 || sub == view2{
+                continue
+            }
+            if sub is AbstractView {
+                continue
+            }
+            let midFrame = sub.frame
+            //看fm1和fm2中间有没有midFrame
+            //这里的算法不太好搞
+            if (midFrame.origin.x + midFrame.size.width / 2 >= fm1.origin.x + fm1.size.width / 2 && midFrame.origin.x + midFrame.size.width / 2 <= fm2.origin.x + fm2.size.width / 2) || (midFrame.origin.y + midFrame.size.height / 2 >= fm1.origin.y + fm1.size.width / 2 && midFrame.origin.y + midFrame.size.height / 2 <= fm2.origin.y + fm2.size.height / 2) {
+                return false
+            }
+            else{
+                return true
+            }
+        }
+        return false
+    }
     
     static func showTaggingView(view:UIView){
         registerBorderTestView(view: view)
@@ -89,7 +238,10 @@ class MarkView {
                 if sourceFrameObj.attachedView is AbstractView && targetFrameObj.attachedView is AbstractView {
                     continue
                 }
+               
+                
                 let hLine = horizontalLine(frameObj1: sourceFrameObj, frameObj2: targetFrameObj)
+                 //判断两个view之间有没有中间view, 可以从这根水平线入手
                 if hLine != nil {
                     arrLines.append(hLine!)
                     targetFrameObj.leftInjectedObjs.append(hLine!)

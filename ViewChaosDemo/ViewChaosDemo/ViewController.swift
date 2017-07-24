@@ -14,6 +14,8 @@ class ViewController: UIViewController {
     var btnShowMark = UIButton(frame: CGRect(x: 10, y: 20, width: 80, height: 30))
     
     var view1 = UIView()
+    
+    var view2 = UIView(frame: CGRect(x: 50, y: 400, width: 300, height: 200))
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.title = "ViewChaos"
@@ -36,6 +38,9 @@ class ViewController: UIViewController {
         btnShowMark.setTitle("mark", for: .normal)
         btnShowMark.addTarget(self, action: #selector(ViewController.showMark(_:)), for: .touchUpInside)
         view1.addSubview(btnShowMark)
+        
+        view2.backgroundColor = UIColor(red: 1, green: 0.5, blue: 0, alpha: 0.6)
+        view.addSubview(view2)
     }
 
 
