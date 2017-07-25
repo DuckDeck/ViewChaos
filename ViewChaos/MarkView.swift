@@ -74,7 +74,8 @@ class MarkView {
                 if sub.frame.size.width < 2 {
                     continue
                 }
-                if isNerbaer(view1: withView, view2: sub) {
+                //如果没有相邻，就不要加入
+                if isNotAdjoin(view1: withView, view2: sub) {
                     continue
                 }
             }
@@ -184,11 +185,8 @@ class MarkView {
     
     //并不是看最近，而是看中间有没有view档住，这个会比较 麻烦
     //返回一个值，看两个view之间有没有其他的view,有表示true 没有表示false
-    static func isNerbaer(view1:UIView,view2:UIView) ->Bool{
+    static func isNotAdjoin(view1:UIView,view2:UIView) ->Bool{
         if view1.superview != view2.superview{
-            return true
-        }
-        if view1 == view2{
             return true
         }
         if view1 is AbstractView || view2 is AbstractView{
@@ -196,6 +194,8 @@ class MarkView {
         }
         let fm1 = view1.frame
         let fm2 = view2.frame
+        let rectCenter = CGRect(x: fm1.center.x < fm2.center.x ? fm1.center.x : fm2.center.x, y: fm1.center.y < fm2.center.y ? fm1.center.y : fm2.center.y,
+                                width: abs(fm2.center.x - fm1.center.x), height: abs(fm2.center.y - fm1.center.y))
         for sub in view1.superview!.subviews{
             if sub == view1 || sub == view2{
                 continue
@@ -206,11 +206,11 @@ class MarkView {
             let midFrame = sub.frame
             //看fm1和fm2中间有没有midFrame
             //这里的算法不太好搞
-            if (midFrame.origin.x + midFrame.size.width / 2 >= fm1.origin.x + fm1.size.width / 2 && midFrame.origin.x + midFrame.size.width / 2 <= fm2.origin.x + fm2.size.width / 2) || (midFrame.origin.y + midFrame.size.height / 2 >= fm1.origin.y + fm1.size.width / 2 && midFrame.origin.y + midFrame.size.height / 2 <= fm2.origin.y + fm2.size.height / 2) {
-                return false
+            if (rectCenter.contains(midFrame.leftCenter)||rectCenter.contains(midFrame.rightCenter)||rectCenter.contains(midFrame.topCenter)||rectCenter.contains(midFrame.bottomCenter)) {
+                return true
             }
             else{
-                return true
+                return false
             }
         }
         return false
@@ -433,5 +433,4 @@ class MarkView {
         }
         v.removeFromSuperview()
     }
-    
 }

@@ -79,8 +79,6 @@ extension UIWindow:UIActionSheetDelegate {
 //    Chaos.hookMethod(UIView.self, originalSelector: #selector(UIView.willRemoveSubview(_:)), swizzleSelector: #selector(UIView.vcWillRemoveSubview(_:)))
 //    Chaos.hookMethod(UIView.self, originalSelector: #selector(UIView.didAddSubview(_:)), swizzleSelector: #selector(UIView.vcDidAddSubview(_:)))
 
-    
-    
     public  func vcMakeKeyAndVisible(){
         self.vcMakeKeyAndVisible()//看起来是死循环,其实不是,因为已经交换过了
         if self.frame.size.height > 20  //为什么是20,当时写这个的时侯不明白为什么是20
@@ -123,8 +121,14 @@ extension UIWindow:UIActionSheetDelegate {
             })
             let action4 = UIAlertAction(title: "标记界面", style: .default, handler: { (action) in
                 Chaos.toast("标记界面功能已经启用,双击标记界面可取消此功能")
+                //issue14 .对于用这种方法来显示标签，因为一下子会全部显示所有View的标签，如果 页面很复杂，就会特别乱，那还看个毛标签，所以就完全起不到作用
+                //所以要修正这个问题，就是手指点哪里就显示该view的标签，而不是癸未显示所有，
+                //解决方案，在windowh上加一层view，响应touch事件，然后获取哪保姆个view，在该view上显示标签
                 self.chaosFeature = ChaosFeature.mark.rawValue
-                MarkView.recursiveShowTagView(view: self)
+               // MarkView.recursiveShowTagView(view: self)
+                let v = HolderMarkView(frame: self.bounds)
+                self.insertSubview(v, at: 1000)
+                
             })
             let action5 = UIAlertAction(title: "取消", style: .cancel, handler: nil)
             alert.addAction(action1)
@@ -175,7 +179,8 @@ extension UIWindow:UIActionSheetDelegate {
         }
     }
     
-
+   
+    
     private  func showBorderView(view:UIView){
         for v in view.subviews{
 //            print("\(v.dynamicType)")

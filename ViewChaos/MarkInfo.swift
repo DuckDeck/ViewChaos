@@ -80,11 +80,8 @@ class BorderAttachView:UIView,AbstractView{
 }
 
 class TaggingView: UIView,AbstractView {
-    
     weak var attachedView:UIView?
-    
     var lines:[Line]?
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -137,5 +134,48 @@ extension Array{
             self.remove(at: j)
         }
     }
+}
+
+extension CGRect{
+    var center:CGPoint {
+        return CGPoint(x: self.origin.x + self.size.width / 2, y: self.origin.y + self.size.height / 2)
+    }
+    
+    var leftCenter:CGPoint{
+        return CGPoint(x: self.origin.x, y: self.origin.y + self.size.height / 2)
+    }
+    
+    var rightCenter:CGPoint{
+        return CGPoint(x: self.origin.x + self.size.width, y: self.origin.y + self.size.height / 2)
+    }
+    
+    var topCenter:CGPoint{
+        return CGPoint(x: self.origin.x + self.size.width / 2, y: self.origin.y )
+    }
+    
+    var bottomCenter:CGPoint{
+        return CGPoint(x: self.origin.x + self.size.width / 2, y: self.origin.y + self.size.height)
+    }
+}
+
+class HolderMarkView: UIView,AbstractView {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        print(123)
+        //获取相应的view
+        //Issue 15 因为要最外面 加了view,所以不能获取下面是哪个view，那么要用viewshaos里面的办法才行
+//        let touch = touches.first
+//        if let v = touch?.view{
+//            print(v.frame)
+//        }
+        
+    }
+    
     
 }
