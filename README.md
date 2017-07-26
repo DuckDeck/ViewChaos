@@ -1,7 +1,7 @@
 ViewChaos
 
 
-新的版本快要发布了
+1.2.0已经更新，等待更新文档
 ===
 ViewChaos是一个iOS UI调试工具，可以直接在APP里面看到UI的各种状态，对用代码开以UI十分友好
 ##ViewChaos的安装和使用
