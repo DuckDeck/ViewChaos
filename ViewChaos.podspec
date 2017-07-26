@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "ViewChaos"
-  s.version      = "1.1.0"
+  s.version      = "1.2.0"
   s.summary      = "A iOS view diagnose tool."
 
   # This description is used to generate tags and improve search results.
@@ -80,7 +80,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "https://github.com/DuckDeck/ViewChaos.git", :tag => "1.1.0" }
+  s.source       = { :git => "https://github.com/DuckDeck/ViewChaos.git", :tag => "1.2.0" }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #

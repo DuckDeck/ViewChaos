@@ -644,8 +644,4 @@ class MarkView {
         v.removeFromSuperview()
     }
     
-    static func isLineBelongView(line:Line,view:UIView){
-        let center = view.frame.center
-      
-    }
 }
