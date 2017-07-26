@@ -87,6 +87,40 @@ class MarkView {
        recursiveRemoveTagView(view: superView)
     }
 
+    static func removeSingleTaggingView(view:UIView){
+        guard let supView = view.superview else {
+            return
+        }
+        //这个地方会有一占麻烦
+        var taggintView:TaggingView?
+        for s in supView.subviews{
+            if s is TaggingView{
+                taggintView  = s as? TaggingView
+                break
+            }
+        }
+        if taggintView == nil {
+            return
+        }
+        if taggintView!.lines == nil{
+            return
+        }
+        taggintView!.lines!.removeWith { (l) -> Bool in
+            if let fm = l.belongToFrame{
+               return  fm.equalTo(view.frame)
+            }
+            return false
+        }
+        if taggintView!.lines!.count <= 0{
+            removeTaggView(view: supView)
+        }
+        else{
+            taggintView?.setNeedsDisplay()
+        }
+        
+        view.isMarked = false
+    }
+    
     static func showSingleTaggingView(view:UIView)  {
         if let m = view.isMarked{
             if m{
@@ -132,15 +166,18 @@ class MarkView {
                 if sourceFrameObj.attachedView is AbstractView && targetFrameObj.attachedView is AbstractView {
                     continue
                 }
-                let hLine = horizontalLine(frameObj1: sourceFrameObj, frameObj2: targetFrameObj)
+                var hLine = horizontalLine(frameObj1: sourceFrameObj, frameObj2: targetFrameObj)
                 //判断两个view之间有没有中间view, 可以从这根水平线入手
                 if hLine != nil {
+                    hLine?.belongToFrame = sourceFrameObj.frame.size.width < 1 ? targetFrameObj.frame : sourceFrameObj.frame
                     arrLines.append(hLine!)
                     targetFrameObj.leftInjectedObjs.append(hLine!)
                 }
-                let vLine = verticalLine(frameObj1: sourceFrameObj, frameObj2: targetFrameObj)
+                var vLine = verticalLine(frameObj1: sourceFrameObj, frameObj2: targetFrameObj)
                 if vLine != nil{
+                     vLine?.belongToFrame = sourceFrameObj.frame.size.height < 1 ? targetFrameObj.frame : sourceFrameObj.frame
                     arrLines.append(vLine!)
+                   
                     targetFrameObj.topInjectedObjs.append(vLine!)
                 }
             }
@@ -212,10 +249,23 @@ class MarkView {
             }
         }
         //Issue 15 每占一次全添加一个view ,点太多了会让TaggingView太多占太多的内存
-        //最后一个问题
-        let taggintView = TaggingView(frame: supView.bounds, lines: arrLines)
-        taggintView.attachedView = taggintView
-        supView.addSubview(taggintView)
+        //所以先要找出这个view再重新绘制
+        var taggintView:TaggingView?
+        for s in supView.subviews{
+            if s is TaggingView{
+                taggintView  = s as? TaggingView
+                break
+            }
+        }
+        if taggintView == nil {
+             taggintView = TaggingView(frame: supView.bounds, lines: arrLines)
+            taggintView?.attachedView = taggintView
+        }
+        else{
+            taggintView?.addLines(arrLines)
+        }
+        
+        supView.addSubview(taggintView!)
         view.isMarked = true
     }
 
@@ -592,5 +642,10 @@ class MarkView {
             att.window?.chaosFeature = ChaosFeature.none.rawValue
         }
         v.removeFromSuperview()
+    }
+    
+    static func isLineBelongView(line:Line,view:UIView){
+        let center = view.frame.center
+      
     }
 }

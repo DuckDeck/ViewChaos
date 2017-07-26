@@ -8,6 +8,7 @@
 
 import UIKit
 struct Line:Equatable{
+    var belongToFrame:CGRect?
     var point1:ShortPoint
     var point2:ShortPoint
     init(point1:ShortPoint,point2:ShortPoint) {
@@ -118,6 +119,13 @@ class TaggingView: UIView,AbstractView {
              (str as NSString).draw(in: position, withAttributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 7),NSForegroundColorAttributeName:UIColor.red,NSBackgroundColorAttributeName:UIColor(red: 1, green: 1, blue: 0, alpha: 0.5)])
         }
     }
+    
+    func addLines(_ lines:[Line])  {
+        for l in lines{
+            self.lines?.append(l)
+        }
+        setNeedsDisplay()
+    }
 }
 
 extension Array{
@@ -130,8 +138,8 @@ extension Array{
             }
             i = i + 1
         }
-        for j in 0...i{
-            self.remove(at: j)
+        for i in index.enumerated().reversed(){
+            self.remove(at: i.element)
         }
     }
 }
@@ -162,13 +170,27 @@ class HolderMarkView: UIView,AbstractView {
     var arrViewHit:[UIView] = [UIView]()
     override init(frame: CGRect) {
         super.init(frame: frame)
+        //最后再加上双击删除功能
+        isUserInteractionEnabled = true
+        let tap = UITapGestureRecognizer(target: self, action: #selector(HolderMarkView.doubleTap(gesture:)))
+        tap.numberOfTapsRequired = 2
+        addGestureRecognizer(tap)
+    }
+    
+    
+    func doubleTap(gesture:UITapGestureRecognizer)  {
+       let location =  gesture.location(in: self)
+        if let t = topView(self.window!, point: location)
+        {
+            MarkView.removeSingleTaggingView(view: t)
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print(123)
+
         //获取相应的view
         //Issue 15 因为要最外面 加了view,所以不能获取下面是哪个view，那么要用viewshaos里面的办法才行
 //        let touch = touches.first
@@ -188,9 +210,9 @@ class HolderMarkView: UIView,AbstractView {
         arrViewHit .removeAll()
         hitTest(view, point: point)
         let viewTop = arrViewHit.last
-        for v in arrViewHit{
-            Chaos.Log("\(type(of: v))")
-        }
+//        for v in arrViewHit{
+//            Chaos.Log("\(type(of: v))")
+//        }
         arrViewHit.removeAll()
         return viewTop
     }
