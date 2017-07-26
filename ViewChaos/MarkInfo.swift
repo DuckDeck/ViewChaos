@@ -159,6 +159,7 @@ extension CGRect{
 }
 
 class HolderMarkView: UIView,AbstractView {
+    var arrViewHit:[UIView] = [UIView]()
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -174,8 +175,41 @@ class HolderMarkView: UIView,AbstractView {
 //        if let v = touch?.view{
 //            print(v.frame)
 //        }
-        
+     
+        let touch = touches.first
+        let point = touch?.location(in: self.window)
+        if let t = topView(self.window!, point: point!)
+        {
+            MarkView.showSingleTaggingView(view: t)
+        }
     }
     
+    func topView(_ view:UIView,point:CGPoint)->UIView?{
+        arrViewHit .removeAll()
+        hitTest(view, point: point)
+        let viewTop = arrViewHit.last
+        for v in arrViewHit{
+            Chaos.Log("\(type(of: v))")
+        }
+        arrViewHit.removeAll()
+        return viewTop
+    }
+    
+    func hitTest(_ view:UIView, point:CGPoint){
+        var pt = point
+        if view is UIScrollView{
+            pt.x += (view as! UIScrollView).contentOffset.x
+            pt.y += (view as! UIScrollView).contentOffset.y
+        }
+        if view.point(inside: point, with: nil) && !view.isHidden && view.alpha > 0.01  && !view.isDescendant(of: self) && !(view is ViewChaos){//这里的判断很重要.
+            if !(view is AbstractView) {//issue12 在这里过滤掉AbstractView就行，就可以是获取最上面的AbstractView了
+                arrViewHit.append(view)
+                for subView in view.subviews{
+                    let subPoint = CGPoint(x: point.x - subView.frame.origin.x , y: point.y - subView.frame.origin.y)
+                    hitTest(subView, point: subPoint)
+                }
+            }
+        }
+    }
     
 }

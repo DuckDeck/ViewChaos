@@ -9,6 +9,20 @@
 
 
 import UIKit
+
+
+private var UIView_IsMarked = 0
+extension UIView{
+      var isMarked:Bool?{
+        get{
+            return objc_getAssociatedObject(self, &UIView_IsMarked) as? Bool
+        }
+        set{
+            objc_setAssociatedObject(self, &UIView_IsMarked, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_ASSIGN)
+        }
+    }
+}
+
 class MarkView {
     static func removeTaggView(view:UIView){
         for v in view.subviews{
@@ -29,6 +43,7 @@ class MarkView {
     
     static func recursiveRemoveTagView(view:UIView){
         removeTaggView(view: view)
+        view.isMarked = false
         for v in view.subviews{
             recursiveRemoveTagView(view: v)
         }
@@ -43,12 +58,23 @@ class MarkView {
         }
     }
     
+    static func isAreadyShowTag(view:UIView)->Bool{
+        for sub in view.subviews{
+            if sub is AbstractView{
+                return true
+            }
+        }
+        return false
+    }
+    
     static func showSuperTaggingView(view:UIView){
         guard let superView = view.superview else {
             return
         }
         //issue13 这里不能就这样直接调用这个方法，因为会获取下面在其他view.需要写特定的方法
-        
+        if isAreadyShowTag(view: superView){
+            return
+        }
       //  showTaggingView(view: superView)
         showTaggingView(view: superView, withView: view)
     }
@@ -57,7 +83,140 @@ class MarkView {
         guard let superView = view.superview else {
             return
         }
+        superView.isMarked = false
        recursiveRemoveTagView(view: superView)
+    }
+
+    static func showSingleTaggingView(view:UIView)  {
+        if let m = view.isMarked{
+            if m{
+                return  //这样内存占用少了很多
+            }
+        }
+        guard let supView = view.superview else {
+            return
+        }
+        //这样会添加很多view
+        
+        var isHaveRegistered = false
+        for s in supView.subviews{
+            if s is AbstractView{
+                isHaveRegistered = true
+                break
+            }
+        }
+        if !isHaveRegistered{
+            registerBorderTestView(view: supView)
+        }
+        
+        //要断送这个view有没有票标记过
+        var arrViewFrameObjs = [FrameObject]()
+        for sub in supView.subviews{
+            if !(sub is AbstractView ){
+                if sub.alpha < 0.01 {
+                    continue
+                }
+                if sub.frame.size.width < 2 {
+                    continue
+                }
+                if sub != view {
+                    continue
+                }
+            }
+            let frameObject = FrameObject(frame: sub.frame, attachedView: sub)
+            arrViewFrameObjs.append(frameObject)
+        }
+        var arrLines = [Line]()
+        for sourceFrameObj in arrViewFrameObjs{
+            for var targetFrameObj in arrViewFrameObjs{
+                if sourceFrameObj.attachedView is AbstractView && targetFrameObj.attachedView is AbstractView {
+                    continue
+                }
+                let hLine = horizontalLine(frameObj1: sourceFrameObj, frameObj2: targetFrameObj)
+                //判断两个view之间有没有中间view, 可以从这根水平线入手
+                if hLine != nil {
+                    arrLines.append(hLine!)
+                    targetFrameObj.leftInjectedObjs.append(hLine!)
+                }
+                let vLine = verticalLine(frameObj1: sourceFrameObj, frameObj2: targetFrameObj)
+                if vLine != nil{
+                    arrLines.append(vLine!)
+                    targetFrameObj.topInjectedObjs.append(vLine!)
+                }
+            }
+        }
+        let minValue:CGFloat = 5
+        for var obj in arrViewFrameObjs{
+            // 排序：Y值：从大到小
+            obj.leftInjectedObjs =  obj.leftInjectedObjs.sorted{$0.point1.point.y > $1.point1.point.y}
+            var i = 0
+            var baseLine:Line?
+            var compareLine:Line?
+            if obj.leftInjectedObjs.count > 0{
+                baseLine = obj.leftInjectedObjs[i]
+            }
+            while i < obj.leftInjectedObjs.count{
+                if i + 1 < obj.leftInjectedObjs.count{
+                    compareLine = obj.leftInjectedObjs[i+1]
+                    if abs(baseLine!.point1.point.y - compareLine!.point1.point.y) < minValue{
+                        if baseLine!.lineWidth > compareLine!.lineWidth{
+                            arrLines.removeWith(condition: { (l) -> Bool in
+                                l == baseLine!
+                            })
+                            baseLine = compareLine
+                        }
+                        else{
+                            arrLines.removeWith(condition: { (l) -> Bool in
+                                l == compareLine!
+                            })
+                        }
+                        
+                    }
+                    else{
+                        baseLine = compareLine
+                    }
+                }
+                i = i + 1
+            }
+            
+            
+            obj.topInjectedObjs =  obj.topInjectedObjs.sorted{$0.point1.point.y > $1.point1.point.y}
+            
+            var j = 0
+            var baseLine2:Line?
+            var compareLine2:Line?
+            if obj.topInjectedObjs.count > 0 {
+                baseLine2 = obj.topInjectedObjs[0]
+            }
+            while j < obj.topInjectedObjs.count {
+                if j+1 < obj.topInjectedObjs.count{
+                    compareLine2 = obj.topInjectedObjs[j+1]
+                    if abs(baseLine2!.point1.point.x - compareLine2!.point1.point.x) < minValue{
+                        if baseLine2!.lineWidth > compareLine2!.lineWidth {
+                            arrLines.removeWith(condition: { (l) -> Bool in
+                                l == baseLine2!
+                            })
+                            baseLine2 = compareLine2
+                        }
+                        else{
+                            arrLines.removeWith(condition: { (l) -> Bool in
+                                l == compareLine2!
+                            })
+                        }
+                    }
+                    else{
+                        baseLine2 = compareLine2
+                    }
+                }
+                j = j + 1
+            }
+        }
+        //Issue 15 每占一次全添加一个view ,点太多了会让TaggingView太多占太多的内存
+        //最后一个问题
+        let taggintView = TaggingView(frame: supView.bounds, lines: arrLines)
+        taggintView.attachedView = taggintView
+        supView.addSubview(taggintView)
+        view.isMarked = true
     }
 
     
@@ -176,10 +335,11 @@ class MarkView {
         }
         let taggintView = TaggingView(frame: view.bounds, lines: arrLines)
         taggintView.attachedView = view
-        taggintView.isUserInteractionEnabled = true
-        let tap = UITapGestureRecognizer(target: self, action: #selector(MarkView.doubleTap(gesture:)))
-        tap.numberOfTapsRequired = 2
-        taggintView.addGestureRecognizer(tap)
+//        taggintView.isUserInteractionEnabled = true
+//        let tap = UITapGestureRecognizer(target: self, action: #selector(MarkView.doubleTap(gesture:)))
+//        tap.numberOfTapsRequired = 2
+//        taggintView.addGestureRecognizer(tap)
+    //暂时不要这个功能
         view.addSubview(taggintView)
     }
     
@@ -326,10 +486,10 @@ class MarkView {
         }
         let taggintView = TaggingView(frame: view.bounds, lines: arrLines)
         taggintView.attachedView = view
-        taggintView.isUserInteractionEnabled = true
-        let tap = UITapGestureRecognizer(target: self, action: #selector(MarkView.doubleTap(gesture:)))
-        tap.numberOfTapsRequired = 2
-        taggintView.addGestureRecognizer(tap)
+//        taggintView.isUserInteractionEnabled = true
+//        let tap = UITapGestureRecognizer(target: self, action: #selector(MarkView.doubleTap(gesture:)))
+//        tap.numberOfTapsRequired = 2
+//        taggintView.addGestureRecognizer(tap)
         view.addSubview(taggintView)
     }
     

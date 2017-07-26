@@ -127,6 +127,7 @@ extension UIWindow:UIActionSheetDelegate {
                 self.chaosFeature = ChaosFeature.mark.rawValue
                // MarkView.recursiveShowTagView(view: self)
                 let v = HolderMarkView(frame: self.bounds)
+                v.tag = -2000
                 self.insertSubview(v, at: 1000)
                 
             })
@@ -172,6 +173,11 @@ extension UIWindow:UIActionSheetDelegate {
                 if buttonIndex == 1{
                     Chaos.toast("标记界面功能已关闭")
                     self.chaosFeature = ChaosFeature.none.rawValue
+                    for view in self.subviews{
+                        if view.tag == -2000{
+                            view.removeFromSuperview()
+                        }
+                    }
                     MarkView.recursiveRemoveTagView(view: self)
                 }
             })
@@ -647,7 +653,7 @@ class ViewChaos: UIView {
         hitTest(view, point: point)
         let viewTop = arrViewHit.last
 //        for v in arrViewHit{
-//            Chaos.Log("\(v.dynamicType)")
+//             Chaos.Log("\(type(of: v))")
 //        }
         arrViewHit.removeAll()
         return viewTop
