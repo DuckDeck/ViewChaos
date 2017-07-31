@@ -14,7 +14,7 @@ ViewChaos
 + 可以实时修改`View`的`Frame, Font,border,tintColor,background`,等属性，这样就不用一次又一次地调试代码后编译启动APP查看，可 以一次性设置后再在代码里修改。
 + 可以生成代码，这个用处不大，但是也是可以参考的。
 
-##ViewChaos的安装和使用
+## ViewChaos的安装和使用
 `ViewChaos`的安装极为方便，有两种安装方式，如果你不想用`Cocoapods`，只想拖文件，按照以下步骤就行：
 + 第一步：将这七个文件`(ViewChaos.swift,ViewChaosInfo.swift,ViewNeat.swift，ZoomView.swift,DrawView.swift,MarkInfo.swift,MarkView.swift)`复制到你的项目里，或者直接复制`ViewChaos`这个文件夹到你的项目。
 + 第二步：选择 `target-> 你的项目 -> Build Setting-> 搜索 'swift compile'-> 选择 'Other Swift Flags' -> 选择 DeBug option -> 添加 -DDEBUG command (这个能让此工具仅工Debug模式有效)`
