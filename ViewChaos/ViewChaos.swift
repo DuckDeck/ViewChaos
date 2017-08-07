@@ -44,7 +44,6 @@ class ViewChaosStart: SelfAware {
           #if DEBUG
             Chaos.hookMethod(UIWindow.self, originalSelector: #selector(UIWindow.makeKeyAndVisible), swizzleSelector: #selector(UIWindow.vcMakeKeyAndVisible))
             Chaos.hookMethod(UIView.self, originalSelector: #selector(UIView.willMove(toSuperview:)), swizzleSelector: #selector(UIView.vcWillMoveToSuperview(_:)))
-            
             Chaos.hookMethod(UIView.self, originalSelector: #selector(UIView.willRemoveSubview(_:)), swizzleSelector: #selector(UIView.vcWillRemoveSubview(_:)))
             Chaos.hookMethod(UIView.self, originalSelector: #selector(UIView.didAddSubview(_:)), swizzleSelector: #selector(UIView.vcDidAddSubview(_:)))
          #endif

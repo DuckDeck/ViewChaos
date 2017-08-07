@@ -59,7 +59,7 @@ struct Interval {
     }
 }
 
-struct FrameObject {
+class FrameObject {
     var frame:CGRect
     var attachedView:UIView
     var topInjectedObjs:[Line]

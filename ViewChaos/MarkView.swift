@@ -162,7 +162,7 @@ class MarkView {
         }
         var arrLines = [Line]()
         for sourceFrameObj in arrViewFrameObjs{
-            for var targetFrameObj in arrViewFrameObjs{
+            for  targetFrameObj in arrViewFrameObjs{
                 if sourceFrameObj.attachedView is AbstractView && targetFrameObj.attachedView is AbstractView {
                     continue
                 }
@@ -183,7 +183,7 @@ class MarkView {
             }
         }
         let minValue:CGFloat = 5
-        for var obj in arrViewFrameObjs{
+        for  obj in arrViewFrameObjs{
             // 排序：Y值：从大到小
             obj.leftInjectedObjs =  obj.leftInjectedObjs.sorted{$0.point1.point.y > $1.point1.point.y}
             var i = 0
@@ -248,7 +248,7 @@ class MarkView {
                 j = j + 1
             }
         }
-        //Issue 15 每占一次全添加一个view ,点太多了会让TaggingView太多占太多的内存
+        //Issue 16 每占一次全添加一个view ,点太多了会让TaggingView太多占太多的内存
         //所以先要找出这个view再重新绘制
         var taggintView:TaggingView?
         for s in supView.subviews{
@@ -294,8 +294,11 @@ class MarkView {
             arrViewFrameObjs.append(frameObject)
         }
         var arrLines = [Line]()
+      //Issue 17 如果用var修饰里面变量的话就是会重新生成一个可变的新副本，改变这个副本不会影响到原来的  那么只能用i来循环了
+      //我看到FrameObject是一个struct,那么我知道可能是什么了，可能是因为FrameObject是一个结构体的原因，
+      //改成class刚好就没这个问题了
         for sourceFrameObj in arrViewFrameObjs{
-            for var targetFrameObj in arrViewFrameObjs{
+            for  targetFrameObj in arrViewFrameObjs{
                 if sourceFrameObj.attachedView is AbstractView && targetFrameObj.attachedView is AbstractView {
                     continue
                 }
@@ -312,12 +315,14 @@ class MarkView {
                 }
             }
         }
-        
+    
+    
         // 查找重复的射入line
         // hLine:Y的差值小于某个值，leftInjectedObjs->取最小一条
         // vLine:X的差值小于某个值，topInjectedObjs->取最小一条
+    //好像不存在这种情况，需要删除多余我的线
         let minValue:CGFloat = 5
-        for var obj in arrViewFrameObjs{
+        for  obj in arrViewFrameObjs{
             // 排序：Y值：从大到小
             obj.leftInjectedObjs =  obj.leftInjectedObjs.sorted{$0.point1.point.y > $1.point1.point.y}
             var i = 0
@@ -444,7 +449,7 @@ class MarkView {
         }
         var arrLines = [Line]()
         for sourceFrameObj in arrViewFrameObjs{
-            for var targetFrameObj in arrViewFrameObjs{
+            for  targetFrameObj in arrViewFrameObjs{
                 if sourceFrameObj.attachedView is AbstractView && targetFrameObj.attachedView is AbstractView {
                     continue
                 }
@@ -468,7 +473,7 @@ class MarkView {
         // hLine:Y的差值小于某个值，leftInjectedObjs->取最小一条
         // vLine:X的差值小于某个值，topInjectedObjs->取最小一条
         let minValue:CGFloat = 5
-        for var obj in arrViewFrameObjs{
+        for  obj in arrViewFrameObjs{
                 // 排序：Y值：从大到小
                 obj.leftInjectedObjs =  obj.leftInjectedObjs.sorted{$0.point1.point.y > $1.point1.point.y}
                 var i = 0
@@ -624,11 +629,11 @@ class MarkView {
     static func registerBorderTestView(view:UIView){
         let minWh = 1.0 / UIScreen.main.scale
         let leftBorderView  = BorderAttachView(frame: CGRect(x: 0, y: 0, width: minWh, height: view.bounds.size.height))
-        let rightBoaderView = BorderAttachView(frame: CGRect(x: view.bounds.size.width - minWh, y: 0, width: minWh, height: view.bounds.size.height))
+        let rightBorderView = BorderAttachView(frame: CGRect(x: view.bounds.size.width - minWh, y: 0, width: minWh, height: view.bounds.size.height))
         let topBorderView = BorderAttachView(frame: CGRect(x: 0, y: 0, width: view.bounds.size.width, height: minWh))
         let bottomBorderView = BorderAttachView(frame: CGRect(x: 0, y: view.bounds.size.height - minWh, width: view.bounds.size.height, height: minWh))
         view.addSubview(leftBorderView)
-        view.addSubview(rightBoaderView)
+        view.addSubview(rightBorderView)
         view.addSubview(topBorderView)
         view.addSubview(bottomBorderView)
     }
