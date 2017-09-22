@@ -259,7 +259,7 @@ class MarkView {
         }
         if taggintView == nil {
              taggintView = TaggingView(frame: supView.bounds, lines: arrLines)
-            taggintView?.attachedView = taggintView
+            taggintView?.attachedView = supView
         }
         else{
             taggintView?.addLines(arrLines)
@@ -320,7 +320,7 @@ class MarkView {
         // 查找重复的射入line
         // hLine:Y的差值小于某个值，leftInjectedObjs->取最小一条
         // vLine:X的差值小于某个值，topInjectedObjs->取最小一条
-    //好像不存在这种情况，需要删除多余我的线
+    //为什么会出现重复射入line呢
         let minValue:CGFloat = 5
         for  obj in arrViewFrameObjs{
             // 排序：Y值：从大到小
@@ -346,7 +346,6 @@ class MarkView {
                                 l == compareLine!
                             })
                         }
-                        
                     }
                     else{
                         baseLine = compareLine

@@ -42,6 +42,7 @@ extension UIApplication{
 class ViewChaosStart: SelfAware {
     static func awake() {
           #if DEBUG
+            print("启动ViewChaos")
             Chaos.hookMethod(UIWindow.self, originalSelector: #selector(UIWindow.makeKeyAndVisible), swizzleSelector: #selector(UIWindow.vcMakeKeyAndVisible))
             Chaos.hookMethod(UIView.self, originalSelector: #selector(UIView.willMove(toSuperview:)), swizzleSelector: #selector(UIView.vcWillMoveToSuperview(_:)))
             Chaos.hookMethod(UIView.self, originalSelector: #selector(UIView.willRemoveSubview(_:)), swizzleSelector: #selector(UIView.vcWillRemoveSubview(_:)))
