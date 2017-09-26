@@ -2,7 +2,7 @@ ViewChaos
 
 > ViewChaos是一个动态的iOS UI调试工具，是为了解决iOS UI代码编写和调试困难而写的
 
-##ViewChaos 的特性
+## ViewChaos 的特性
 
 + 集成方便，不用写一行代码，把文件拖进你的项目就行了，而且只有在`Debug`模式有效，`Release`模式将自动禁用。
 + 给`View`添加了`Name`属性，这样就能知道哪个`View`是由哪些代码生成的，可以更好地定位到代码。
