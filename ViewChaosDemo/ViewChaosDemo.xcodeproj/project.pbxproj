@@ -215,7 +215,7 @@
 				TargetAttributes = {
 					A2E6F0151BEAFF7D0042FC43 = {
 						CreatedOnToolsVersion = 7.1;
-						DevelopmentTeam = 76966J85NL;
+						DevelopmentTeam = 3YCGH6CCXA;
 						LastSwiftMigration = 0800;
 						ProvisioningStyle = Automatic;
 					};
@@ -413,12 +413,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 76966J85NL;
+				DEVELOPMENT_TEAM = 3YCGH6CCXA;
 				INFOPLIST_FILE = ViewChaosDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "-DDEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = Tyrant.ViewChaosDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = stan.ViewChaosDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -429,13 +429,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 76966J85NL;
+				DEVELOPMENT_TEAM = 3YCGH6CCXA;
 				INFOPLIST_FILE = ViewChaosDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "";
 				"OTHER_SWIFT_FLAGS[arch=*]" = "";
-				PRODUCT_BUNDLE_IDENTIFIER = Tyrant.ViewChaosDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = stan.ViewChaosDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};

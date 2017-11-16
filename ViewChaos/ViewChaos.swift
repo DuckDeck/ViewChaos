@@ -84,11 +84,22 @@ extension UIWindow:UIActionSheetDelegate {
         if self.frame.size.height > 20  //为什么是20,当时写这个的时侯不明白为什么是20
         {//现在我在做放大镜时终于明白知道为什么是20,因为如果是20 的话就是最上面的信号条,而不是下面的UIWindow,信号条其实也是个UIWindow对象
             let viewChaos = ViewChaos()
+            viewChaos.tag = -1000
             self.addSubview(viewChaos)
+            self.addObserver(self, forKeyPath: "rootViewController", options: NSKeyValueObservingOptions.new, context: nil)
             UIApplication.shared.applicationSupportsShakeToEdit = true //启用摇一摇功能
             self.chaosFeature = 0
             self.viewLevel = 0
         }
+    }
+    
+    open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if let v = self.viewWithTag(-1000){
+            v.removeFromSuperview()
+            self.addSubview(v)
+        }
+        
+        
     }
     
      open override func motionBegan(_ motion: UIEventSubtype, with event: UIEvent?) {
