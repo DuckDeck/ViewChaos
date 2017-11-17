@@ -147,7 +147,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         self.init()
     }
     
-    func switchMark(sender:UISwitch)  {
+    @objc func switchMark(sender:UISwitch)  {
         let def = UserDefaults.standard
         def.set(sender.isOn, forKey: "chaosMark")
         def.synchronize()
@@ -186,14 +186,14 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
     }
     
     
-    func handleRemoveSubView(_ notif:Notification){
+    @objc func handleRemoveSubView(_ notif:Notification){
         var view = notif.object as! UIView
         if viewHit! == view{
             view = (notif as NSNotification).userInfo!["subview" as NSObject] as! UIView
             var dict:[String:AnyObject] = [String:AnyObject]()
             dict["key"] = "Add Subview" as AnyObject?
             dict["Time"] = Chaos.currentDate(nil) as AnyObject?
-            dict["OldValue"] = "\(type(of: view))l:\(view.frame.origin.x.format(".1f"))t:\(view.frame.origin.y.format(".1f"))w:\(view.frame.size.width.format(".1f"))h:\(view.frame.size.height.format(".1f"))" as AnyObject?
+            dict["OldValue"] = "\(Swift.type(of: view))l:\(view.frame.origin.x.format(".1f"))t:\(view.frame.origin.y.format(".1f"))w:\(view.frame.size.width.format(".1f"))h:\(view.frame.size.height.format(".1f"))" as AnyObject?
             dict["NewValue"] = "nil" as AnyObject?
             arrTrace?.append(dict)
             if type == .trace{
@@ -204,7 +204,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
     }
     
     
-    func handleAddSubView(_ notif:Notification)
+    @objc func handleAddSubView(_ notif:Notification)
     {
         var view = notif.object as! UIView
         if viewHit! == view{
@@ -213,7 +213,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             dict["key"] = "Add Subview" as AnyObject?
             dict["Time"] = Chaos.currentDate(nil) as AnyObject?
             dict["OldValue"] = "nil" as AnyObject?
-            dict["NewValue"] = "\(type(of: view))l:\(view.frame.origin.x.format(".1f"))t:\(view.frame.origin.y.format(".1f"))w:\(view.frame.size.width.format(".1f"))h:\(view.frame.size.height.format(".1f"))" as AnyObject?
+            dict["NewValue"] = "\(Swift.type(of: view))l:\(view.frame.origin.x.format(".1f"))t:\(view.frame.origin.y.format(".1f"))w:\(view.frame.size.width.format(".1f"))h:\(view.frame.size.height.format(".1f"))" as AnyObject?
             arrTrace?.append(dict)
             if type == .trace{
                 tbRight.reloadData()
@@ -222,7 +222,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         }
     }
     
-    func handleRemoveView(_ notif:Notification){
+    @objc func handleRemoveView(_ notif:Notification){
         let view = notif.object as! UIView
         if viewHit! == view{
             stopTrace()
@@ -231,7 +231,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             var dict:[String:AnyObject] = [String:AnyObject]()
             dict["key"] = "RemoveFromSuperview" as AnyObject?
             dict["Time"] = Chaos.currentDate(nil) as AnyObject?
-            dict["OldValue"] = "\(type(of: view))l:\(view.frame.origin.x.format(".1f"))t:\(view.frame.origin.y.format(".1f"))w:\(view.frame.size.width.format(".1f"))h:\(view.frame.size.height.format(".1f"))" as AnyObject?
+            dict["OldValue"] = "\(Swift.type(of: view))l:\(view.frame.origin.x.format(".1f"))t:\(view.frame.origin.y.format(".1f"))w:\(view.frame.size.width.format(".1f"))h:\(view.frame.size.height.format(".1f"))" as AnyObject?
             dict["NewValue"] = "nil" as AnyObject?
             arrTrace?.append(dict)
             if type == .trace{
@@ -244,7 +244,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             arrSubview?.removeAll()
             arrSuperView?.removeAll()
             arrConstrains?.removeAll()
-            let alert = UIAlertView(title: "ViewChecl", message: "\(type(of: view))RemoveFromSuperview", delegate: nil, cancelButtonTitle: "OK")
+            let alert = UIAlertView(title: "ViewChecl", message: "\(Swift.type(of: view))RemoveFromSuperview", delegate: nil, cancelButtonTitle: "OK")
             alert.show()
             lblCurrentView.text = lblCurrentView.text! + "has removed"
         }
@@ -254,10 +254,10 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         stopTrace()
         viewHit = view
         if let name = viewHit?.chaosName{
-            lblCurrentView.text = "\(type(of: viewHit!)) name:\(name) (\(viewHit!.description))"
+            lblCurrentView.text = "\(Swift.type(of: viewHit!)) name:\(name) (\(viewHit!.description))"
         }
         else{
-            lblCurrentView.text = "\(type(of: viewHit!))(\(viewHit!.description))"
+            lblCurrentView.text = "\(Swift.type(of: viewHit!))(\(viewHit!.description))"
         }
         
         if !back {
@@ -279,7 +279,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         arrTrace = [[String:AnyObject]]()
         arrConstrains = [[String:AnyObject]]()
         arrGeneral = [String]()
-        arrGeneral?.append( "Class Name:\(type(of: viewHit!))")
+        arrGeneral?.append( "Class Name:\(Swift.type(of: viewHit!))")
         arrGeneral?.append("AutoLayout:\(viewHit!.translatesAutoresizingMaskIntoConstraints ? "NO" : "YES")")
         arrGeneral?.append("Left:\(viewHit!.frame.origin.x.format(".2f"))")
         arrGeneral?.append("Top:\(viewHit!.frame.origin.y.format(".2f"))")
@@ -290,7 +290,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         tbRight.tableFooterView = UIView()
     }
     
-    func onTrace(_ sender:UIButton)
+    @objc func onTrace(_ sender:UIButton)
     {
         if sender.title(for: UIControlState()) == "Start"{
             startTrace()
@@ -354,7 +354,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         btn.setTitle("Start", for: UIControlState())
     }
     
-    func close(_ sender:UIButton){
+    @objc func close(_ sender:UIButton){
         if btnClose.title(for: UIControlState()) == "Close"{
             self.removeFromSuperview()
             NotificationCenter.default.post(name: Notification.Name(rawValue: "handleTraceViewClose"), object: nil)
@@ -369,7 +369,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         }
     }
     
-    func back(_ sender:UIButton){
+    @objc func back(_ sender:UIButton){
         arrStackView?.removeLast()
         let view = arrStackView!.last!.obj as! UIView
         if arrStackView?.count == 1{
@@ -378,7 +378,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         initView(view, back: true)
     }
     
-    func hit(_ sender:UIButton){
+    @objc func hit(_ sender:UIButton){
         if viewHit == nil{
             let alert = UIAlertView(title: "ViewChaos", message: "View has removed and can't hit!", delegate: self, cancelButtonTitle: "OK")
             alert.show()
@@ -388,7 +388,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         minimize()
     }
     
-    func control(_ sender:UIButton){
+    @objc func control(_ sender:UIButton){
         if viewHit == nil{
             let alert = UIAlertView(title: "ViewChaos", message: "View has removed and can't control!", delegate: self, cancelButtonTitle: "OK")
             alert.show()
@@ -458,7 +458,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                     var dict = [String:AnyObject]()
                     dict["Type"] = "Left" as AnyObject?
                     dict["Value"] = con.description as AnyObject?
-                    dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
+                    dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem!)
                     dict["Constant"] = constant as AnyObject?
                     dict["Multiplier"] = con.multiplier as AnyObject?
                     dict["Priority"] = con.priority as AnyObject?
@@ -479,7 +479,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                     dict["Type"] = "Top" as AnyObject?
                     dict["Value"] = con.description as AnyObject?
                     Chaos.Log(con.description)
-                    dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
+                    dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem!)
                     dict["Constant"] = constant as AnyObject?
                     dict["Multiplier"] = con.multiplier as AnyObject?
                     dict["Priority"] = con.priority as AnyObject?
@@ -499,7 +499,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                     var dict = [String:AnyObject]()
                     dict["Type"] = "Right" as AnyObject?
                     dict["Value"] = con.description as AnyObject?
-                    dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
+                    dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem!)
                     dict["Constant"] = constant as AnyObject?
                     dict["Multiplier"] = con.multiplier as AnyObject?
                     dict["Priority"] = con.priority as AnyObject?
@@ -519,7 +519,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                     var dict = [String:AnyObject]()
                     dict["Type"] = "Bottom" as AnyObject?
                     dict["Value"] = con.description as AnyObject?
-                    dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
+                    dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem!)
                     dict["Constant"] = constant as AnyObject?
                     dict["Multiplier"] = con.multiplier as AnyObject?
                     dict["Priority"] = con.priority as AnyObject?
@@ -537,7 +537,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                         var dict = [String:AnyObject]()
                         dict["Type"] = "Width" as AnyObject?
                         dict["Value"] = con.description as AnyObject?
-                        dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
+                        dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem!)
                         dict["Constant"] = constant as AnyObject?
                         dict["Multiplier"] = con.multiplier as AnyObject?
                         dict["Priority"] = con.priority as AnyObject?
@@ -556,7 +556,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                         var dict = [String:AnyObject]()
                         dict["Type"] = "Height" as AnyObject?
                         dict["Value"] = con.description as AnyObject?
-                        dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
+                        dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem!)
                         dict["Constant"] = constant as AnyObject?
                         dict["Multiplier"] = con.multiplier as AnyObject?
                         dict["Priority"] = con.priority as AnyObject?
@@ -577,7 +577,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                     var dict = [String:AnyObject]()
                     dict["Type"] = "CenterX" as AnyObject?
                     dict["Value"] = con.description as AnyObject?
-                    dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
+                    dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem!)
                     dict["Constant"] = constant as AnyObject?
                     dict["Multiplier"] = con.multiplier as AnyObject?
                     dict["Priority"] = con.priority as AnyObject?
@@ -597,7 +597,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                     var dict = [String:AnyObject]()
                     dict["Type"] = "CenterY" as AnyObject?
                     dict["Value"] = con.description as AnyObject?
-                    dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
+                    dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem!)
                     dict["Constant"] = constant as AnyObject?
                     dict["Multiplier"] = con.multiplier as AnyObject?
                     dict["Priority"] = con.priority as AnyObject?
@@ -617,7 +617,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                     var dict = [String:AnyObject]()
                     dict["Type"] = "BaseLine" as AnyObject?
                     dict["Value"] = con.description as AnyObject?
-                    dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem)
+                    dict["ToView"] = ViewChaosObject.objectWithWeak(con.firstItem!)
                     dict["Constant"] = constant as AnyObject?
                     dict["Multiplier"] = con.multiplier as AnyObject?
                     dict["Priority"] = con.priority as AnyObject?
@@ -646,7 +646,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         }) 
     }
     
-    func expand(_ sender:UIButton){
+    @objc func expand(_ sender:UIButton){
         sender.removeFromSuperview()
         NotificationCenter.default.post(name: Notification.Name(rawValue: "handleTraceViewClose"), object: nil)
         UIView.animate(withDuration: 0.2, animations: { () -> Void in
@@ -654,7 +654,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         }) 
     }
     
-    func minimize(_ sender:UIButton){
+    @objc func minimize(_ sender:UIButton){
         minimize()
     }
     
@@ -714,7 +714,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             dict["Time"] = Chaos.currentDate(nil) as AnyObject?
             dict["OldValue"] = "l:\(String(describing: oldFrame?.origin.x.format(".1f"))) t:\(String(describing: oldFrame?.origin.y.format(".1f"))) w:\(String(describing: oldFrame?.origin.x.format(".1f"))) :h\(String(describing: oldFrame?.origin.x.format(".1f")))" as AnyObject?
             dict["NewValue"] = "l:\(String(describing: newFrame?.origin.x.format(".1f"))) t:\(String(describing: newFrame?.origin.y.format(".1f"))) w:\(String(describing: newFrame?.origin.x.format(".1f"))) h:\(String(describing: newFrame?.origin.x.format(".1f")))" as AnyObject?
-            dict["SuperView"] = "\(type(of: (object! as! UIView).superview))" as AnyObject?
+            dict["SuperView"] = "\(Swift.type(of: (object! as! UIView).superview))" as AnyObject?
             arrTrace?.append(dict)
         }
         else if keyPath == "tag"{
@@ -990,7 +990,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             cell?.textLabel?.lineBreakMode = NSLineBreakMode.byCharWrapping
             cell?.textLabel?.frame = CGRect(x: 0, y: 0, width: cell!.textLabel!.frame.size.width, height: 40)
             cell?.textLabel?.font = UIFont.systemFont(ofSize: 15)
-            cell?.textLabel?.text = "\(type(of: view!))"
+            cell?.textLabel?.text = "\(Swift.type(of: view!))"
             cell?.textLabel?.sizeToFit()
             cell?.detailTextLabel?.numberOfLines = 0
             cell?.detailTextLabel?.lineBreakMode = NSLineBreakMode.byCharWrapping
@@ -1027,7 +1027,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             cell?.textLabel?.numberOfLines = 0
             cell?.textLabel?.lineBreakMode = NSLineBreakMode.byCharWrapping
             cell?.textLabel?.frame = CGRect(x: 0, y: 0, width: cell!.textLabel!.frame.size.width, height: 40)
-            cell?.textLabel?.text = "\(type(of: view!))"
+            cell?.textLabel?.text = "\(Swift.type(of: view!))"
             cell?.textLabel?.sizeToFit()
             cell?.detailTextLabel?.numberOfLines = 0
             cell?.detailTextLabel?.lineBreakMode = NSLineBreakMode.byCharWrapping
@@ -1115,7 +1115,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
     func heightForGeneralCell(_ index:IndexPath,width:CGFloat) -> CGFloat{
         if (index as NSIndexPath).row == 0{
             let str = arrGeneral![0] as NSString
-            let rect = str.boundingRect(with: CGSize(width: width, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 17)], context: nil)
+            let rect = str.boundingRect(with: CGSize(width: width, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font:UIFont.systemFont(ofSize: 17)], context: nil)
             return rect.size.height + 5
         }
         else{
@@ -1132,7 +1132,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             strDetail = ""
         }
         else{
-            str = "\(type(of: view!))"
+            str = "\(Swift.type(of: view!))"
             strDetail = "l:\(view!.frame.origin.x.format(".1f"))t:\(view!.frame.origin.y.format(".1f"))w:\(view!.frame.size.width.format(".1f"))h:\(view!.frame.size.height.format(".1f"))"
             if view! is UILabel || view! is UITextField || view! is UITextView{
                 let text = view!.value(forKey: "text") as! String
@@ -1147,8 +1147,8 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                 }
             }
         }
-        let rect = (str as NSString).boundingRect(with: CGSize(width: width, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 17)], context: nil)
-        let rectDetail = (strDetail as NSString).boundingRect(with: CGSize(width: width, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 12)], context: nil)
+        let rect = (str as NSString).boundingRect(with: CGSize(width: width, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font:UIFont.systemFont(ofSize: 17)], context: nil)
+        let rectDetail = (strDetail as NSString).boundingRect(with: CGSize(width: width, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font:UIFont.systemFont(ofSize: 12)], context: nil)
         let height = rect.size.height + rectDetail.size.height + 10
         return height
     }
@@ -1162,7 +1162,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             strDetail = ""
         }
         else{
-            str = "\(type(of: view!))"
+            str = "\(Swift.type(of: view!))"
             strDetail = "l:\(view!.frame.origin.x.format(".1f"))t:\(view!.frame.origin.y.format(".1f"))w:\(view!.frame.size.width.format(".1f"))h:\(view!.frame.size.height.format(".1f"))"
             if view! is UILabel || view! is UITextField || view! is UITextView{
                 let text = view!.value(forKey: "text") as! String
@@ -1177,8 +1177,8 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                 }
             }
         }
-        let rect = (str as NSString).boundingRect(with: CGSize(width: width, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 17)], context: nil)
-        let rectDetail = (strDetail as NSString).boundingRect(with: CGSize(width: width, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 12)], context: nil)
+        let rect = (str as NSString).boundingRect(with: CGSize(width: width, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font:UIFont.systemFont(ofSize: 17)], context: nil)
+        let rectDetail = (strDetail as NSString).boundingRect(with: CGSize(width: width, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font:UIFont.systemFont(ofSize: 12)], context: nil)
         return rect.size.height + rectDetail.size.height + 10
     }
     
@@ -1193,8 +1193,8 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             arr.append(t)
         }
         strDetail = (arr as NSArray).componentsJoined(by: " ").replacingOccurrences(of: ">", with: "")
-        let rect = (str as NSString).boundingRect(with: CGSize(width: width, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 17)], context: nil)
-        let rectDetail = (strDetail as NSString).boundingRect(with: CGSize(width: width, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 12)], context: nil)
+        let rect = (str as NSString).boundingRect(with: CGSize(width: width, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font:UIFont.systemFont(ofSize: 17)], context: nil)
+        let rectDetail = (strDetail as NSString).boundingRect(with: CGSize(width: width, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font:UIFont.systemFont(ofSize: 12)], context: nil)
         return rect.size.height + rectDetail.size.height + 10
     }
     
@@ -1206,14 +1206,14 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         if (dic["Key"] as! String) == "superview.frame"{
             strDetail = (dic["Superview"]! as! String) + strDetail
         }
-        let rect = (str as NSString).boundingRect(with: CGSize(width: width, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 17)], context: nil)
-        let rectDetail = (strDetail as NSString).boundingRect(with: CGSize(width: width, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 12)], context: nil)
+        let rect = (str as NSString).boundingRect(with: CGSize(width: width, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font:UIFont.systemFont(ofSize: 17)], context: nil)
+        let rectDetail = (strDetail as NSString).boundingRect(with: CGSize(width: width, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font:UIFont.systemFont(ofSize: 12)], context: nil)
         return rect.size.height + rectDetail.size.height + 10
     }
     
     func heightForAboutCell(_ index:IndexPath,width:CGFloat)->CGFloat{
         let str = arrAbout![(index as NSIndexPath).row]
-        let rect = (str as NSString).boundingRect(with: CGSize(width: width, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 17)], context: nil)
+        let rect = (str as NSString).boundingRect(with: CGSize(width: width, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font:UIFont.systemFont(ofSize: 17)], context: nil)
         return rect.size.height + 5
     }
     

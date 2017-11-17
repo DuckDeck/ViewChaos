@@ -64,11 +64,11 @@ class ZoomView: UIWindow {
             if let point = pointToZoom{
                 self.center = CGPoint(x: point.x, y: point.y)
                 let offset:Int = Int(4 * ((imgSize.width * round(point.y*2)) + round(point.x*2)))
-                let a =  imgCaptureData?[offset].toIntMax()
-                let r = imgCaptureData?[offset + 1].toIntMax()
-                let g = imgCaptureData?[offset + 2].toIntMax()
-                let b = imgCaptureData?[offset + 3].toIntMax()
-                currentColor = UIColor(red:CGFloat(r!) / 255.0, green: CGFloat(g!) / 255.0, blue: CGFloat(b!) / 255.0, alpha: CGFloat(a!) / 255.0)
+                let a =  UInt64(imgCaptureData![offset])
+                let r = UInt64(imgCaptureData![offset + 1])
+                let g = UInt64(imgCaptureData![offset + 2])
+                let b = UInt64(imgCaptureData![offset + 3])
+                currentColor = UIColor(red:CGFloat(r) / 255.0, green: CGFloat(g) / 255.0, blue: CGFloat(b) / 255.0, alpha: CGFloat(a) / 255.0)
                 print("point:\(point) the color is :\(String(describing: currentColor?.format("swift")))")
                 //大功基本告成,我再加个Lable来显示就行
                 
@@ -255,7 +255,7 @@ extension UIImage{
         let r = info[offset + 1]
         let g = info[offset + 2]
         let b = info[offset + 3]
-        color = UIColor(red: CGFloat(r.toIntMax()) / 255.0, green: CGFloat(g.toIntMax()) / 255.0, blue: CGFloat(b.toIntMax()) / 255.0, alpha: CGFloat(a.toIntMax()) / 255.0)
+        color = UIColor(red: CGFloat(UInt64(r)) / 255.0, green: CGFloat(UInt64(g)) / 255.0, blue: CGFloat(UInt64(b)) / 255.0, alpha: CGFloat(UInt64(a)) / 255.0)
         
         //Issue8: 怎么样才能从UnsafemutablePoint<Void>里面获取一位一位的数据出来,我用index的方法打印出来全是空的括号
         //通过stackoverflow,知道怎么办了

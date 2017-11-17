@@ -43,11 +43,11 @@ class ViewController: UIViewController {
     }
 
 
-    func showMark(_ sender:UIButton){
+    @objc func showMark(_ sender:UIButton){
         MarkView.showTaggingView(view: view)
     }
     
-    func click(_ sender:UIButton)
+    @objc func click(_ sender:UIButton)
     {
         let story = UIStoryboard(name: "Main", bundle: Bundle.main)
         let next = story.instantiateViewController(withIdentifier: "next")

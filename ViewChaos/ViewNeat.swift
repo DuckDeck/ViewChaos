@@ -328,7 +328,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
             vRocker.isHidden = false
         }
     }
-    func oper(_ sender:UIButton){
+    @objc func oper(_ sender:UIButton){
         switch sender.tag{
         case 100:
             scaleY = -1
@@ -347,7 +347,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
         operationView()
     }
     
-    func timerFire(_ sender:Timer){
+    @objc func timerFire(_ sender:Timer){
         if !isTouch{
             return
         }
@@ -465,7 +465,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func segClick(_ sender:UISegmentedControl){
+    @objc func segClick(_ sender:UISegmentedControl){
         if viewControl == nil{
             Chaos.toast("VIew have released")
             return
@@ -533,7 +533,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
 
     }
     
-    func segItemClick(_ sender:UISegmentedControl){
+    @objc func segItemClick(_ sender:UISegmentedControl){
         if viewControl == nil{
             Chaos.toast("VIew have released")
             return
@@ -671,7 +671,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
         }
     }
     
-    func chooseColor(_ sender:UIButton){
+    @objc func chooseColor(_ sender:UIButton){
         let title = sender.title(for: UIControlState())
         if title == "ColorPick"{
             vColorPicker = ChaosColorPicker(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 250), color: currentColor)
@@ -688,7 +688,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
         }
     }
     
-    func precise(_ sender:UIButton){
+    @objc func precise(_ sender:UIButton){
          let title = sender.title(for: UIControlState())!
         if title == "Precise"{
             sender.setTitle("Imprecise", for: UIControlState())
@@ -715,14 +715,14 @@ class ViewNeat: UIView,ColorPickerDelegate {
         }
     }
     
-    func scaleChange(_ sender:UIStepper){
+    @objc func scaleChange(_ sender:UIStepper){
         scale = Int(sender.value)
         let showScaleValue = neatPreciseMode == .normal ? CGFloat(scale) : (CGFloat(scale) / 10.0)
       //  lblScale.text = "Scale:\(showScaleValue.format("00.00"))"
           lblScale.text = "Scale:\(showScaleValue)"
     }
     
-    func reset(_ sender:UIButton){
+    @objc func reset(_ sender:UIButton){
         if viewControl != nil{
             viewControl?.frame = originFrame
             if viewControl! is UIButton{
@@ -749,7 +749,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
         }
     }
     
-    func close(_ sender:UIButton){
+    @objc func close(_ sender:UIButton){
        NotificationCenter.default.post(name: Notification.Name(rawValue: "handleTraceViewClose"), object: nil)
     }
     

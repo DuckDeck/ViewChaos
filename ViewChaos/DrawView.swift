@@ -59,7 +59,7 @@ class DrawView: UIView {
     
     
     
-    func captureScreenClick(_ sender:UIButton)  {
+    @objc func captureScreenClick(_ sender:UIButton)  {
         //这里用截图功能
         if let title = sender.title(for: UIControlState())
         {
@@ -85,7 +85,7 @@ class DrawView: UIView {
     
   
     
-    func clearTraceClick(_ sender:UIButton){
+    @objc func clearTraceClick(_ sender:UIButton){
         clearTrace()
         btnCaptureScreen.setTitle("启用截屏", for: UIControlState())
         drawMode = .draw

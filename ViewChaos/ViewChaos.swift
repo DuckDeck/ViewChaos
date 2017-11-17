@@ -19,7 +19,7 @@ class NothingToSeeHere{
     static func harmlessFunction(){
         let typeCount = Int(objc_getClassList(nil, 0))
         let  types = UnsafeMutablePointer<AnyClass?>.allocate(capacity: typeCount)
-        let autoreleaseintTypes = AutoreleasingUnsafeMutablePointer<AnyClass?>(types)
+        let autoreleaseintTypes = AutoreleasingUnsafeMutablePointer<AnyClass>(types)
         objc_getClassList(autoreleaseintTypes, Int32(typeCount))
         for index in 0 ..< typeCount{
             (types[index] as? SelfAware.Type)?.awake()
@@ -79,7 +79,7 @@ extension UIWindow:UIActionSheetDelegate {
 //    Chaos.hookMethod(UIView.self, originalSelector: #selector(UIView.willRemoveSubview(_:)), swizzleSelector: #selector(UIView.vcWillRemoveSubview(_:)))
 //    Chaos.hookMethod(UIView.self, originalSelector: #selector(UIView.didAddSubview(_:)), swizzleSelector: #selector(UIView.vcDidAddSubview(_:)))
 
-    public  func vcMakeKeyAndVisible(){
+    @objc public  func vcMakeKeyAndVisible(){
         self.vcMakeKeyAndVisible()//看起来是死循环,其实不是,因为已经交换过了
         if self.frame.size.height > 20  //为什么是20,当时写这个的时侯不明白为什么是20
         {//现在我在做放大镜时终于明白知道为什么是20,因为如果是20 的话就是最上面的信号条,而不是下面的UIWindow,信号条其实也是个UIWindow对象
@@ -270,19 +270,19 @@ extension UIWindow:UIActionSheetDelegate {
       #endif
 }
 extension UIView{
-    public func vcWillMoveToSuperview(_ subview:UIView?){
+    @objc  public func vcWillMoveToSuperview(_ subview:UIView?){
         self.vcWillMoveToSuperview(subview)
         if let v = subview{
             NotificationCenter.default.post(name: Notification.Name(rawValue: VcWillMoveToSuperview), object: self, userInfo: ["subview":v])
         }
     }
-    public func vcWillRemoveSubview(_ subview:UIView?){
+    @objc public func vcWillRemoveSubview(_ subview:UIView?){
         self.vcWillRemoveSubview(subview)
         if let v = subview{
             NotificationCenter.default.post(name: Notification.Name(rawValue: VcWillRemoveSubview), object: self, userInfo: ["subview":v])
         }
     }
-    public func vcDidAddSubview(_ subview:UIView?){
+    @objc public func vcDidAddSubview(_ subview:UIView?){
         self.vcDidAddSubview(subview)
         if let _ = subview{
             NotificationCenter.default.post(name: Notification.Name(rawValue: VcDidAddSubview), object: self)
@@ -358,10 +358,10 @@ class ViewChaos: UIView {
 
     
     
-    func handleTraceShow(_ notif:Notification){ //如果关了ViewChaosInfo,就会显示出来
+    @objc func handleTraceShow(_ notif:Notification){ //如果关了ViewChaosInfo,就会显示出来
         self.isHidden = false
     }
-    func handleTraceView(_ notif:Notification){// 显示选中的View
+    @objc func handleTraceView(_ notif:Notification){// 显示选中的View
         let view = notif.object as! UIView
         self.window?.addSubview(viewBound)
         let p = self.window?.convert(view.bounds, from: view)
@@ -379,11 +379,11 @@ class ViewChaos: UIView {
             }
     }
     
-    func handleShowMark(_ notif:Notification)  {
+    @objc func handleShowMark(_ notif:Notification)  {
          isMark = notif.object as! Bool
     }
     
-    func handleTraceViewClose(_ notif:Notification){
+    @objc func handleTraceViewClose(_ notif:Notification){
         if viewNeat == nil{
             return
         }
@@ -391,7 +391,7 @@ class ViewChaos: UIView {
         viewNeat = nil
     }
     
-    func controlTraceShow(_ notif:Notification){
+    @objc func controlTraceShow(_ notif:Notification){
         let view = notif.object as! UIView
         self.window?.addSubview(viewBound)
         let p = self.window?.convert(view.bounds, from: view)
@@ -416,7 +416,7 @@ class ViewChaos: UIView {
 
     }
     
-    func handleTraceAddSubView(_ notif:Notification){
+    @objc func handleTraceAddSubView(_ notif:Notification){
         if let viewSuper = notif.object
         {
             if let view = (notif as NSNotification).userInfo!["subview" as NSObject] as? UIView{
@@ -430,7 +430,7 @@ class ViewChaos: UIView {
         }
     }
     
-    func handleTraceContraints(_ notif:Notification){
+    @objc func handleTraceContraints(_ notif:Notification){
         if let dict = notif.object as? [String:AnyObject]{
             let view = (dict["View"] as! ViewChaosObject).obj! as! UIView
             self.window?.addSubview(viewBound)
@@ -505,7 +505,7 @@ class ViewChaos: UIView {
     
     
     
-    func  tapInfo(_ tapGesture:UITapGestureRecognizer){
+    @objc func  tapInfo(_ tapGesture:UITapGestureRecognizer){
         if viewChaosInfo?.superview != nil{  //如果没有移除就不继续
             return
         }
@@ -739,12 +739,12 @@ class Chaos {
    static func hookMethod(_ cls:AnyClass,originalSelector:Selector,swizzleSelector:Selector){  //交换方法
         let originalMethod = class_getInstanceMethod(cls, originalSelector)
         let swizzledMethod = class_getInstanceMethod(cls, swizzleSelector)
-        let didAddMethod = class_addMethod(cls, originalSelector, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod))
+        let didAddMethod = class_addMethod(cls, originalSelector, method_getImplementation(swizzledMethod!), method_getTypeEncoding(swizzledMethod!))
         if didAddMethod{
-            class_replaceMethod(cls, swizzleSelector, method_getImplementation(originalMethod), method_getTypeEncoding(originalMethod))
+            class_replaceMethod(cls, swizzleSelector, method_getImplementation(originalMethod!), method_getTypeEncoding(originalMethod!))
         }
         else{
-            method_exchangeImplementations(originalMethod, swizzledMethod)
+            method_exchangeImplementations(originalMethod!, swizzledMethod!)
         }
     }
     
@@ -1086,7 +1086,7 @@ class ChaosColorPicker: UIView
         selectedColor = color;
     }
     
-    func baseColorPicking(_ sender: UIGestureRecognizer)
+    @objc func baseColorPicking(_ sender: UIGestureRecognizer)
     {
         if(sender.numberOfTouches==1)
         {
@@ -1097,7 +1097,7 @@ class ChaosColorPicker: UIView
         }
     }
     
-    func colorPicking(_ sender: UIGestureRecognizer)
+    @objc func colorPicking(_ sender: UIGestureRecognizer)
     {
         if(sender.numberOfTouches==1)
         {
@@ -1201,7 +1201,7 @@ class ToastLable:UILabel {
     override func textRect(forBounds bounds: CGRect, limitedToNumberOfLines numberOfLines: Int) -> CGRect {
         var rect = bounds
         if let txt = self.text{
-            rect.size =  (txt as NSString).boundingRect(with: CGSize(width: CGFloat(self.maxWidth!) - self.textInsets!.left - self.textInsets!.right, height: CGFloat.greatestFiniteMagnitude), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSFontAttributeName:self.font], context: nil).size
+            rect.size =  (txt as NSString).boundingRect(with: CGSize(width: CGFloat(self.maxWidth!) - self.textInsets!.left - self.textInsets!.right, height: CGFloat.greatestFiniteMagnitude), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font:self.font], context: nil).size
         }
         return rect
     }
