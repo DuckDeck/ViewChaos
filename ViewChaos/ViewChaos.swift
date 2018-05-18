@@ -24,7 +24,7 @@ class NothingToSeeHere{
         for index in 0 ..< typeCount{
             (types[index] as? SelfAware.Type)?.awake()
         }
-        types.deallocate(capacity: typeCount)
+        types.deallocate()
     }
 }
 
