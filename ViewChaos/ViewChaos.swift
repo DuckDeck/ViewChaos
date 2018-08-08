@@ -8,7 +8,7 @@
 
 import UIKit
 enum ChaosFeature:Int{
-    case none=0,zoom,border,alpha,mark
+    case none=0,zoom,border,alpha,mark,Log
 }
 
 public protocol SelfAware:class {
@@ -142,12 +142,21 @@ extension UIWindow:UIActionSheetDelegate {
                 self.insertSubview(v, at: 1000)
                 
             })
-            let action5 = UIAlertAction(title: "取消", style: .cancel, handler: nil)
+            let action5 = UIAlertAction(title: "显示Log", style: .default, handler: { (action) in
+                Chaos.toast("Log显示功能已经启用")
+                self.chaosFeature = ChaosFeature.Log.rawValue
+                let v = LogView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.width * 0.6))
+                v.tag = -9000
+                self.insertSubview(v, at: 1000)
+                
+            })
+            let action6 = UIAlertAction(title: "取消", style: .cancel, handler: nil)
             alert.addAction(action1)
             alert.addAction(action2)
             alert.addAction(action3)
             alert.addAction(action4)
-             alert.addAction(action5)
+            alert.addAction(action5)
+            alert.addAction(action6)
             self.rootViewController?.present(alert, animated: true, completion: nil)
         case ChaosFeature.zoom.rawValue:
             UIAlertView.setMessage("关闭放大镜").addFirstButton("取消").addSecondButton("确定").alertWithButtonClick({ (buttonIndex, alert) -> Void in
@@ -192,6 +201,8 @@ extension UIWindow:UIActionSheetDelegate {
                     MarkView.recursiveRemoveTagView(view: self)
                 }
             })
+        case ChaosFeature.Log.rawValue:
+            break;
          default:break
         }
     }

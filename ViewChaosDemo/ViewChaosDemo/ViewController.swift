@@ -12,7 +12,7 @@ class ViewController: UIViewController {
     var btn:UIButton?
     
     var btnShowMark = UIButton(frame: CGRect(x: 10, y: 20, width: 80, height: 30))
-    
+    let btnLog = UIButton(frame: CGRect(x: 100, y: 360, width: 100, height: 30))
     var view1 = UIView()
     
     var view2 = UIView(frame: CGRect(x: 50, y: 400, width: 300, height: 200))
@@ -27,7 +27,10 @@ class ViewController: UIViewController {
         btn?.addTarget(self, action: #selector(ViewController.click(_:)), for: UIControlEvents.touchUpInside)
         view.addSubview(btn!)
         
-    
+        btnLog.setTitle("添加Log", for: .normal)
+        btnLog.backgroundColor = UIColor(red: 0, green: 1, blue: 0, alpha: 0.5)
+        btnLog.addTarget(self, action: #selector(printLog), for: .touchUpInside)
+        
         view1.frame = CGRect(x: 20, y: 180, width: 200, height: 100)
         view1.backgroundColor = UIColor(red: 0, green: 1, blue: 0, alpha: 0.5)
         view1.alpha = 0.5
@@ -42,6 +45,9 @@ class ViewController: UIViewController {
         view.addSubview(view2)
     }
 
+    @objc func printLog() {
+        
+    }
 
     @objc func showMark(_ sender:UIButton){
         MarkView.showTaggingView(view: view)
