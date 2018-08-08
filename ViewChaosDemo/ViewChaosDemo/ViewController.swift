@@ -30,6 +30,7 @@ class ViewController: UIViewController {
         btnLog.setTitle("添加Log", for: .normal)
         btnLog.backgroundColor = UIColor(red: 0, green: 1, blue: 0, alpha: 0.5)
         btnLog.addTarget(self, action: #selector(printLog), for: .touchUpInside)
+        view.addSubview(btnLog)
         
         view1.frame = CGRect(x: 20, y: 180, width: 200, height: 100)
         view1.backgroundColor = UIColor(red: 0, green: 1, blue: 0, alpha: 0.5)
@@ -46,7 +47,7 @@ class ViewController: UIViewController {
     }
 
     @objc func printLog() {
-        
+        VCLog(message: "this is a log")
     }
 
     @objc func showMark(_ sender:UIButton){

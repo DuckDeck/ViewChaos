@@ -145,7 +145,7 @@ extension UIWindow:UIActionSheetDelegate {
             let action5 = UIAlertAction(title: "显示Log", style: .default, handler: { (action) in
                 Chaos.toast("Log显示功能已经启用")
                 self.chaosFeature = ChaosFeature.Log.rawValue
-                let v = LogView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.width * 0.6))
+                let v = LogView.sharedInstance
                 v.tag = -9000
                 self.insertSubview(v, at: 1000)
                 
@@ -202,7 +202,18 @@ extension UIWindow:UIActionSheetDelegate {
                 }
             })
         case ChaosFeature.Log.rawValue:
-            break;
+            UIAlertView.setMessage("关闭显示Log功能").addFirstButton("取消").addSecondButton("确定").alertWithButtonClick({ (buttonIndex, alert) -> Void in
+                if buttonIndex == 1{
+                    Chaos.toast("显示Log功能已关闭")
+                    self.chaosFeature = ChaosFeature.none.rawValue
+                    for view in self.subviews{
+                        if view.tag == -9000{
+                            view.removeFromSuperview()
+                        }
+                    }
+                    MarkView.recursiveRemoveTagView(view: self)
+                }
+            })
          default:break
         }
     }

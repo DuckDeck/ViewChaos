@@ -10,16 +10,58 @@ import UIKit
 
 
 
-class LogView: UIWindow {
+class LogView: UIView {
+    static let  sharedInstance = LogView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.width * 0.6))
     var arrMsg = [String]()
     let tbmsg = UITableView()
     override init(frame: CGRect) {
         super.init(frame: frame)
+        backgroundColor = UIColor(red: 0.7, green: 0.7, blue: 0.7, alpha: 0.7)
+        tbmsg.backgroundColor = UIColor.clear
         tbmsg.frame = CGRect(origin: CGPoint(), size: frame.size)
         tbmsg.dataSource = self
         tbmsg.delegate = self
-        tbmsg.register(UITableViewCell.self, forCellReuseIdentifier: "LogCell")
+        tbmsg.estimatedRowHeight = 20
+        tbmsg.register(logTableViewCell.self, forCellReuseIdentifier: "LogCell")
         tbmsg.tableFooterView = UIView()
+        addSubview(tbmsg)
+    }
+    
+    func addLog(msg:String)  {
+        if arrMsg.count >= 20{
+            arrMsg.removeSubrange(10..<20)
+           
+        }
+        arrMsg.append(msg)
+        tbmsg.reloadData()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+class logTableViewCell: UITableViewCell {
+    let lblMsg = UILabel()
+    var msg:String?{
+        didSet{
+            lblMsg.text = msg
+        }
+    }
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        backgroundColor = UIColor.clear
+        lblMsg.numberOfLines = 0
+        lblMsg.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(lblMsg)
+        let leftConstraint = NSLayoutConstraint.init(item: lblMsg, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: contentView, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: 10)
+        let rightConstraint = NSLayoutConstraint.init(item: lblMsg, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: contentView, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: -10)
+        let topConstraint = NSLayoutConstraint.init(item: lblMsg, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: contentView, attribute: NSLayoutAttribute.top, multiplier: 1, constant: 3)
+        let bottomConstraint = NSLayoutConstraint.init(item: lblMsg, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: contentView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -3)
+        NSLayoutConstraint.activate([leftConstraint,rightConstraint,topConstraint,bottomConstraint])
+        lblMsg.textColor = UIColor.white
+        lblMsg.font = UIFont.systemFont(ofSize: 12)
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -33,8 +75,8 @@ extension LogView:UITableViewDataSource,UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "LogCell", for: indexPath)
-        cell.textLabel?.text = arrMsg[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "LogCell", for: indexPath) as! logTableViewCell
+        cell.msg = arrMsg[indexPath.row]
         return cell
     }
 }
@@ -44,6 +86,7 @@ func VCLog<T>(message:T,file:String = #file, method:String = #function,line:Int 
     if   let path = NSURL(string: file)
     {
         let log = "\(path.lastPathComponent!)[\(line)],\(method) \(message)"
+        LogView.sharedInstance.addLog(msg: log)
         print(log)
     }
     #endif
