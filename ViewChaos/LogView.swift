@@ -30,8 +30,8 @@ class LogView: UIView {
     }
     
     func addLog(msg:String)  {
-        if arrMsg.count >= 20{
-            arrMsg.removeSubrange(10..<20)
+        if arrMsg.count >= 80{
+            arrMsg.removeSubrange(50..<80)
            
         }
         arrMsg.append(msg)
