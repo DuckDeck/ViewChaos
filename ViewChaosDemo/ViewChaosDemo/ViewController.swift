@@ -48,6 +48,7 @@ class ViewController: UIViewController {
 
     @objc func printLog() {
         VCLog(message: "this is a log")
+        VCLog(message: "this is a logMarkView.showTaggingView(view: view)MarkView.showTaggingView(view: view)MarkView.showTaggingView(view: view)MarkView.showTaggingView(view: view)")
     }
 
     @objc func showMark(_ sender:UIButton){

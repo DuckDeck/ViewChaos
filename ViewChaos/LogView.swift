@@ -22,6 +22,8 @@ class LogView: UIView {
         tbmsg.dataSource = self
         tbmsg.delegate = self
         tbmsg.estimatedRowHeight = 20
+        tbmsg.separatorStyle = .singleLine
+        tbmsg.separatorColor = UIColor.white
         tbmsg.register(logTableViewCell.self, forCellReuseIdentifier: "LogCell")
         tbmsg.tableFooterView = UIView()
         addSubview(tbmsg)
