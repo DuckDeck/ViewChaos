@@ -45,14 +45,14 @@ class DrawView: UIView {
         self.backgroundColor = UIColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 0.2)
         btnCaptureScreen.frame = CGRect(x: UIScreen.main.bounds.size.width - 90, y: UIScreen.main.bounds.size.height - 25, width: 90, height: 25)
         btnCaptureScreen.backgroundColor =  UIColor(red: 0.0, green: 0.898, blue: 0.836, alpha: 0.5)
-        btnCaptureScreen.setTitle("启用截屏", for: UIControlState())
-        btnCaptureScreen.addTarget(self, action: #selector(DrawView.captureScreenClick(_:)), for: UIControlEvents.touchUpInside)
+        btnCaptureScreen.setTitle("启用截屏", for: UIControl.State())
+        btnCaptureScreen.addTarget(self, action: #selector(DrawView.captureScreenClick(_:)), for: UIControl.Event.touchUpInside)
         addSubview(btnCaptureScreen)
         
         btnCleanTrace.frame = CGRect(x: UIScreen.main.bounds.size.width - 150, y: UIScreen.main.bounds.size.height - 25, width: 50, height: 25)
         btnCleanTrace.backgroundColor =  UIColor(red: 0.0, green: 0.898, blue: 0.836, alpha: 0.5)
-        btnCleanTrace.setTitle("清理", for: UIControlState())
-        btnCleanTrace.addTarget(self, action: #selector(DrawView.clearTraceClick(_:)), for: UIControlEvents.touchUpInside)
+        btnCleanTrace.setTitle("清理", for: UIControl.State())
+        btnCleanTrace.addTarget(self, action: #selector(DrawView.clearTraceClick(_:)), for: UIControl.Event.touchUpInside)
         addSubview(btnCleanTrace)
         btnCleanTrace.isHidden = true
     }
@@ -61,13 +61,13 @@ class DrawView: UIView {
     
     @objc func captureScreenClick(_ sender:UIButton)  {
         //这里用截图功能
-        if let title = sender.title(for: UIControlState())
+        if let title = sender.title(for: UIControl.State())
         {
             if title == "启用截屏"{
             Chaos.toast("现在开始截图")
             drawMode = .capture
                 self.backgroundColor = UIColor.clear
-                btnCaptureScreen.setTitle("保存", for: UIControlState())
+                btnCaptureScreen.setTitle("保存", for: UIControl.State())
             }
             else{
                 UIGraphicsBeginImageContextWithOptions(UIScreen.main.bounds.size, true, 0)//这个应该是设定一个区域
@@ -76,7 +76,7 @@ class DrawView: UIView {
                 UIImageWriteToSavedPhotosAlbum(imgCapture!, self, nil, nil)
                 self.backgroundColor = UIColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 0.2)
                 Chaos.toast("保存截图成功")
-                btnCaptureScreen.setTitle("启用截屏", for: UIControlState())
+                btnCaptureScreen.setTitle("启用截屏", for: UIControl.State())
                 clearTrace()
                 drawMode = .draw
             }
@@ -87,7 +87,7 @@ class DrawView: UIView {
     
     @objc func clearTraceClick(_ sender:UIButton){
         clearTrace()
-        btnCaptureScreen.setTitle("启用截屏", for: UIControlState())
+        btnCaptureScreen.setTitle("启用截屏", for: UIControl.State())
         drawMode = .draw
     }
     

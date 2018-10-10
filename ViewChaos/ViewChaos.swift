@@ -102,7 +102,7 @@ extension UIWindow:UIActionSheetDelegate {
         
     }
     
-     open override func motionBegan(_ motion: UIEventSubtype, with event: UIEvent?) {
+    open override func motionBegan(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
         switch self.chaosFeature
         {
             case ChaosFeature.none.rawValue:
@@ -336,12 +336,12 @@ class ViewChaos: UIView {
         windowInfo.backgroundColor = UIColor(red: 0.0, green: 0.898, blue: 0.836, alpha: 0.7)
         windowInfo.isHidden = true
         windowInfo.chaosName = "windowInfo"
-        windowInfo.windowLevel = UIWindowLevelAlert
+        windowInfo.windowLevel = UIWindow.Level.alert
         lblInfo = UILabel(frame: windowInfo.bounds)
         lblInfo.numberOfLines = 2
         lblInfo.backgroundColor = UIColor.clear
         lblInfo.lineBreakMode = NSLineBreakMode.byCharWrapping
-        lblInfo.autoresizingMask = [UIViewAutoresizing.flexibleHeight,UIViewAutoresizing.flexibleWidth]
+        lblInfo.autoresizingMask = [UIView.AutoresizingMask.flexibleHeight,UIView.AutoresizingMask.flexibleWidth]
         //self.checkUpdate
         left = 0
         top = 0
@@ -351,7 +351,7 @@ class ViewChaos: UIView {
         self.layer.zPosition = CGFloat(Float.greatestFiniteMagnitude)
         
         let lbl = UILabel(frame: self.bounds)
-        lbl.autoresizingMask = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleHeight]
+        lbl.autoresizingMask = [UIView.AutoresizingMask.flexibleWidth, UIView.AutoresizingMask.flexibleHeight]
         lbl.textAlignment = NSTextAlignment.center
         lbl.text = "V"
         lbl.backgroundColor = UIColor(red: 0.253, green: 0.917, blue: 0.476, alpha: 1.0)
@@ -439,13 +439,14 @@ class ViewChaos: UIView {
     }
     
     @objc func handleTraceAddSubView(_ notif:Notification){
-        if let viewSuper = notif.object
+        if let viewSuper = notif.object as? UIWindow
         {
             if let view = (notif as NSNotification).userInfo!["subview" as NSObject] as? UIView{
-                if (viewSuper as AnyObject).isKind(of: UIWindow.self) && view != self{
-                    (viewSuper as AnyObject).bringSubview(toFront: self)
+                if  view != self{
+                    viewSuper.bringSubviewToFront(self)
                     if viewChaosInfo != nil{
-                        (viewSuper as AnyObject).bringSubview(toFront: viewChaosInfo!)
+                        viewSuper.bringSubviewToFront(viewChaosInfo!)
+                       
                     }
                 }
             }
@@ -458,7 +459,7 @@ class ViewChaos: UIView {
             self.window?.addSubview(viewBound)
             let p = self.window?.convert(view.bounds, from: view)
             viewBound.frame = p!
-            UIView.animate(withDuration: 0.3, delay: 0, options: [UIViewAnimationOptions.allowUserInteraction,UIViewAnimationOptions.repeat,UIViewAnimationOptions.autoreverse], animations: { () -> Void in
+            UIView.animate(withDuration: 0.3, delay: 0, options: [UIView.AnimationOptions.allowUserInteraction,UIView.AnimationOptions.repeat,UIView.AnimationOptions.autoreverse], animations: { () -> Void in
                 UIView.setAnimationRepeatCount(2)
                 self.viewBound.alpha = 0
                 }, completion: { (finished) -> Void in
@@ -1200,7 +1201,7 @@ class ToastLable:UILabel {
         animationGroup.duration = forwardAnimation.duration + backWardAnimation.duration + waitAnimationDuration
         animationGroup.isRemovedOnCompletion = false
         //animationGroup.delegate = self
-        animationGroup.fillMode = kCAFillModeForwards
+        animationGroup.fillMode = CAMediaTimingFillMode.forwards
         self.layer.add(animationGroup, forKey: "animation")
     }
     override func sizeToFit() {
@@ -1218,12 +1219,13 @@ class ToastLable:UILabel {
         }
     }
     override func drawText(in rect: CGRect) {
-        super.drawText(in: UIEdgeInsetsInsetRect(rect, self.textInsets!))
+        super.drawText(in: rect.inset(by: self.textInsets ?? UIEdgeInsets()))
+//        super.drawText(in: UIEdgeInsetsInsetRect(rect, self.textInsets!))
     }
     override func textRect(forBounds bounds: CGRect, limitedToNumberOfLines numberOfLines: Int) -> CGRect {
         var rect = bounds
         if let txt = self.text{
-            rect.size =  (txt as NSString).boundingRect(with: CGSize(width: CGFloat(self.maxWidth!) - self.textInsets!.left - self.textInsets!.right, height: CGFloat.greatestFiniteMagnitude), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font:self.font], context: nil).size
+            rect.size =  (txt as NSString).boundingRect(with: CGSize(width: CGFloat(self.maxWidth!) - self.textInsets!.left - self.textInsets!.right, height: CGFloat.greatestFiniteMagnitude), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font:self.font], context: nil).size
         }
         return rect
     }

@@ -99,7 +99,7 @@ class ZoomView: UIWindow {
         self.layer.borderColor = UIColor.lightGray.cgColor
         self.layer.cornerRadius = 60
         self.layer.masksToBounds = true
-        self.windowLevel = UIWindowLevelAlert
+        self.windowLevel = UIWindow.Level.alert
         
         //Issue0 如果我在这里把UIApplication.sharedApplication().keyWindow给vZoom.viewToZoom，也就是说在ViewDidLoad里面
         //那么如果我要pop这个ViewController,

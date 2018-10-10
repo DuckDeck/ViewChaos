@@ -19,12 +19,12 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.title = "ViewChaos"
-       view.backgroundColor = UIColor.white
+        view.backgroundColor = UIColor.white
         btn = UIButton(frame: CGRect(x: 10, y: 100, width: 100, height: 30))
         btn?.backgroundColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.2)
-        btn?.setTitle("Next", for: UIControlState())
+        btn?.setTitle("Next", for: UIControl.State())
         btn?.chaosName = "btn"
-        btn?.addTarget(self, action: #selector(ViewController.click(_:)), for: UIControlEvents.touchUpInside)
+        btn?.addTarget(self, action: #selector(ViewController.click(_:)), for: UIControl.Event.touchUpInside)
         view.addSubview(btn!)
         
         btnLog.setTitle("添加Log", for: .normal)

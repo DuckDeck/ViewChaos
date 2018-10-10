@@ -90,28 +90,28 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         addSubview(tbLeft)
         addSubview(tbRight)
         btnClose.frame = CGRect(x: self.frame.size.width - 45, y: 5, width: 45, height: 22)
-        btnClose.setTitle("Close", for: UIControlState())
+        btnClose.setTitle("Close", for: UIControl.State())
         btnClose.titleLabel?.font = UIFont.systemFont(ofSize: 13)
-        btnClose.setTitleColor(UIColor.orange, for: UIControlState())
-        btnClose.addTarget(self, action: #selector(ViewChaosInfo.close(_:)), for: UIControlEvents.touchUpInside)
+        btnClose.setTitleColor(UIColor.orange, for: UIControl.State())
+        btnClose.addTarget(self, action: #selector(ViewChaosInfo.close(_:)), for: UIControl.Event.touchUpInside)
         addSubview(btnClose)
         btnBack.frame = CGRect(x: self.frame.size.width - btnClose.frame.size.width - 45, y: 5, width: 45, height: 22)
-        btnBack.setTitle("Back", for: UIControlState())
+        btnBack.setTitle("Back", for: UIControl.State())
         btnBack.titleLabel?.font = UIFont.systemFont(ofSize: 12)
-        btnBack.setTitleColor(UIColor.orange, for: UIControlState())
-        btnBack.addTarget(self, action: #selector(ViewChaosInfo.back(_:)), for: UIControlEvents.touchUpInside)
+        btnBack.setTitleColor(UIColor.orange, for: UIControl.State())
+        btnBack.addTarget(self, action: #selector(ViewChaosInfo.back(_:)), for: UIControl.Event.touchUpInside)
         addSubview(btnBack)
         btnHit.frame = CGRect(x: btnBack.frame.origin.x - 35, y: 5, width: 35, height: 22)
-        btnHit.setTitle("Hit", for: UIControlState())
+        btnHit.setTitle("Hit", for: UIControl.State())
         btnHit.titleLabel?.font = UIFont.systemFont(ofSize: 13)
-        btnHit.setTitleColor(UIColor.orange, for: UIControlState())
-        btnHit.addTarget(self, action: #selector(ViewChaosInfo.hit(_:)), for: UIControlEvents.touchUpInside)
+        btnHit.setTitleColor(UIColor.orange, for: UIControl.State())
+        btnHit.addTarget(self, action: #selector(ViewChaosInfo.hit(_:)), for: UIControl.Event.touchUpInside)
         addSubview(btnHit)
         btnControl.frame = CGRect(x: btnHit.frame.origin.x - 45, y: 5, width: 45, height: 22)
-        btnControl.setTitle("Control", for: UIControlState())
+        btnControl.setTitle("Control", for: UIControl.State())
         btnControl.titleLabel?.font = UIFont.systemFont(ofSize: 13)
-        btnControl.setTitleColor(UIColor.orange, for: UIControlState())
-        btnControl.addTarget(self, action: #selector(ViewChaosInfo.control(_:)), for: UIControlEvents.touchUpInside)
+        btnControl.setTitleColor(UIColor.orange, for: UIControl.State())
+        btnControl.addTarget(self, action: #selector(ViewChaosInfo.control(_:)), for: UIControl.Event.touchUpInside)
         addSubview(btnControl)
         swMark.frame = CGRect(x: btnControl.frame.origin.x - 50, y: 0, width: 45, height: 22)
         swMark.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
@@ -137,9 +137,9 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         addSubview(lblCurrentView)
         btnMinimize.frame = CGRect(x: self.frame.size.width-20, y: self.frame.size.height / 2 - 20, width: 20, height: 40)
         btnMinimize.backgroundColor = UIColor.black
-        btnMinimize.setTitleColor(UIColor.white, for: UIControlState())
-        btnMinimize.setTitle(">", for: UIControlState())
-        btnMinimize.addTarget(self, action: #selector(ViewChaosInfo.minimize(_:)), for: UIControlEvents.touchUpInside)
+        btnMinimize.setTitleColor(UIColor.white, for: UIControl.State())
+        btnMinimize.setTitle(">", for: UIControl.State())
+        btnMinimize.addTarget(self, action: #selector(ViewChaosInfo.minimize(_:)), for: UIControl.Event.touchUpInside)
         addSubview(btnMinimize)
     }
     
@@ -238,7 +238,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                 tbRight.reloadData()
                 tbRight.tableFooterView = UIView()
                 if let btn = tbRight.tableHeaderView as? UIButton{
-                    btn.setTitle("Start", for: UIControlState())
+                    btn.setTitle("Start", for: UIControl.State())
                 }
             }
             arrSubview?.removeAll()
@@ -292,7 +292,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
     
     @objc func onTrace(_ sender:UIButton)
     {
-        if sender.title(for: UIControlState()) == "Start"{
+        if sender.title(for: UIControl.State()) == "Start"{
             startTrace()
         }
         else{
@@ -308,7 +308,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             return
         }
         isTrace =  true
-        btn.setTitle("Stop", for: UIControlState())
+        btn.setTitle("Stop", for: UIControl.State())
         arrTrace?.removeAll()
         tbRight.reloadData()
         tbRight.tableFooterView = UIView()
@@ -351,15 +351,15 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             return;
         }
         let btn = tbRight.tableHeaderView! as! UIButton
-        btn.setTitle("Start", for: UIControlState())
+        btn.setTitle("Start", for: UIControl.State())
     }
     
     @objc func close(_ sender:UIButton){
-        if btnClose.title(for: UIControlState()) == "Close"{
+        if btnClose.title(for: UIControl.State()) == "Close"{
             self.removeFromSuperview()
             NotificationCenter.default.post(name: Notification.Name(rawValue: "handleTraceViewClose"), object: nil)
         }
-        else if btnClose.title(for: UIControlState()) == "Stop"{
+        else if btnClose.title(for: UIControl.State()) == "Stop"{
             stopTrace()
             if isTrace! &&  viewHit != nil{
                 viewHit?.layer.borderColor = viewTrackBorderColor?.cgColor
@@ -444,7 +444,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                         constant = con.constant
                     }
                 }
-                if con.firstItem as! UIView == viewHit! && (con.firstAttribute == NSLayoutAttribute.leading || con.firstAttribute == NSLayoutAttribute.left || con.firstAttribute == NSLayoutAttribute.leadingMargin || con.firstAttribute == NSLayoutAttribute.leftMargin){
+                if con.firstItem as! UIView == viewHit! && (con.firstAttribute == NSLayoutConstraint.Attribute.leading || con.firstAttribute == NSLayoutConstraint.Attribute.left || con.firstAttribute == NSLayoutConstraint.Attribute.leadingMargin || con.firstAttribute == NSLayoutConstraint.Attribute.leftMargin){
                     var dict = [String:AnyObject]()
                     dict["Type"] = "Left" as AnyObject?
                     dict["Value"] = con.description as AnyObject?
@@ -454,7 +454,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                     dict["Priority"] = con.priority as AnyObject?
                     arrConstrains?.append(dict)
                 }
-                else if  con.secondItem as? UIView == viewHit! && (con.secondAttribute == NSLayoutAttribute.leading || con.secondAttribute == NSLayoutAttribute.left || con.secondAttribute == NSLayoutAttribute.leadingMargin || con.secondAttribute == NSLayoutAttribute.leftMargin){
+                else if  con.secondItem as? UIView == viewHit! && (con.secondAttribute == NSLayoutConstraint.Attribute.leading || con.secondAttribute == NSLayoutConstraint.Attribute.left || con.secondAttribute == NSLayoutConstraint.Attribute.leadingMargin || con.secondAttribute == NSLayoutConstraint.Attribute.leftMargin){
                     var dict = [String:AnyObject]()
                     dict["Type"] = "Left" as AnyObject?
                     dict["Value"] = con.description as AnyObject?
@@ -464,7 +464,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                     dict["Priority"] = con.priority as AnyObject?
                     arrConstrains?.append(dict)
                 }
-                else if con.firstItem as! UIView == viewHit! && (con.firstAttribute == NSLayoutAttribute.top || con.firstAttribute == NSLayoutAttribute.topMargin) {
+                else if con.firstItem as! UIView == viewHit! && (con.firstAttribute == NSLayoutConstraint.Attribute.top || con.firstAttribute == NSLayoutConstraint.Attribute.topMargin) {
                     var dict = [String:AnyObject]()
                     dict["Type"] = "Top" as AnyObject?
                     dict["Value"] = con.description as AnyObject?
@@ -474,7 +474,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                     dict["Priority"] = con.priority as AnyObject?
                     arrConstrains?.append(dict)
                 }
-                else if con.secondItem as? UIView == viewHit! && (con.secondAttribute == NSLayoutAttribute.top || con.secondAttribute == NSLayoutAttribute.topMargin) {
+                else if con.secondItem as? UIView == viewHit! && (con.secondAttribute == NSLayoutConstraint.Attribute.top || con.secondAttribute == NSLayoutConstraint.Attribute.topMargin) {
                     var dict = [String:AnyObject]()
                     dict["Type"] = "Top" as AnyObject?
                     dict["Value"] = con.description as AnyObject?
@@ -485,7 +485,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                     dict["Priority"] = con.priority as AnyObject?
                     arrConstrains?.append(dict)
                 }
-                else if con.firstItem as! UIView == viewHit! && (con.firstAttribute == NSLayoutAttribute.trailing || con.firstAttribute == NSLayoutAttribute.trailingMargin || con.firstAttribute == NSLayoutAttribute.right || con.firstAttribute == NSLayoutAttribute.rightMargin){
+                else if con.firstItem as! UIView == viewHit! && (con.firstAttribute == NSLayoutConstraint.Attribute.trailing || con.firstAttribute == NSLayoutConstraint.Attribute.trailingMargin || con.firstAttribute == NSLayoutConstraint.Attribute.right || con.firstAttribute == NSLayoutConstraint.Attribute.rightMargin){
                     var dict = [String:AnyObject]()
                     dict["Type"] = "Right" as AnyObject?
                     dict["Value"] = con.description as AnyObject?
@@ -495,7 +495,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                     dict["Priority"] = con.priority as AnyObject?
                     arrConstrains?.append(dict)
                 }
-                else if con.secondItem as? UIView == viewHit! && (con.secondAttribute == NSLayoutAttribute.trailing || con.secondAttribute == NSLayoutAttribute.trailingMargin || con.secondAttribute == NSLayoutAttribute.right || con.secondAttribute == NSLayoutAttribute.rightMargin){
+                else if con.secondItem as? UIView == viewHit! && (con.secondAttribute == NSLayoutConstraint.Attribute.trailing || con.secondAttribute == NSLayoutConstraint.Attribute.trailingMargin || con.secondAttribute == NSLayoutConstraint.Attribute.right || con.secondAttribute == NSLayoutConstraint.Attribute.rightMargin){
                     var dict = [String:AnyObject]()
                     dict["Type"] = "Right" as AnyObject?
                     dict["Value"] = con.description as AnyObject?
@@ -505,7 +505,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                     dict["Priority"] = con.priority as AnyObject?
                     arrConstrains?.append(dict)
                 }
-                else if con.firstItem as! UIView == viewHit! && (con.firstAttribute == NSLayoutAttribute.bottom || con.firstAttribute == NSLayoutAttribute.bottomMargin) {
+                else if con.firstItem as! UIView == viewHit! && (con.firstAttribute == NSLayoutConstraint.Attribute.bottom || con.firstAttribute == NSLayoutConstraint.Attribute.bottomMargin) {
                     var dict = [String:AnyObject]()
                     dict["Type"] = "Bottom" as AnyObject?
                     dict["Value"] = con.description as AnyObject?
@@ -515,7 +515,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                     dict["Priority"] = con.priority as AnyObject?
                     arrConstrains?.append(dict)
                 }
-                else if con.secondItem as? UIView == viewHit! && (con.secondAttribute == NSLayoutAttribute.bottom || con.secondAttribute == NSLayoutAttribute.bottomMargin) {
+                else if con.secondItem as? UIView == viewHit! && (con.secondAttribute == NSLayoutConstraint.Attribute.bottom || con.secondAttribute == NSLayoutConstraint.Attribute.bottomMargin) {
                     var dict = [String:AnyObject]()
                     dict["Type"] = "Bottom" as AnyObject?
                     dict["Value"] = con.description as AnyObject?
@@ -525,7 +525,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                     dict["Priority"] = con.priority as AnyObject?
                     arrConstrains?.append(dict)
                 }
-                else if (con.firstItem as! UIView == viewHit! && con.firstAttribute == NSLayoutAttribute.width) || (con.secondItem as? UIView == viewHit && con.secondAttribute == NSLayoutAttribute.width){
+                else if (con.firstItem as! UIView == viewHit! && con.firstAttribute == NSLayoutConstraint.Attribute.width) || (con.secondItem as? UIView == viewHit && con.secondAttribute == NSLayoutConstraint.Attribute.width){
                     if con.isKind(of: NSClassFromString("NSContentSizeLayoutConstraint")!){
                         var dict = [String:AnyObject]()
                         dict["Type"] = "IntrinsicContent Width" as AnyObject?
@@ -544,7 +544,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                         arrConstrains?.append(dict)
                     }
                 }
-                else if (con.firstItem as! UIView == viewHit! && con.firstAttribute == NSLayoutAttribute.height) || (con.secondItem as? UIView == viewHit && con.secondAttribute == NSLayoutAttribute.height){
+                else if (con.firstItem as! UIView == viewHit! && con.firstAttribute == NSLayoutConstraint.Attribute.height) || (con.secondItem as? UIView == viewHit && con.secondAttribute == NSLayoutConstraint.Attribute.height){
                     if con.isKind(of: NSClassFromString("NSContentSizeLayoutConstraint")!){
                         var dict = [String:AnyObject]()
                         dict["Type"] = "IntrinsicContent Height" as AnyObject?
@@ -563,7 +563,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                         arrConstrains?.append(dict)
                     }
                 }
-                else if con.firstItem as! UIView == viewHit! && con.firstAttribute == NSLayoutAttribute.centerX{
+                else if con.firstItem as! UIView == viewHit! && con.firstAttribute == NSLayoutConstraint.Attribute.centerX{
                     var dict = [String:AnyObject]()
                     dict["Type"] = "CenterX" as AnyObject?
                     dict["Value"] = con.description as AnyObject?
@@ -573,7 +573,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                     dict["Priority"] = con.priority as AnyObject?
                     arrConstrains?.append(dict)
                 }
-                else if con.secondItem as? UIView == viewHit! && con.firstAttribute == NSLayoutAttribute.centerX{
+                else if con.secondItem as? UIView == viewHit! && con.firstAttribute == NSLayoutConstraint.Attribute.centerX{
                     var dict = [String:AnyObject]()
                     dict["Type"] = "CenterX" as AnyObject?
                     dict["Value"] = con.description as AnyObject?
@@ -583,7 +583,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                     dict["Priority"] = con.priority as AnyObject?
                     arrConstrains?.append(dict)
                 }
-                else if con.firstItem as! UIView == viewHit! && con.firstAttribute == NSLayoutAttribute.centerY{
+                else if con.firstItem as! UIView == viewHit! && con.firstAttribute == NSLayoutConstraint.Attribute.centerY{
                     var dict = [String:AnyObject]()
                     dict["Type"] = "CenterY" as AnyObject?
                     dict["Value"] = con.description as AnyObject?
@@ -593,7 +593,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                     dict["Priority"] = con.priority as AnyObject?
                     arrConstrains?.append(dict)
                 }
-                else if con.secondItem as? UIView == viewHit! && con.firstAttribute == NSLayoutAttribute.centerY{
+                else if con.secondItem as? UIView == viewHit! && con.firstAttribute == NSLayoutConstraint.Attribute.centerY{
                     var dict = [String:AnyObject]()
                     dict["Type"] = "CenterY" as AnyObject?
                     dict["Value"] = con.description as AnyObject?
@@ -603,7 +603,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                     dict["Priority"] = con.priority as AnyObject?
                     arrConstrains?.append(dict)
                 }
-                else if con.firstItem as! UIView == viewHit! && con.firstAttribute == NSLayoutAttribute.lastBaseline{
+                else if con.firstItem as! UIView == viewHit! && con.firstAttribute == NSLayoutConstraint.Attribute.lastBaseline{
                     var dict = [String:AnyObject]()
                     dict["Type"] = "BaseLine" as AnyObject?
                     dict["Value"] = con.description as AnyObject?
@@ -613,7 +613,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                     dict["Priority"] = con.priority as AnyObject?
                     arrConstrains?.append(dict)
                 }
-                else if con.secondItem as? UIView == viewHit! && con.firstAttribute == NSLayoutAttribute.lastBaseline{
+                else if con.secondItem as? UIView == viewHit! && con.firstAttribute == NSLayoutConstraint.Attribute.lastBaseline{
                     var dict = [String:AnyObject]()
                     dict["Type"] = "BaseLine" as AnyObject?
                     dict["Value"] = con.description as AnyObject?
@@ -638,10 +638,10 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             self.frame = fm
             }, completion: { (finished) -> Void in
                 let btn = UIButton(frame: self.bounds)
-                btn.setTitle("<", for: UIControlState())
+                btn.setTitle("<", for: UIControl.State())
                 btn.backgroundColor = UIColor.black
-                btn.setTitleColor(UIColor.white, for: UIControlState())
-                btn.addTarget(self, action: #selector(ViewChaosInfo.expand(_:)), for: UIControlEvents.touchUpInside)
+                btn.setTitleColor(UIColor.white, for: UIControl.State())
+                btn.addTarget(self, action: #selector(ViewChaosInfo.expand(_:)), for: UIControl.Event.touchUpInside)
                 self.addSubview(btn)
         }) 
     }
@@ -792,7 +792,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         else if keyPath == "contentInset"{
             let oldEdge = (change![NSKeyValueChangeKey.oldKey]! as AnyObject).uiEdgeInsetsValue
             let newEdge = (change![NSKeyValueChangeKey.newKey]! as AnyObject).uiEdgeInsetsValue
-            if UIEdgeInsetsEqualToEdgeInsets(oldEdge!, newEdge!){
+            if oldEdge == newEdge {
                 return
             }
             var dict = [String:AnyObject]()
@@ -875,7 +875,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         if tableView == tbLeft{
             cell = tableView.dequeueReusableCell(withIdentifier: "cellLeft")
             if cell == nil{
-                cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "cellLeft")
+                cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "cellLeft")
                 cell?.backgroundColor = UIColor.clear
             }
             cell?.textLabel?.font = UIFont.systemFont(ofSize: 14)
@@ -901,10 +901,10 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             tbRight.reloadData()
             if type == .trace{
                 let btn = UIButton(frame: CGRect(x: 0, y: 0, width: 0, height: 30))
-                btn.setTitle(isTrace! ? "Stop" : "Start", for: UIControlState())
-                btn.setTitleColor(UIColor.orange, for: UIControlState())
+                btn.setTitle(isTrace! ? "Stop" : "Start", for: UIControl.State())
+                btn.setTitleColor(UIColor.orange, for: UIControl.State())
                 btn.backgroundColor = UIColor(red: 0.0, green: 1.0, blue: 0.74, alpha: 1.0)
-                btn.addTarget(self, action: #selector(ViewChaosInfo.onTrace(_:)), for: UIControlEvents.touchUpInside)
+                btn.addTarget(self, action: #selector(ViewChaosInfo.onTrace(_:)), for: UIControl.Event.touchUpInside)
                 tbRight.tableHeaderView = btn
             }
             else
@@ -963,7 +963,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
     func handleGeneralCell(_ index:IndexPath)->UITableViewCell{
         var cell = tbRight.dequeueReusableCell(withIdentifier: "tbrightGeneral")
         if cell == nil{
-            cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "tbrightGeneral")
+            cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "tbrightGeneral")
             cell?.backgroundColor = UIColor.clear
         }
         cell?.textLabel?.numberOfLines = 0
@@ -977,7 +977,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
     func handleSuperViewCell(_ index:IndexPath)->UITableViewCell{
         var cell = tbRight.dequeueReusableCell(withIdentifier: "tbrightSuperView")
         if cell == nil{
-            cell = UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: "tbrightSuperView")
+            cell = UITableViewCell(style: UITableViewCell.CellStyle.subtitle, reuseIdentifier: "tbrightSuperView")
             cell?.backgroundColor = UIColor.clear
         }
         let view = (arrSuperView![(index as NSIndexPath).row]).obj as? UIView
@@ -1003,7 +1003,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             }
             else if view is UIButton{
                 let btn = view as! UIButton
-                let title = btn.title(for: UIControlState()) == nil ? "": btn.title(for: UIControlState())!
+                let title = btn.title(for: UIControl.State()) == nil ? "": btn.title(for: UIControl.State())!
                 cell?.detailTextLabel?.text = cell!.detailTextLabel!.text! + " text(\((title as NSString).length): \(title))"
             }
             cell?.detailTextLabel?.sizeToFit()
@@ -1015,7 +1015,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
     func handleSubViewCell(_ index:IndexPath)->UITableViewCell{
         var cell = tbRight.dequeueReusableCell(withIdentifier: "tbrightSubView")
         if cell == nil{
-            cell = UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: "tbrightSubView")
+            cell = UITableViewCell(style: UITableViewCell.CellStyle.subtitle, reuseIdentifier: "tbrightSubView")
             cell?.backgroundColor = UIColor.clear
         }
         let view = (arrSubview![(index as NSIndexPath).row]).obj as? UIView
@@ -1040,7 +1040,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             }
             else if view is UIButton{
                 let btn = view as! UIButton
-                let title = btn.title(for: UIControlState()) == nil ? "": btn.title(for: UIControlState())!
+                let title = btn.title(for: UIControl.State()) == nil ? "": btn.title(for: UIControl.State())!
                 cell?.detailTextLabel?.text = cell!.detailTextLabel!.text! + " text(\((title as NSString).length): \(title))"
             }
             cell?.detailTextLabel?.sizeToFit()
@@ -1051,7 +1051,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
     func handleConstrainCell(_ index:IndexPath)->UITableViewCell{
         var cell = tbRight.dequeueReusableCell(withIdentifier: "tbrightConstrain")
         if cell == nil{
-            cell = UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: "tbrightConstrain")
+            cell = UITableViewCell(style: UITableViewCell.CellStyle.subtitle, reuseIdentifier: "tbrightConstrain")
             cell?.backgroundColor = UIColor.clear
         }
         let dict = arrConstrains![(index as NSIndexPath).row]
@@ -1077,7 +1077,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
     func handleTraceCell(_ index:IndexPath)->UITableViewCell{
         var cell = tbRight.dequeueReusableCell(withIdentifier: "tbrightTrace")
         if cell == nil{
-            cell = UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: "tbrightTrace")
+            cell = UITableViewCell(style: UITableViewCell.CellStyle.subtitle, reuseIdentifier: "tbrightTrace")
             cell?.backgroundColor = UIColor.clear
         }
         let dict = arrTrace![(index as NSIndexPath).row]
@@ -1100,7 +1100,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
     func  handleAboutCell(_ index:IndexPath)->UITableViewCell{
         var cell = tbRight.dequeueReusableCell(withIdentifier: "tbrightAbout")
         if cell == nil{
-            cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "tbrightAbout")
+            cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "tbrightAbout")
             cell?.backgroundColor = UIColor.clear
         }
         cell?.textLabel?.numberOfLines = 0
@@ -1115,7 +1115,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
     func heightForGeneralCell(_ index:IndexPath,width:CGFloat) -> CGFloat{
         if (index as NSIndexPath).row == 0{
             let str = arrGeneral![0] as NSString
-            let rect = str.boundingRect(with: CGSize(width: width, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font:UIFont.systemFont(ofSize: 17)], context: nil)
+            let rect = str.boundingRect(with: CGSize(width: width, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 17)], context: nil)
             return rect.size.height + 5
         }
         else{
@@ -1139,7 +1139,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                 strDetail = "\(strDetail) text(\((text as NSString).length)):\(text)"
             }else if view! is UIButton{
                 let btn = view as! UIButton
-                if let title = btn.title(for: UIControlState()){
+                if let title = btn.title(for: UIControl.State()){
                     strDetail = "\(strDetail) text(\((title as NSString).length)):\(title)"
                 }
                 else{
@@ -1147,8 +1147,8 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                 }
             }
         }
-        let rect = (str as NSString).boundingRect(with: CGSize(width: width, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font:UIFont.systemFont(ofSize: 17)], context: nil)
-        let rectDetail = (strDetail as NSString).boundingRect(with: CGSize(width: width, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font:UIFont.systemFont(ofSize: 12)], context: nil)
+        let rect = (str as NSString).boundingRect(with: CGSize(width: width, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 17)], context: nil)
+        let rectDetail = (strDetail as NSString).boundingRect(with: CGSize(width: width, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 12)], context: nil)
         let height = rect.size.height + rectDetail.size.height + 10
         return height
     }
@@ -1169,7 +1169,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                 strDetail = "\(strDetail) text(\((text as NSString).length)):\(text)"
             }else if view! is UIButton{
                 let btn = view as! UIButton
-                if let title = btn.title(for: UIControlState()){
+                if let title = btn.title(for: UIControl.State()){
                     strDetail = "\(strDetail) text(\((title as NSString).length)):\(title)"
                 }
                 else{
@@ -1177,8 +1177,8 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                 }
             }
         }
-        let rect = (str as NSString).boundingRect(with: CGSize(width: width, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font:UIFont.systemFont(ofSize: 17)], context: nil)
-        let rectDetail = (strDetail as NSString).boundingRect(with: CGSize(width: width, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font:UIFont.systemFont(ofSize: 12)], context: nil)
+        let rect = (str as NSString).boundingRect(with: CGSize(width: width, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 17)], context: nil)
+        let rectDetail = (strDetail as NSString).boundingRect(with: CGSize(width: width, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 12)], context: nil)
         return rect.size.height + rectDetail.size.height + 10
     }
     
@@ -1193,8 +1193,8 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             arr.append(t)
         }
         strDetail = (arr as NSArray).componentsJoined(by: " ").replacingOccurrences(of: ">", with: "")
-        let rect = (str as NSString).boundingRect(with: CGSize(width: width, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font:UIFont.systemFont(ofSize: 17)], context: nil)
-        let rectDetail = (strDetail as NSString).boundingRect(with: CGSize(width: width, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font:UIFont.systemFont(ofSize: 12)], context: nil)
+        let rect = (str as NSString).boundingRect(with: CGSize(width: width, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 17)], context: nil)
+        let rectDetail = (strDetail as NSString).boundingRect(with: CGSize(width: width, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 12)], context: nil)
         return rect.size.height + rectDetail.size.height + 10
     }
     
@@ -1206,14 +1206,14 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         if (dic["Key"] as! String) == "superview.frame"{
             strDetail = (dic["Superview"]! as! String) + strDetail
         }
-        let rect = (str as NSString).boundingRect(with: CGSize(width: width, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font:UIFont.systemFont(ofSize: 17)], context: nil)
-        let rectDetail = (strDetail as NSString).boundingRect(with: CGSize(width: width, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font:UIFont.systemFont(ofSize: 12)], context: nil)
+        let rect = (str as NSString).boundingRect(with: CGSize(width: width, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 17)], context: nil)
+        let rectDetail = (strDetail as NSString).boundingRect(with: CGSize(width: width, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 12)], context: nil)
         return rect.size.height + rectDetail.size.height + 10
     }
     
     func heightForAboutCell(_ index:IndexPath,width:CGFloat)->CGFloat{
         let str = arrAbout![(index as NSIndexPath).row]
-        let rect = (str as NSString).boundingRect(with: CGSize(width: width, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font:UIFont.systemFont(ofSize: 17)], context: nil)
+        let rect = (str as NSString).boundingRect(with: CGSize(width: width, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 17)], context: nil)
         return rect.size.height + 5
     }
     

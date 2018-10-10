@@ -50,16 +50,16 @@ class logTableViewCell: UITableViewCell {
             lblMsg.text = msg
         }
     }
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = UIColor.clear
         lblMsg.numberOfLines = 0
         lblMsg.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(lblMsg)
-        let leftConstraint = NSLayoutConstraint.init(item: lblMsg, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal, toItem: contentView, attribute: NSLayoutAttribute.leading, multiplier: 1, constant: 10)
-        let rightConstraint = NSLayoutConstraint.init(item: lblMsg, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal, toItem: contentView, attribute: NSLayoutAttribute.trailing, multiplier: 1, constant: -10)
-        let topConstraint = NSLayoutConstraint.init(item: lblMsg, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: contentView, attribute: NSLayoutAttribute.top, multiplier: 1, constant: 3)
-        let bottomConstraint = NSLayoutConstraint.init(item: lblMsg, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal, toItem: contentView, attribute: NSLayoutAttribute.bottom, multiplier: 1, constant: -3)
+        let leftConstraint = NSLayoutConstraint.init(item: lblMsg, attribute: NSLayoutConstraint.Attribute.leading, relatedBy: NSLayoutConstraint.Relation.equal, toItem: contentView, attribute: NSLayoutConstraint.Attribute.leading, multiplier: 1, constant: 10)
+        let rightConstraint = NSLayoutConstraint.init(item: lblMsg, attribute: NSLayoutConstraint.Attribute.trailing, relatedBy: NSLayoutConstraint.Relation.equal, toItem: contentView, attribute: NSLayoutConstraint.Attribute.trailing, multiplier: 1, constant: -10)
+        let topConstraint = NSLayoutConstraint.init(item: lblMsg, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: contentView, attribute: NSLayoutConstraint.Attribute.top, multiplier: 1, constant: 3)
+        let bottomConstraint = NSLayoutConstraint.init(item: lblMsg, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal, toItem: contentView, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1, constant: -3)
         NSLayoutConstraint.activate([leftConstraint,rightConstraint,topConstraint,bottomConstraint])
         lblMsg.textColor = UIColor.white
         lblMsg.font = UIFont.systemFont(ofSize: 12)

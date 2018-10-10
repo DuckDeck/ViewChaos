@@ -116,7 +116,7 @@ class TaggingView: UIView,AbstractView {
             context.strokePath()
             let str = String.init(format: "%.0f px", line.lineWidth)
             let position = CGRect(x: line.centerPoint.x - 15 < 0 ? 3 :  line.centerPoint.x - 15 , y: line.centerPoint.y - 6 < 3 ? 0 : line.centerPoint.y - 6 , width: 30, height: 16)
-             (str as NSString).draw(in: position, withAttributes: [NSAttributedStringKey.font:UIFont.systemFont(ofSize: 7),NSAttributedStringKey.foregroundColor:UIColor.red,NSAttributedStringKey.backgroundColor:UIColor(red: 1, green: 1, blue: 0, alpha: 0.5)])
+            (str as NSString).draw(in: position, withAttributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 7),NSAttributedString.Key.foregroundColor:UIColor.red,NSAttributedString.Key.backgroundColor:UIColor(red: 1, green: 1, blue: 0, alpha: 0.5)])
         }
     }
     
