@@ -549,7 +549,7 @@ class ViewChaos: UIView {
         viewBound.removeFromSuperview()
         
         let touch = touches.first
-        let point = touch?.location(in: self)
+        let point = touch?.location(in: self) //这个坐标是这个圆本身的坐标
         left = Float(point!.x)
         top = Float(point!.y)
         let topPoint = touch?.location(in: self.window)
@@ -669,13 +669,21 @@ class ViewChaos: UIView {
         var pt = point
         if view is UIScrollView{
             pt.x += (view as! UIScrollView).contentOffset.x
+//            if view.frame.origin.y < 64{
+//                pt.y += (view as! UIScrollView).contentOffset.y + 64 - view.frame.origin.y
+//            }
+//            else{
+//                pt.y += (view as! UIScrollView).contentOffset.y
+//            }
             pt.y += (view as! UIScrollView).contentOffset.y
+            
         }
-        if view.point(inside: point, with: nil) && !view.isHidden && view.alpha > 0.01 && view != viewBound && !view.isDescendant(of: self){//这里的判断很重要.
+        
+        if view.point(inside: pt, with: nil) && !view.isHidden && view.alpha > 0.01 && view != viewBound && !view.isDescendant(of: self){//这里的判断很重要.
             if !(view is AbstractView) {//issue12 在这里过滤掉AbstractView就行，就可以是获取最上面的AbstractView了
                 arrViewHit.append(view)
                 for subView in view.subviews{
-                    let subPoint = CGPoint(x: point.x - subView.frame.origin.x , y: point.y - subView.frame.origin.y)
+                    let subPoint = CGPoint(x: pt.x - subView.frame.origin.x , y: pt.y - subView.frame.origin.y)
                     hitTest(subView, point: subPoint)
                 }
             }
@@ -686,9 +694,9 @@ class ViewChaos: UIView {
         arrViewHit .removeAll()
         hitTest(view, point: point)
         let viewTop = arrViewHit.last
-//        for v in arrViewHit{
-//             Chaos.Log("\(type(of: v))")
-//        }
+        for v in arrViewHit{
+             Chaos.Log("\(type(of: v))")
+        }
         arrViewHit.removeAll()
         return viewTop
     }

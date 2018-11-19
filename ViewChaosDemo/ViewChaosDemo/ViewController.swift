@@ -13,6 +13,7 @@ class ViewController: UIViewController {
     
     var btnShowMark = UIButton(frame: CGRect(x: 10, y: 20, width: 80, height: 30))
     let btnLog = UIButton(frame: CGRect(x: 100, y: 360, width: 100, height: 30))
+    let btnTable = UIButton(frame: CGRect(x: 150, y: 100, width: 100, height: 30))
     var view1 = UIView()
     
     var view2 = UIView(frame: CGRect(x: 50, y: 400, width: 300, height: 200))
@@ -26,6 +27,11 @@ class ViewController: UIViewController {
         btn?.chaosName = "btn"
         btn?.addTarget(self, action: #selector(ViewController.click(_:)), for: UIControl.Event.touchUpInside)
         view.addSubview(btn!)
+        
+        btnTable.backgroundColor = UIColor.purple
+        btnTable.setTitle("ToTable", for: .normal)
+        btnTable.addTarget(self, action: #selector(toTable), for: .touchUpInside)
+        view.addSubview(btnTable)
         
         btnLog.setTitle("添加Log", for: .normal)
         btnLog.backgroundColor = UIColor(red: 0, green: 1, blue: 0, alpha: 0.5)
@@ -46,6 +52,10 @@ class ViewController: UIViewController {
         view.addSubview(view2)
     }
 
+    @objc func toTable()  {
+        navigationController?.pushViewController(TableViewController(), animated: true)
+    }
+    
     @objc func printLog() {
         VCLog(message: "this is a log")
         VCLog(message: "this is a logMarkView.showTaggingView(view: view)MarkView.showTaggingView(view: view)MarkView.showTaggingView(view: view)MarkView.showTaggingView(view: view)")
