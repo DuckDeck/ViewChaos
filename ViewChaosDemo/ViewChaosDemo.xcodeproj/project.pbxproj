@@ -19,6 +19,7 @@
 		A2E6F0391BEB08680042FC43 /* NextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E6F0381BEB08680042FC43 /* NextViewController.swift */; };
 		A2E6F03B1BEB08770042FC43 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2E6F03A1BEB08770042FC43 /* Main.storyboard */; };
 		AE08A9C91C9A72F7005767E1 /* ZoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE08A9C81C9A72F7005767E1 /* ZoomView.swift */; };
+		AE2672AB21EF3B3B006F2892 /* Tool.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2672AA21EF3B3B006F2892 /* Tool.swift */; };
 		AE85E05E1CE5B02900B242A1 /* chaos_alpha.gif in Resources */ = {isa = PBXBuildFile; fileRef = AE85E04D1CE5B02900B242A1 /* chaos_alpha.gif */; };
 		AE85E05F1CE5B02900B242A1 /* chaos_ball_move.gif in Resources */ = {isa = PBXBuildFile; fileRef = AE85E04E1CE5B02900B242A1 /* chaos_ball_move.gif */; };
 		AE85E0601CE5B02900B242A1 /* chaos_border_1.gif in Resources */ = {isa = PBXBuildFile; fileRef = AE85E04F1CE5B02900B242A1 /* chaos_border_1.gif */; };
@@ -65,6 +66,7 @@
 		A2E6F0381BEB08680042FC43 /* NextViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NextViewController.swift; sourceTree = "<group>"; };
 		A2E6F03A1BEB08770042FC43 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		AE08A9C81C9A72F7005767E1 /* ZoomView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZoomView.swift; sourceTree = "<group>"; };
+		AE2672AA21EF3B3B006F2892 /* Tool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tool.swift; sourceTree = "<group>"; };
 		AE85E04D1CE5B02900B242A1 /* chaos_alpha.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = chaos_alpha.gif; sourceTree = "<group>"; };
 		AE85E04E1CE5B02900B242A1 /* chaos_ball_move.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = chaos_ball_move.gif; sourceTree = "<group>"; };
 		AE85E04F1CE5B02900B242A1 /* chaos_border_1.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = chaos_border_1.gif; sourceTree = "<group>"; };
@@ -184,6 +186,7 @@
 				AEF4BDC51F0C71E900D22223 /* MarkInfo.swift */,
 				AEF4BDC71F0C780800D22223 /* MarkView.swift */,
 				AEADFD4D211AC03900E6B58D /* LogView.swift */,
+				AE2672AA21EF3B3B006F2892 /* Tool.swift */,
 			);
 			name = ViewChaos;
 			path = ../ViewChaos;
@@ -296,6 +299,7 @@
 				A2E6F01A1BEAFF7D0042FC43 /* AppDelegate.swift in Sources */,
 				A211FED41BF03D0C004A0A29 /* ViewNeat.swift in Sources */,
 				A211FED21BF02A83004A0A29 /* ViewChaosInfo.swift in Sources */,
+				AE2672AB21EF3B3B006F2892 /* Tool.swift in Sources */,
 				AEB502A521A29E5B00981FB9 /* TableViewController.swift in Sources */,
 				AEF4BDC81F0C780800D22223 /* MarkView.swift in Sources */,
 				AE08A9C91C9A72F7005767E1 /* ZoomView.swift in Sources */,
