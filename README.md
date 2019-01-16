@@ -1,6 +1,6 @@
 ViewChaos
 
-> ViewChaos是一个动态的iOS UI调试工具，是为了解决iOS UI代码编写和调试困难而写的
+> ViewChaos是一个动态的iOS UI调试工具，是为了解决纯代码编写的iOS UI而调试困难而写的
 
 ## ViewChaos 的特性
 
