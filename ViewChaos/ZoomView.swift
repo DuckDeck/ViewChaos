@@ -141,8 +141,8 @@ class ZoomViewBrace: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.frame = UIScreen.main.bounds
-        
-        lblPixelColor.frame = CGRect(x: 0, y: 14, width: UIScreen.main.bounds.size.width, height: 22)
+        let infoTop:CGFloat = (UIDevice.screenResution == .Res414X736 || UIDevice.screenResution == .Res414X896) ? 50 : 0
+        lblPixelColor.frame = CGRect(x: 0, y: infoTop, width: UIScreen.main.bounds.size.width, height: 22)
         lblPixelColor.backgroundColor = UIColor(red: 0.0, green: 0.898, blue: 0.836, alpha: 0.7)
         lblPixelColor.textColor = UIColor.black
         lblPixelColor.numberOfLines = 2
@@ -266,7 +266,6 @@ extension UIImage{
         //Issue9:对于UnsafeMutablePointer<T>类型,从Memery里面取值比较麻烦.那么怎么知道一共有多少值,怎么用index取值呢?
         //对于这个问题,我发现了,其实是也可以像Objc那样取值的.直接用[index]来取就行,一个像素点一共有四个可以取,分别是alpha,red,green,blue
         //依次加1,加2,加3就行了,再就可以婚礼转化成颜色
-        //真TMD不容易啊
         
         return color
     }

@@ -1122,6 +1122,13 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         var cell = tbRight.dequeueReusableCell(withIdentifier: "tbrightSetting") as? ShakeEnableCell
         if cell == nil{
             cell = ShakeEnableCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "tbrightSetting")
+            cell?.blkSHowMenu = {[weak self]() in
+                self?.close(self!.btnClose)
+                if let win =  UIApplication.shared.keyWindow{
+                    win.showMenu()
+                }
+                //但是不能关是个问题
+            }
             cell?.backgroundColor = UIColor.clear
         }
         return cell!

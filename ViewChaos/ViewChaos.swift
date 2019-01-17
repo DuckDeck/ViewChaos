@@ -79,6 +79,12 @@ extension UIWindow:UIActionSheetDelegate {
 //    Chaos.hookMethod(UIView.self, originalSelector: #selector(UIView.willRemoveSubview(_:)), swizzleSelector: #selector(UIView.vcWillRemoveSubview(_:)))
 //    Chaos.hookMethod(UIView.self, originalSelector: #selector(UIView.didAddSubview(_:)), swizzleSelector: #selector(UIView.vcDidAddSubview(_:)))
 
+    fileprivate func enableShake(){
+        let def = UserDefaults.standard
+        def.set(true, forKey: "ShakeEnable")
+        def.synchronize()
+    }
+    
     @objc public  func vcMakeKeyAndVisible(){
         self.vcMakeKeyAndVisible()//看起来是死循环,其实不是,因为已经交换过了
         if self.frame.size.height > 20  //为什么是20,当时写这个的时侯不明白为什么是20
@@ -110,18 +116,24 @@ extension UIWindow:UIActionSheetDelegate {
         if !UserDefaults.standard.bool(forKey: "ShakeEnable"){
             return
         }
+        showMenu()
+    }
+    
+   
+   internal func showMenu() {
         switch self.chaosFeature
         {
-            case ChaosFeature.none.rawValue:
-            //这里放一个菜单
+        case ChaosFeature.none.rawValue:
+            //这里放一个菜单 要在这打开摇一摇关了的功能 
             let alert = UIAlertController(title: "使用功能", message: nil, preferredStyle: .actionSheet)
             let action1 = UIAlertAction(title: "启用放大镜", style: .default, handler: { (action) in
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: setZoomViewWork), object: nil)
                 Chaos.toast("放大镜已经启用")
                 let view = ZoomViewBrace(frame: CGRect())
-                view.tag = -1000
+                view.tag = -1111
                 self.insertSubview(view, at: 100)
                 self.chaosFeature = ChaosFeature.zoom.rawValue
+                self.enableShake()
             })
             let action2 = UIAlertAction(title: "显示边框", style: .default, handler: { (action) in
                 Chaos.toast("边框显示功能已经启用")
@@ -130,12 +142,14 @@ extension UIWindow:UIActionSheetDelegate {
                 let view = DrawView(frame: CGRect())
                 view.tag = -7000
                 self.insertSubview(view, at: 600)
-
+                self.enableShake()
+                
             })
             let action3 = UIAlertAction(title: "显示透明度", style: .default, handler: { (action) in
                 Chaos.toast("透明显示功能已经启用")
                 self.chaosFeature = ChaosFeature.alpha.rawValue
                 self.showAlphaView(view: self)
+                self.enableShake()
             })
             let action4 = UIAlertAction(title: "标记界面", style: .default, handler: { (action) in
                 Chaos.toast("标记界面功能已经启用,双击标记界面可取消此功能")
@@ -143,11 +157,11 @@ extension UIWindow:UIActionSheetDelegate {
                 //所以要修正这个问题，就是手指点哪里就显示该view的标签，而不是癸未显示所有，
                 //解决方案，在windowh上加一层view，响应touch事件，然后获取哪保姆个view，在该view上显示标签
                 self.chaosFeature = ChaosFeature.mark.rawValue
-               // MarkView.recursiveShowTagView(view: self)
+                // MarkView.recursiveShowTagView(view: self)
                 let v = HolderMarkView(frame: self.bounds)
                 v.tag = -2000
                 self.insertSubview(v, at: 1000)
-                
+                self.enableShake()
             })
             let action5 = UIAlertAction(title: "显示Log", style: .default, handler: { (action) in
                 Chaos.toast("Log显示功能已经启用")
@@ -155,7 +169,7 @@ extension UIWindow:UIActionSheetDelegate {
                 let v = LogView.sharedInstance
                 v.tag = -9000
                 self.insertSubview(v, at: 1000)
-                
+                self.enableShake()
             })
             let action6 = UIAlertAction(title: "取消", style: .cancel, handler: nil)
             alert.addAction(action1)
@@ -171,8 +185,9 @@ extension UIWindow:UIActionSheetDelegate {
                     Chaos.toast("放大镜已经关闭")
                     self.chaosFeature = ChaosFeature.none.rawValue
                     for view in self.subviews{
-                        if view.tag == -1000{
+                        if view.tag == -1111{
                             view.removeFromSuperview()
+                            break
                         }
                     }
                 }
@@ -182,7 +197,7 @@ extension UIWindow:UIActionSheetDelegate {
                 if buttonIndex == 1{
                     Chaos.toast("边框显示功能已关闭")
                     self.chaosFeature = ChaosFeature.none.rawValue
-                   self.removeBorderView(view: self)
+                    self.removeBorderView(view: self)
                 }
             })
             
@@ -221,11 +236,10 @@ extension UIWindow:UIActionSheetDelegate {
                     MarkView.recursiveRemoveTagView(view: self)
                 }
             })
-         default:break
+        default:break
         }
     }
     
-   
     
     private  func showBorderView(view:UIView){
         for v in view.subviews{
@@ -383,25 +397,6 @@ class ViewChaos: UIView {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-
-    func isProfiledScreen() -> Bool {
-        guard let systemVersion = Float(UIDevice.current.systemVersion) else{
-            return false
-        }
-        if systemVersion > 11{
-//           var systemInfo = utsname()
-//           uname(&systemInfo)
-//           let machine = Mirror(reflecting: systemInfo.machine)
-//           let identifier = machine.children.redu
-            let model = UIDevice.current.model
-            return true
-        }
-        else{
-            return false
-        }
-        
     }
     
     
