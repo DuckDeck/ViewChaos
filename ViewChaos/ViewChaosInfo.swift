@@ -1119,9 +1119,9 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
     }
     
     func handleSettingCell(_ index:IndexPath) -> UITableViewCell {
-        var cell = tbRight.dequeueReusableCell(withIdentifier: "tbrightSetting")
+        var cell = tbRight.dequeueReusableCell(withIdentifier: "tbrightSetting") as? ShakeEnableCell
         if cell == nil{
-            cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "tbrightSetting")
+            cell = ShakeEnableCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "tbrightSetting")
             cell?.backgroundColor = UIColor.clear
         }
         return cell!

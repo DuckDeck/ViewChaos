@@ -87,6 +87,9 @@ extension UIWindow:UIActionSheetDelegate {
             viewChaos.tag = -1000
             self.addSubview(viewChaos)
             self.addObserver(self, forKeyPath: "rootViewController", options: NSKeyValueObservingOptions.new, context: nil)
+            let def = UserDefaults.standard
+            def.set(true, forKey: "ShakeEnable")
+            def.synchronize()
             UIApplication.shared.applicationSupportsShakeToEdit = true //启用摇一摇功能
             self.chaosFeature = 0
             self.viewLevel = 0
@@ -103,6 +106,10 @@ extension UIWindow:UIActionSheetDelegate {
     }
     
     open override func motionBegan(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
+        super.motionBegan(motion, with: event)
+        if !UserDefaults.standard.bool(forKey: "ShakeEnable"){
+            return
+        }
         switch self.chaosFeature
         {
             case ChaosFeature.none.rawValue:
