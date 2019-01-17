@@ -35,7 +35,9 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         case subview = 2
         case constrain = 3
         case trace = 4
-        case about = 5
+        case setting = 5
+        case about = 6
+       
     }
     weak var viewHit:UIView?
     var lblCurrentView:UILabel
@@ -167,7 +169,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             tbRight.delegate = self
             tbRight.dataSource = self
             btnBack.isHidden = true
-            arrLeft = ["General","SuperView","SubView","Constrains","Trace","About"]
+            arrLeft = ["General","SuperView","SubView","Constrains","Trace","setting","About"]
             arrStackView = [ViewChaosObject]()
             arrGeneral = [String]()
             arrAbout = ["这是一个测试UI的工具",",这个工具是RunTrace的Swift版本.希望大家用得开心"]
@@ -862,6 +864,9 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             else if type == .about{
                 return arrAbout!.count
             }
+            else if type == .setting{
+                return 1
+            }
             else
             {
                 return 0
@@ -884,12 +889,13 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         }
         else{
             switch type{
-            case .general:cell = handleGeneralCell(indexPath)
-            case .superview:cell = handleSuperViewCell(indexPath)
-            case .subview:cell = handleSubViewCell(indexPath)
-            case .constrain:cell = handleConstrainCell(indexPath)
-            case .trace:cell = handleTraceCell(indexPath)
-            case .about:cell = handleAboutCell(indexPath)
+                case .general:cell = handleGeneralCell(indexPath)
+                case .superview:cell = handleSuperViewCell(indexPath)
+                case .subview:cell = handleSubViewCell(indexPath)
+                case .constrain:cell = handleConstrainCell(indexPath)
+                case .trace:cell = handleTraceCell(indexPath)
+                case .about:cell = handleAboutCell(indexPath)
+                case .setting:cell = handleSettingCell(indexPath)
             }
             return cell!
         }
@@ -950,12 +956,13 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         else
         {
             switch type{
-            case .general: return heightForGeneralCell(indexPath, width: tableView.bounds.size.width - 2 * tableView.separatorInset.left)
-            case .superview: return heightForSuperViewCell(indexPath, width: tableView.bounds.size.width - 2 * tableView.separatorInset.left)
-            case .subview: return heightForSubViewCell(indexPath, width: tableView.bounds.size.width - 2 * tableView.separatorInset.left)
-            case .constrain: return heightForConstrainCell(indexPath, width: tableView.bounds.size.width - 2 * tableView.separatorInset.left)
-            case .trace: return heightForTraceCell(indexPath, width: tableView.bounds.size.width - 2 * tableView.separatorInset.left)
-            case .about: return heightForAboutCell(indexPath, width: tableView.bounds.size.width - 2 * tableView.separatorInset.left)
+                case .general: return heightForGeneralCell(indexPath, width: tableView.bounds.size.width - 2 * tableView.separatorInset.left)
+                case .superview: return heightForSuperViewCell(indexPath, width: tableView.bounds.size.width - 2 * tableView.separatorInset.left)
+                case .subview: return heightForSubViewCell(indexPath, width: tableView.bounds.size.width - 2 * tableView.separatorInset.left)
+                case .constrain: return heightForConstrainCell(indexPath, width: tableView.bounds.size.width - 2 * tableView.separatorInset.left)
+                case .trace: return heightForTraceCell(indexPath, width: tableView.bounds.size.width - 2 * tableView.separatorInset.left)
+                case .about: return heightForAboutCell(indexPath, width: tableView.bounds.size.width - 2 * tableView.separatorInset.left)
+                case .setting: return heightForAboutCell(indexPath, width: tableView.bounds.size.width - 2 * tableView.separatorInset.left)
             }
         }
     }
@@ -1111,6 +1118,14 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         return cell!
     }
     
+    func handleSettingCell(_ index:IndexPath) -> UITableViewCell {
+        var cell = tbRight.dequeueReusableCell(withIdentifier: "tbrightSetting")
+        if cell == nil{
+            cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "tbrightSetting")
+            cell?.backgroundColor = UIColor.clear
+        }
+        return cell!
+    }
     
     func heightForGeneralCell(_ index:IndexPath,width:CGFloat) -> CGFloat{
         if (index as NSIndexPath).row == 0{

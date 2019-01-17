@@ -332,9 +332,9 @@ class ViewChaos: UIView {
         viewBound.layer.borderWidth = 3
         viewBound.layer.borderColor = UIColor.black.cgColor //View的边界黑色,这个应该可以切换
         viewBound.layer.zPosition = CGFloat(Float.greatestFiniteMagnitude)
-        let model = UIDevice.current.model
-//        let infoTop:CGFloat = self.isProfiledScreen() ? 100 : 0
-        windowInfo = UIWindow(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
+       
+        let infoTop:CGFloat = (UIDevice.screenResution == .Res414X736 || UIDevice.screenResution == .Res414X896) ? 36 : 0
+        windowInfo = UIWindow(frame: CGRect(x: 0, y: infoTop, width: UIScreen.main.bounds.width, height: 50))
         windowInfo.backgroundColor = UIColor(red: 0.0, green: 0.898, blue: 0.836, alpha: 0.7)
         windowInfo.isHidden = true
         windowInfo.chaosName = "windowInfo"
@@ -344,7 +344,6 @@ class ViewChaos: UIView {
         lblInfo.backgroundColor = UIColor.clear
         lblInfo.lineBreakMode = NSLineBreakMode.byCharWrapping
         lblInfo.autoresizingMask = [UIView.AutoresizingMask.flexibleHeight,UIView.AutoresizingMask.flexibleWidth]
-        //self.checkUpdate
         left = 0
         top = 0
         
