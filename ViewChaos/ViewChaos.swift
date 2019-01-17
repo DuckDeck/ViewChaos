@@ -120,7 +120,7 @@ extension UIWindow:UIActionSheetDelegate {
     }
     
    
-   internal func showMenu() {
+   public func showMenu() {
         switch self.chaosFeature
         {
         case ChaosFeature.none.rawValue:
