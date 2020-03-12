@@ -17,7 +17,7 @@ ViewChaos
 
 ## ViewChaos的安装和使用
 `ViewChaos`的安装极为方便，有两种安装方式，如果你不想用`Cocoapods`，只想拖文件，按照以下步骤就行：
-+ 第一步：将这10个文件`(ViewChaos.swift,ViewChaosInfo.swift,ViewNeat.swift，ZoomView.swift,DrawView.swift,MarkInfo.swift,MarkView.swift，ShakeEnableCell.swift,tool.swift,LogView.swift)`复制到你的项目里，或者直接复制`ViewChaos`这个文件夹到你的项目。
++ 第一步：将这10个文件`(ViewChaos.swift,ViewChaosInfo.swift,ViewNeat.swift，ZoomView.swift,DrawView.swift,MarkInfo.swift,MarkView.swift，ShakeEnableCell.swift,tool.swift,LogView.swift)`复制到你的项目里，或者直接复制`ViewChaos`这个文件夹到你的项目。
 + 第二步：选择 `target-> 你的项目 -> Build Setting-> 搜索 'swift compile'-> 选择 'Other Swift Flags' -> 选择 DeBug option -> 添加 -DDEBUG command (这个能让此工具仅工Debug模式有效)`
 + 第三步:如果你找不到`Other Swift Flags`选项，说明你的项目是纯`Objective-c`，那么你需要手动添加一个`swift`文件到你的项目，这时`XCode`会让你添加一个`header bridge`文件，这时侯选择是，再做第二步操作.】
 + 第四步：开始使用。
