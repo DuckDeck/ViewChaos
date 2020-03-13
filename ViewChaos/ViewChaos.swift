@@ -120,7 +120,7 @@ extension UIWindow:UIActionSheetDelegate {
     }
     
    
-   public func showMenu() {
+   internal func showMenu() {
         switch self.chaosFeature
         {
         case ChaosFeature.none.rawValue:
@@ -1177,12 +1177,11 @@ class ToastLable:UILabel {
     }
     override func drawText(in rect: CGRect) {
         super.drawText(in: rect.inset(by: self.textInsets ?? UIEdgeInsets()))
-//        super.drawText(in: UIEdgeInsetsInsetRect(rect, self.textInsets!))
     }
     override func textRect(forBounds bounds: CGRect, limitedToNumberOfLines numberOfLines: Int) -> CGRect {
         var rect = bounds
         if let txt = self.text{
-            rect.size =  (txt as NSString).boundingRect(with: CGSize(width: CGFloat(self.maxWidth!) - self.textInsets!.left - self.textInsets!.right, height: CGFloat.greatestFiniteMagnitude), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font:self.font], context: nil).size
+            rect.size =  (txt as NSString).boundingRect(with: CGSize(width: CGFloat(self.maxWidth!) - self.textInsets!.left - self.textInsets!.right, height: CGFloat.greatestFiniteMagnitude), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font:self.font!], context: nil).size
         }
         return rect
     }
