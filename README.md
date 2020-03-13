@@ -6,18 +6,18 @@ ViewChaos
 
 + 集成方便，不用写一行代码，把文件拖进你的项目就行了，而且只有在`Debug`模式有效，`Release`模式将自动禁用。
 + 给`View`添加了`Name`属性，这样就能知道哪个`View`是由哪些代码生成的，可以更好地定位到代码。
-+ 添加了摇一摇功能，里面集成了放大镜，UI边框显示，UI透明度和标记界面模式，可以查看整个界面布局的一些基本信息。
++ 添加了摇一摇功能，里面集成了放大镜，UI边框显示，UI透明度，标记界面模式和显示log的功能，可以查看整个界面布局的一些基本信息。
 + 可以获取`View`的基本信息，以及它的所有的`父View`和`子View`的基本信息，同时还可以标记该`View`的坐标位置信息。
 + 可视化显示`Autolayout`。
 + 可以实时追踪`View`的状态。
 + 监测内存泄露。
 + 可以实时修改`View`的`Frame, Font,border,tintColor,background`,等属性，这样就不用一次又一次地调试代码后编译启动APP查看，可 以一次性设置后再在代码里修改。
-+ 可以生成代码，这个用处不大，但是也是可以参考的。
++ ~~可以生成代码，这个用处不大，但是也是可以参考的~~。
 + 注意，如果禁用了摇一摇出菜单功能，如果自己手动调出菜单，那么还是需要用摇一摇来关了菜单，这实际是要将摇一摇功能开启了，这时需要再一次将摇一摇关了。
 
 ## ViewChaos的安装和使用
 `ViewChaos`的安装极为方便，有两种安装方式，如果你不想用`Cocoapods`，只想拖文件，按照以下步骤就行：
-+ 第一步：将这七个文件`(ViewChaos.swift,ViewChaosInfo.swift,ViewNeat.swift，ZoomView.swift,DrawView.swift,MarkInfo.swift,MarkView.swift)`复制到你的项目里，或者直接复制`ViewChaos`这个文件夹到你的项目。
++ 第一步：将这10个文件`(ViewChaos.swift,ViewChaosInfo.swift,ViewNeat.swift，ZoomView.swift,DrawView.swift,MarkInfo.swift,MarkView.swift，ShakeEnableCell.swift,tool.swift,LogView.swift)`复制到你的项目里，或者直接复制`ViewChaos`这个文件夹到你的项目。
 + 第二步：选择 `target-> 你的项目 -> Build Setting-> 搜索 'swift compile'-> 选择 'Other Swift Flags' -> 选择 DeBug option -> 添加 -DDEBUG command (这个能让此工具仅工Debug模式有效)`
 + 第三步:如果你找不到`Other Swift Flags`选项，说明你的项目是纯`Objective-c`，那么你需要手动添加一个`swift`文件到你的项目，这时`XCode`会让你添加一个`header bridge`文件，这时侯选择是，再做第二步操作.】
 + 第四步：开始使用。
