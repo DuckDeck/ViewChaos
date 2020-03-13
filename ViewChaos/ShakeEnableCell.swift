@@ -25,8 +25,9 @@ class ShakeEnableCell: UITableViewCell {
         swEnableShake.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
         contentView.addSubview(swEnableShake)
         
-        btnInvokeMenu.frame = CGRect(x: 170, y: 10, width: 80, height: 20)
+        btnInvokeMenu.frame = CGRect(x: 160, y: 10, width: 80, height: 20)
         btnInvokeMenu.setTitle("打开菜单", for: .normal)
+        btnInvokeMenu.setTitleColor(UIColor.black, for: .normal)
         btnInvokeMenu.titleLabel?.font = UIFont.systemFont(ofSize: 15)
         btnInvokeMenu.addTarget(self, action: #selector(showMenu), for: .touchUpInside)
         contentView.addSubview(btnInvokeMenu)

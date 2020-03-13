@@ -172,7 +172,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             arrLeft = ["General","SuperView","SubView","Constrains","Trace","setting","About"]
             arrStackView = [ViewChaosObject]()
             arrGeneral = [String]()
-            arrAbout = ["这是一个测试UI的工具",",这个工具是RunTrace的Swift版本.希望大家用得开心"]
+            arrAbout = ["这是一个测试UI的工具","建议大家好好看看说明文档以充分利用这个工具.希望大家用得开心","关于作者Shadowege ,可以使用3421902这个QQ号联系"]
             initView(viewHit!, back: false)
             NotificationCenter.default.addObserver(self, selector: #selector(ViewChaosInfo.handleRemoveView(_:)), name: NSNotification.Name(rawValue: handleTraceRemoveView), object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(ViewChaosInfo.handleRemoveSubView(_:)), name: NSNotification.Name(rawValue: handleTraceRemoveSubView), object: nil)
@@ -1236,7 +1236,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
     func heightForAboutCell(_ index:IndexPath,width:CGFloat)->CGFloat{
         let str = arrAbout![(index as NSIndexPath).row]
         let rect = (str as NSString).boundingRect(with: CGSize(width: width, height: 1000), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 17)], context: nil)
-        return rect.size.height + 5
+        return rect.size.height + 24
     }
     
     required init?(coder aDecoder: NSCoder) {

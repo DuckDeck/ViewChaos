@@ -16,7 +16,7 @@ class LogView: UIView {
     let tbmsg = UITableView()
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = UIColor(red: 0.7, green: 0.7, blue: 0.7, alpha: 0.7)
+        backgroundColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.8)
         tbmsg.backgroundColor = UIColor.clear
         tbmsg.frame = CGRect(origin: CGPoint(), size: frame.size)
         tbmsg.dataSource = self
@@ -32,7 +32,6 @@ class LogView: UIView {
     func addLog(msg:String)  {
         if arrMsg.count >= 80{
             arrMsg.removeSubrange(50..<80)
-           
         }
         arrMsg.append(msg)
         tbmsg.reloadData()
