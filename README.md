@@ -27,7 +27,7 @@ ViewChaos
 + 第二步：`选择Pods项目->选择 target-> ViewChaos -> Build Setting-> 搜索 'swift compile'-> 选择 'Other Swift Flags' -> 选择 DeBug option -> 添加 -DDEBUG command (这个能让此工具仅工Debug模式有效).`
 + 第三步：开始使用。
 
-![加上-DDEBUG](http://upload-images.jianshu.io/upload_images/1281203-5760044ba4ebc6d7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![加上-DDEBUG](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/0.png)
 
 注意一定要添加`-DDEBUG`，加上这个功能是为了让`ViewChaos`可以在`Debug`模式下启动，而`Release`模式会不会启动。然后启动你的项目，你就可以看到你的APP里面多了一个V的绿色小圆，同时你的APP也有了摇一摇功能。下面我用图片和文字来给读者展示`ViewChaos`的各种功能，建议读者下载`Demo`用真机或者模拟器亲自试试，下面的详细讲解这些功能。
 
@@ -50,10 +50,13 @@ ViewChaos
 
 透明模式更简单了，可以直接现实页面里的UI控件的透明情况，透明度越高的`View`红色会越深。如果没有红色表示此`View`是不透明的。
 
-最后一个功能新加的，也比较新颖，就是标记界面功能，启动该模式后。点击你想要标记的`View`，`ViewChaos`会将此`View`的左右上下标记并显示出来。双击该`View`会取消标记。
+然后就是标记界面功能，启动该模式后。点击你想要标记的`View`，`ViewChaos`会将此`View`的左右上下标记并显示出来。双击该`View`会取消标记。
 
 ![标记界面模式](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/shake.gif)
 
+最后一个是显示Log功能，当你用ViewChaos的VCLog用在本项目来打印Log的时侯，会将log保存起来，然后使用显示log就可以显示VCLog打印的Log
+
+![显示Log](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/log.png)
 
 上面就是摇一摇的全部功能了，注意这个可能和你的项目的摇一摇功能相冲突，目前还没有提供关闭功能，以后版本会提供的
 
