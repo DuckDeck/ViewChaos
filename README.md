@@ -2,7 +2,7 @@ ViewChaos
 
 > ViewChaos是一个动态的iOS UI调试工具，是为了解决纯代码编写的iOS UI而调试困难而写的
 
-## ViewChaos 的特性
+## GrandView 的特性
 
 + 集成方便，不用写一行代码，把文件拖进你的项目就行了，而且只有在`Debug`模式有效，`Release`模式将自动禁用。
 + 给`View`添加了`Name`属性，这样就能知道哪个`View`是由哪些代码生成的，可以更好地定位到代码。
@@ -15,27 +15,25 @@ ViewChaos
 + ~~可以生成代码，这个用处不大，但是也是可以参考的~~。
 + 注意，如果禁用了摇一摇出菜单功能，如果自己手动调出菜单，那么还是需要用摇一摇来关了菜单，这实际是要将摇一摇功能开启了，这时需要再一次将摇一摇关了。
 
-## ViewChaos的安装和使用
-`ViewChaos`的安装极为方便，有两种安装方式，如果你不想用`Cocoapods`，只想拖文件，按照以下步骤就行：
-+ 第一步：将这10个文件`(ViewChaos.swift,ViewChaosInfo.swift,ViewNeat.swift，ZoomView.swift,DrawView.swift,MarkInfo.swift,MarkView.swift，ShakeEnableCell.swift,tool.swift,LogView.swift)`复制到你的项目里，或者直接复制`ViewChaos`这个文件夹到你的项目。
+## GrandView的安装和使用
+`GrandView`的安装极为方便，有两种安装方式，如果你不想用`Cocoapods`，只想拖文件，按照以下步骤就行：
++ 第一步：将这10个文件`(ViewChaos.swift,ViewChaosInfo.swift,ViewNeat.swift，ZoomView.swift,DrawView.swift,MarkInfo.swift,MarkView.swift，ShakeEnableCell.swift,tool.swift,LogView.swift)`复制到你的项目里，或者直接复制`Sources`这个文件夹到你的项目。
 + 第二步：选择 `target-> 你的项目 -> Build Setting-> 搜索 'swift compile'-> 选择 'Other Swift Flags' -> 选择 DeBug option -> 添加 -DDEBUG command (这个能让此工具仅工Debug模式有效)`
 + 第三步:如果你找不到`Other Swift Flags`选项，说明你的项目是纯`Objective-c`，那么你需要手动添加一个`swift`文件到你的项目，这时`XCode`会让你添加一个`header bridge`文件，这时侯选择是，再做第二步操作.】
 + 第四步：开始使用。
 
-如果你想用`Cocoapods`，就更简单了：
-+ 第一步：`pod 'ViewChaos'`，再安装就行。
-+ 第二步：`选择Pods项目->选择 target-> ViewChaos -> Build Setting-> 搜索 'swift compile'-> 选择 'Other Swift Flags' -> 选择 DeBug option -> 添加 -DDEBUG command (这个能让此工具仅工Debug模式有效).`
+~~如果你想用`Cocoapods`，就更简单了~~,注意！这个项目不支持Cocoapods,建议使用Swift Package Manager安装：
 + 第三步：开始使用。
 
 ![加上-DDEBUG](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/0.png)
 
-注意一定要添加`-DDEBUG`，加上这个功能是为了让`ViewChaos`可以在`Debug`模式下启动，而`Release`模式会不会启动。然后启动你的项目，你就可以看到你的APP里面多了一个V的绿色小圆，同时你的APP也有了摇一摇功能。下面我用图片和文字来给读者展示`ViewChaos`的各种功能，建议读者下载`Demo`用真机或者模拟器亲自试试，下面的详细讲解这些功能。
+注意一定要添加`-DDEBUG`，加上这个功能是为了让`GrandView`可以在`Debug`模式下启动，而`Release`模式会不会启动。然后启动你的项目，你就可以看到你的APP里面多了一个V的绿色小圆，同时你的APP也有了摇一摇功能。下面我用图片和文字来给读者展示`GrandView`的各种功能，建议读者下载`Demo`用真机或者模拟器亲自试试，下面的详细讲解这些功能。
 
 ## 摇一摇功能
 
 ![摇一摇呼唤出菜单](http://upload-images.jianshu.io/upload_images/1281203-85bec787e39209e8.gif?imageMogr2/auto-orient/strip)
 
-如果`ViewChaos`正确地集成到了你的APP里，那么就可以使用摇一摇调试功能。摇一摇功能里面一共有四个小功能，分别是放大镜，显示边框，显示透明度和标记界面。下面一个一个讲解
+如果`GrandView`正确地集成到了你的APP里，那么就可以使用摇一摇调试功能。摇一摇功能里面一共有四个小功能，分别是放大镜，显示边框，显示透明度和标记界面。下面一个一个讲解
 
 
 ![放大镜模式](http://upload-images.jianshu.io/upload_images/1281203-f15934bf8eb7fe11.gif?imageMogr2/auto-orient/strip)
@@ -50,18 +48,18 @@ ViewChaos
 
 透明模式更简单了，可以直接现实页面里的UI控件的透明情况，透明度越高的`View`红色会越深。如果没有红色表示此`View`是不透明的。
 
-然后就是标记界面功能，启动该模式后。点击你想要标记的`View`，`ViewChaos`会将此`View`的左右上下标记并显示出来。双击该`View`会取消标记。
+然后就是标记界面功能，启动该模式后。点击你想要标记的`View`，`GrandView`会将此`View`的左右上下标记并显示出来。双击该`View`会取消标记。
 
 ![标记界面模式](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/shake.gif)
 
-最后一个是显示Log功能，当你用ViewChaos的VCLog用在本项目来打印Log的时侯，会将log保存起来，然后使用显示log就可以显示VCLog打印的Log
+最后一个是显示Log功能，当你用GrandView的VCLog用在本项目来打印Log的时侯，会将log保存起来，然后使用显示log就可以显示VCLog打印的Log
 
 ![显示Log](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/log.png)
 
 上面就是摇一摇的全部功能了，注意这个可能和你的项目的摇一摇功能相冲突，目前还没有提供关闭功能，以后版本会提供的
 
 ## 最核心的抓取`View`和用表格表示显示`View`相关信息功能
-下面要讲的就是`ViewChaos`的最核心的功能了， 这一切都要靠这这个绿色的V字小球来实现。
+下面要讲的就是`GrandView`的最核心的功能了， 这一切都要靠这这个绿色的V字小球来实现。
 
 ![移动小球](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/chaos_ball_move.gif)
 
@@ -88,7 +86,7 @@ ViewChaos
 
 ![View追踪](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/chaos_trace_view.gif)
 
-最后就是追踪`(Trace)`功能。该功能可以追踪`View`的状态，比如`frame，tag，center`，等，当你点开始，`ViewChaos`就会监视该View的各种属性，如果该`View`的属性发生的改变，`ViewChaos`会记录下来并保存,然后在下面显示出来。
+最后就是追踪`(Trace)`功能。该功能可以追踪`View`的状态，比如`frame，tag，center`，等，当你点开始，`GrandView`就会监视该View的各种属性，如果该`View`的属性发生的改变，`ViewChaos`会记录下来并保存,然后在下面显示出来。
 
 ## 实时调整UI功能
 后面的功能就是属于改变`View`的各种属性，它可以让你调整`View`，直到符合你的要求为止，然后你可以生成代码，从里面选择出你需要的代码。
@@ -132,4 +130,4 @@ ViewChaos
 + `Reset(重设)`按钮会将View回复成原来的状态.
 + `Close(关闭)`按钮会关闭控制面板.
 
-以上差不多就是`VIewChaos的`全部功能，要这里还是建议读者亲自去下载`Demo`试用一下。`ViewChaos`基本上能够满足大部分UI的调试，但是也有的属性还不能看到和修改，另外还希望读者给出建议，这些都是以后的改进方向。
+以上差不多就是`GrandView`的全部功能，要这里还是建议读者亲自去下载`Demo`试用一下。`GrandView`基本上能够满足大部分UI的调试，但是也有的属性还不能看到和修改，另外还希望读者给出建议，这些都是以后的改进方向。
