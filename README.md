@@ -34,12 +34,12 @@ ViewChaos
 
 ## 摇一摇功能
 
-![摇一摇呼唤出菜单](http://upload-images.jianshu.io/upload_images/1281203-85bec787e39209e8.gif?imageMogr2/auto-orient/strip)
+![摇一摇呼唤出菜单](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/shake_pop_menu.gif)
 
 如果`GrandView`正确地集成到了你的APP里，那么就可以使用摇一摇调试功能。摇一摇功能里面一共有四个小功能，分别是放大镜，显示边框，显示透明度和标记界面。下面一个一个讲解
 
 
-![放大镜模式](http://upload-images.jianshu.io/upload_images/1281203-f15934bf8eb7fe11.gif?imageMogr2/auto-orient/strip)
+![放大镜模式](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/chaos_zoom.gif)
 放大镜模式比较简单，当启用后，用手指触摸屏幕，它会将你手指下的点放大显示（只支持单点），上面绿色区域可以显示该点的坐标和颜色值。
 
 ![边框模式](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/chaos_border_1.gif)
@@ -98,14 +98,14 @@ ViewChaos
 
 
 
-![View位置](http://upload-images.jianshu.io/upload_images/1281203-36eddc5c6f5fb129.gif?imageMogr2/auto-orient/strip)
-![View位置](http://upload-images.jianshu.io/upload_images/1281203-3e97f7a520051ae4.gif?imageMogr2/auto-orient/strip)
+![View位置](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/chaos_control_move.gif)
+![View位置](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/chaos_control_move2.gif)
 
 第一个功能就是改变`View`的位置，比较简单
 
 
 
-![View大小](http://upload-images.jianshu.io/upload_images/1281203-cdc22f4a8bbe3cc0.gif?imageMogr2/auto-orient/strip)
+![View大小](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/chaos_control_size.gif)
 
 第二功能就是改变`View`的大小，上面有两个按钮，一个是控制左上边的大小，一个是控制右下边的大小。
 
@@ -115,7 +115,7 @@ ViewChaos
 第三个功能就是改变`View`里面字体的大小，目前只对`Button,Lable,TextFiled和TextView`有用。其他的无效
 
 ![View边框](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/chaos_control_border.gif)
-![View边框](http://upload-images.jianshu.io/upload_images/1281203-26a2c69a5a0ecbe6.gif?imageMogr2/auto-orient/strip)
+![View边框](https://raw.githubusercontent.com/DuckDeck/ViewChaos/master/ViewChaosDemo/Resource/chaos_control_border2.gif)
 
 第四个功能就是改变`View`的边框，摇杆上面有三个子菜单，分别是颜色，边框和弧度，选择哪种就能控制哪种。
 
@@ -124,9 +124,9 @@ ViewChaos
 
 第五个功能就是改变View的颜色属性，如果存在的话。分别是前景色，背影色和主题色。
 
-![View颜色](http://upload-images.jianshu.io/upload_images/1281203-732a8731b4c0a236.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-最后一个功能就是生成代码啦，将所有的属性调整好之后，点一下code就能生成下面的代码。你可以从里面选择出有用的部分。
+
+~~最后一个功能就是生成代码啦，将所有的属性调整好之后，点一下code就能生成下面的代码。你可以从里面选择出有用的部分~~。
 
 + 里面部分功能说明，在调整`VIew`位置和大小时，如果想让View的变化更慢一些，那么可以修改`scale`的值，5是最快的，1是最慢的。
 + 如果你想做特别微小的调整，那么可以点Precise按钮启动精确模式，想退出再点一下就行.
