@@ -1,6 +1,9 @@
 ViewChaos
 
 > ViewChaos是一个动态的iOS UI调试工具，是为了解决纯代码编写的iOS UI而调试困难而写的
+> 。。。。。。SwiftUI的出现让这个项目的意义不大了。。。
+>  更新到2.0.0支持Swift Package Manage 集成功能  
+
 
 ## GrandView 的特性
 
