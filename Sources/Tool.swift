@@ -190,6 +190,7 @@ extension UIDevice{
         case "iPod4,1":                                 return "iPod touch 4"
         case "iPod5,1":                                 return "iPod Touch 5"
         case "iPod7,1":                                 return "iPod Touch 6"
+        case "iPod9,1":                                 return "iPod Touch 7"
         // iPhone
         case "iPhone1,1":                               return "iPhone"
         case "iPhone1,2":                               return "iPhone 3G"
@@ -209,6 +210,12 @@ extension UIDevice{
         case "iPhone10,1", "iPhone10,4":                return "iPhone 8"
         case "iPhone10,2", "iPhone10,5":                return "iPhone 8 Plus"
         case "iPhone10,3", "iPhone10,6":                return "iPhone X"
+        case "iPhone11,2":                              return "iPhone XS"
+        case "iPhone11,6":                              return "iPhone XS MAX"
+        case "iPhone11,8":                              return "iPhone XR"
+        case "iPhone12,1":                              return "iPhone 11"
+        case "iPhone12,3":                              return "iPhone 11 Pro"
+        case "iPhone12,5":                              return "iPhone 11 Pro max"
         // iPad
         case "iPad1,1":                                 return "iPad"
         case "iPad2,1", "iPad2,2", "iPad2,3", "iPad2,4":return "iPad 2"
@@ -233,31 +240,23 @@ extension UIDevice{
         default: return identifier
         }
     }
-    
-    
 }
 
-//获取设备类型，根据屏的w
-enum DeviceResution{
-    case Res414X896,Res375X812,Res320X568,Res414X736,Res375X667
-}
+
 
 extension UIDevice{
-    static var screenResution:DeviceResution{
-        let res = UIScreen.main.bounds
-        if res.height == 896{
-            return DeviceResution.Res414X896
+   public static var isNotchScreen:Bool{
+        if UIDevice.current.userInterfaceIdiom == .pad{
+            return false
         }
-        else if res.height == 812{
-             return DeviceResution.Res375X812
-        }
-        else if res.height == 736{
-             return DeviceResution.Res375X812
-        }
-        else if res.height == 667{
-            return DeviceResution.Res375X667
-        }
-        return DeviceResution.Res320X568
+        let size = UIScreen.main.bounds.size
+        let notchValue: Int = Int(size.width/size.height * 100)
+          if 216 == notchValue || 46 == notchValue {
+              
+              return true
+          }
+          
+          return false
     }
 }
 

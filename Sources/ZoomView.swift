@@ -141,7 +141,7 @@ class ZoomViewBrace: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.frame = UIScreen.main.bounds
-        let infoTop:CGFloat = (UIDevice.screenResution == .Res414X736 || UIDevice.screenResution == .Res414X896) ? 50 : 0
+        let infoTop:CGFloat = UIDevice.isNotchScreen ? 50 : 0
         lblPixelColor.frame = CGRect(x: 0, y: infoTop, width: UIScreen.main.bounds.size.width, height: 22)
         lblPixelColor.backgroundColor = UIColor(red: 0.0, green: 0.898, blue: 0.836, alpha: 0.7)
         lblPixelColor.textColor = UIColor.black
