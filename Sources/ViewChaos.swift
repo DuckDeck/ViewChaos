@@ -39,8 +39,8 @@ extension UIApplication{
     }
 }
 
-class ViewChaosStart: SelfAware {
-    static func awake() {
+public class ViewChaosStart: SelfAware {
+    public static func awake() {
           #if DEBUG
             print("启动ViewChaos")
             Chaos.hookMethod(UIWindow.self, originalSelector: #selector(UIWindow.makeKeyAndVisible), swizzleSelector: #selector(UIWindow.vcMakeKeyAndVisible))
