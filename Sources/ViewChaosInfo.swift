@@ -54,8 +54,8 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
     var arrSuperView:[ViewChaosObject]?
     var arrSubview:[ViewChaosObject]?
     var isTouch:Bool = false
-    var vwTop:CGFloat = 0
-    var vwLeft:CGFloat = 0
+    var vcTop:CGFloat = 0
+    var vcLeft:CGFloat = 0
     var originFrame:CGRect?
     var arrTrace:[[String:AnyObject]]?
     var viewTrackBorderWith:CGFloat?
@@ -838,8 +838,8 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         isTouch = true
         if  let touch = touches.first{
             let p = touch.location(in: self)
-            vwLeft = p.x
-            vwTop = p.y
+            vcLeft = p.x
+            vcTop = p.y
         }
     }
     
@@ -851,7 +851,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         if let touch = touches.first
         {
             let p = touch.location(in: self.window)
-            self.frame = CGRect(x: p.x - vwLeft, y: p.y - vwTop, width: self.frame.size.width, height: self.frame.size.height)
+            self.frame = CGRect(x: p.x - vcLeft, y: p.y - vcTop, width: self.frame.size.width, height: self.frame.size.height)
         }
     }
     

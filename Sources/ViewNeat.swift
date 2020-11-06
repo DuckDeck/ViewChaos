@@ -82,7 +82,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
     var currentColor:UIColor
     var vRockerArea:UIView
     var vRocker: UIView
-    var left,top:Float  //右 上
+    var vcleft,vctop:Float  //右 上
     var scaleX = 1
     var scaleY = 1
     var scale:Int = 1
@@ -104,8 +104,8 @@ class ViewNeat: UIView,ColorPickerDelegate {
         segItemMenu = UISegmentedControl(items: ["LeftTop","RightBottom"])
         vRockerArea = UIView()
         vRocker = UIView()
-        left = 0
-        top = 0
+        vcleft = 0
+        vctop = 0
         lblViewInfo = UILabel()
         originFrame = CGRect.zero
         currentColor = UIColor.clear
@@ -251,8 +251,8 @@ class ViewNeat: UIView,ColorPickerDelegate {
         {
             if point.x > 0 && point.x < vRocker.frame.size.width && point.y > 0 && point.y < vRocker.frame.size.height{
                 isTouch = true
-                left = Float(point.x)
-                top = Float(point.y)
+                vcleft = Float(point.x)
+                vctop = Float(point.y)
                 if timer!.isValid{
                     timer?.fire()
                     timer?.resumeChaosTimer()
@@ -268,7 +268,7 @@ class ViewNeat: UIView,ColorPickerDelegate {
         }
         let touch = touches.first
         if let point = touch?.location(in: vRockerArea){
-            var newFrame = CGRect(x: point.x - CGFloat(left), y: point.y - CGFloat(top), width: vRocker.frame.size.width, height: vRocker.frame.size.height)
+            var newFrame = CGRect(x: point.x - CGFloat(vcleft), y: point.y - CGFloat(vctop), width: vRocker.frame.size.width, height: vRocker.frame.size.height)
             if newFrame.origin.x <= 0{
                 newFrame.origin.x = 0
             }

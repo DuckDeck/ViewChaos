@@ -92,6 +92,7 @@ extension UIWindow:UIActionSheetDelegate {
             viewChaos.tag = -1000
             self.addSubview(viewChaos)
             self.addObserver(self, forKeyPath: "rootViewController", options: NSKeyValueObservingOptions.new, context: nil)
+            viewChaos.addViewInfoView()
             let def = UserDefaults.standard
             def.set(true, forKey: "ShakeEnable")
             def.synchronize()
@@ -103,8 +104,11 @@ extension UIWindow:UIActionSheetDelegate {
     
     open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if let v = self.viewWithTag(-1000){
-            v.removeFromSuperview()
-            self.addSubview(v)
+            if let viewchaos = v as? ViewChaos{
+                v.removeFromSuperview()
+                self.addSubview(v)
+                viewchaos.addViewInfoView()
+            }
         }
         
         
@@ -350,11 +354,11 @@ extension UIView{
 
 class ViewChaos: UIView {
     var isTouch:Bool //是否下在触摸中
-    var left,top:Float  //右 上
+    var vcleft,vctop:Float  //右 上
     weak var previousViewTouch:UIView?
     weak var viewTouch:UIView?
     var viewBound:UIView  //显示抓去View的边界
-    var windowInfo:UIWindow
+    var windowInfo:UIView
     var lblInfo:UILabel
     var viewChaosInfo:ViewChaosInfo?
     var viewNeat:ViewNeat?
@@ -370,18 +374,18 @@ class ViewChaos: UIView {
         viewBound.layer.zPosition = CGFloat(Float.greatestFiniteMagnitude)
         
         let infoTop:CGFloat = UIDevice.isNotchScreen ? 36 : 0
-        windowInfo = UIWindow(frame: CGRect(x: 0, y: infoTop, width: UIScreen.main.bounds.width, height: 50))
+        windowInfo = UIView(frame: CGRect(x: 0, y: infoTop, width: UIScreen.main.bounds.width, height: 50))
         windowInfo.backgroundColor = UIColor(red: 0.0, green: 0.898, blue: 0.836, alpha: 0.7)
         windowInfo.isHidden = true
         windowInfo.chaosName = "windowInfo"
-        windowInfo.windowLevel = UIWindow.Level.alert
+//        windowInfo.windowLevel = UIWindow.Level.alert
         lblInfo = UILabel(frame: windowInfo.bounds)
         lblInfo.numberOfLines = 2
         lblInfo.backgroundColor = UIColor.clear
         lblInfo.lineBreakMode = NSLineBreakMode.byCharWrapping
         lblInfo.autoresizingMask = [UIView.AutoresizingMask.flexibleHeight,UIView.AutoresizingMask.flexibleWidth]
-        left = 0
-        top = 0
+        vcleft = 0
+        vctop = 0
         
         super.init(frame: CGRect.zero)
         self.frame = CGRect(x: UIScreen.main.bounds.width-35, y: 100, width: 30, height: 30)
@@ -414,6 +418,9 @@ class ViewChaos: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func addViewInfoView() {
+        superview?.insertSubview(windowInfo, at: 1000)
+    }
     
     @objc func handleTraceShow(_ notif:Notification){ //如果关了ViewChaosInfo,就会显示出来
         self.isHidden = false
@@ -585,8 +592,8 @@ class ViewChaos: UIView {
         
         let touch = touches.first
         let point = touch?.location(in: self) //这个坐标是这个圆本身的坐标
-        left = Float(point!.x)
-        top = Float(point!.y)
+        vcleft = Float(point!.x)
+        vctop = Float(point!.y)
         let topPoint = touch?.location(in: self.window)
         
         if  let view = topView(self.window!, point: topPoint!)
@@ -619,7 +626,7 @@ class ViewChaos: UIView {
         }
         let touch = touches.first
         let point = touch?.location(in: self.window)
-        self.frame = CGRect(x: point!.x - CGFloat(left), y: point!.y - CGFloat(top), width: self.frame.size.width, height: self.frame.size.height)//这是为了精准定位.,要处理当前点到top和left的位移
+        self.frame = CGRect(x: point!.x - CGFloat(vcleft), y: point!.y - CGFloat(vctop), width: self.frame.size.width, height: self.frame.size.height)//这是为了精准定位.,要处理当前点到top和left的位移
         if  let view = topView(self.window!, point: point!)
         {
             let fm = self.window?.convert(view.bounds, from: view)
