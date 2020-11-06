@@ -15,7 +15,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        ViewChaosStart.awake()
+        #if DEBUG
+            ViewChaosStart.awake()
+        #endif
         window = UIWindow(frame: UIScreen.main.bounds)
          print(UIScreen.main.bounds)
         let mainViewController = ViewController()
