@@ -52,7 +52,6 @@ public class ViewChaosStart: SelfAware {
 }
 
 extension UIWindow:UIActionSheetDelegate {
-    #if DEBUG
 //    open override  class func initialize(){
 //        struct UIWindow_SwizzleToken {
 //            init() {
@@ -120,7 +119,7 @@ extension UIWindow:UIActionSheetDelegate {
     }
     
    
-   internal func showMenu() {
+    func showMenu() {
         switch self.chaosFeature
         {
         case ChaosFeature.none.rawValue:
@@ -180,62 +179,78 @@ extension UIWindow:UIActionSheetDelegate {
             alert.addAction(action6)
             self.rootViewController?.present(alert, animated: true, completion: nil)
         case ChaosFeature.zoom.rawValue:
-            UIAlertView.setMessage("关闭放大镜").addFirstButton("取消").addSecondButton("确定").alertWithButtonClick({ (buttonIndex, alert) -> Void in
-                if buttonIndex == 1{
-                    Chaos.toast("放大镜已经关闭")
-                    self.chaosFeature = ChaosFeature.none.rawValue
-                    for view in self.subviews{
-                        if view.tag == -1111{
-                            view.removeFromSuperview()
-                            break
-                        }
+            let action1 = UIAlertAction(title: "取消", style: .cancel, handler: nil)
+            let action2 = UIAlertAction(title: "确定", style: .default) { (action) in
+                Chaos.toast("放大镜已经关闭")
+                self.chaosFeature = ChaosFeature.none.rawValue
+                for view in self.subviews{
+                    if view.tag == -1111{
+                        view.removeFromSuperview()
+                        break
                     }
                 }
-            })
+            }
+            let alert = UIAlertController.init(title: "提示", message:"关闭放大镜", preferredStyle: .alert)
+            alert.addAction(action1)
+            alert.addAction(action2)
+            self.rootViewController?.present(alert, animated: true, completion: nil)
         case ChaosFeature.border.rawValue:
-            UIAlertView.setMessage("关闭边框显示功能").addFirstButton("取消").addSecondButton("确定").alertWithButtonClick({ (buttonIndex, alert) -> Void in
-                if buttonIndex == 1{
-                    Chaos.toast("边框显示功能已关闭")
-                    self.chaosFeature = ChaosFeature.none.rawValue
-                    self.removeBorderView(view: self)
-                }
-            })
-            
+            let action1 = UIAlertAction(title: "取消", style: .cancel, handler: nil)
+            let action2 = UIAlertAction(title: "确定", style: .default) { (action) in
+                Chaos.toast("边框显示功能已关闭")
+                self.chaosFeature = ChaosFeature.none.rawValue
+                self.removeBorderView(view: self)
+            }
+            let alert = UIAlertController.init(title: "提示", message:"关闭边框显示功能", preferredStyle: .alert)
+            alert.addAction(action1)
+            alert.addAction(action2)
+            self.rootViewController?.present(alert, animated: true, completion: nil)
         case ChaosFeature.alpha.rawValue:
-            UIAlertView.setMessage("关闭透明显示功能").addFirstButton("取消").addSecondButton("确定").alertWithButtonClick({ (buttonIndex, alert) -> Void in
-                if buttonIndex == 1{
-                    Chaos.toast("透明显示功能已关闭")
-                    self.chaosFeature = ChaosFeature.none.rawValue
-                    self.removeAlphaView(view: self)
-                }
-            })
-            
+            let action1 = UIAlertAction(title: "取消", style: .cancel, handler: nil)
+            let action2 = UIAlertAction(title: "确定", style: .default) { (action) in
+                Chaos.toast("透明显示功能已关闭")
+                self.chaosFeature = ChaosFeature.none.rawValue
+                self.removeAlphaView(view: self)
+            }
+            let alert = UIAlertController.init(title: "提示", message:"关闭透明显示功能", preferredStyle: .alert)
+            alert.addAction(action1)
+            alert.addAction(action2)
+            self.rootViewController?.present(alert, animated: true, completion: nil)
+
         case ChaosFeature.mark.rawValue:
-            UIAlertView.setMessage("关闭标记界面功能").addFirstButton("取消").addSecondButton("确定").alertWithButtonClick({ (buttonIndex, alert) -> Void in
-                if buttonIndex == 1{
-                    Chaos.toast("标记界面功能已关闭")
-                    self.chaosFeature = ChaosFeature.none.rawValue
-                    for view in self.subviews{
-                        if view.tag == -2000{
-                            view.removeFromSuperview()
-                        }
+            let action1 = UIAlertAction(title: "取消", style: .cancel, handler: nil)
+            let action2 = UIAlertAction(title: "确定", style: .default) { (action) in
+                Chaos.toast("标记界面功能已关闭")
+                self.chaosFeature = ChaosFeature.none.rawValue
+                for view in self.subviews{
+                    if view.tag == -2000{
+                        view.removeFromSuperview()
                     }
-                    MarkView.recursiveRemoveTagView(view: self)
                 }
-            })
+                MarkView.recursiveRemoveTagView(view: self)
+            }
+            let alert = UIAlertController.init(title: "提示", message:"关闭标记界面功能", preferredStyle: .alert)
+            alert.addAction(action1)
+            alert.addAction(action2)
+            self.rootViewController?.present(alert, animated: true, completion: nil)
+
         case ChaosFeature.Log.rawValue:
-            UIAlertView.setMessage("关闭显示Log功能").addFirstButton("取消").addSecondButton("确定").alertWithButtonClick({ (buttonIndex, alert) -> Void in
-                if buttonIndex == 1{
-                    Chaos.toast("显示Log功能已关闭")
-                    self.chaosFeature = ChaosFeature.none.rawValue
-                    for view in self.subviews{
-                        if view.tag == -9000{
-                            view.removeFromSuperview()
-                        }
+            let action1 = UIAlertAction(title: "取消", style: .cancel, handler: nil)
+            let action2 = UIAlertAction(title: "确定", style: .default) { (action) in
+                Chaos.toast("显示Log功能已关闭")
+                self.chaosFeature = ChaosFeature.none.rawValue
+                for view in self.subviews{
+                    if view.tag == -9000{
+                        view.removeFromSuperview()
                     }
-                    MarkView.recursiveRemoveTagView(view: self)
                 }
-            })
+                MarkView.recursiveRemoveTagView(view: self)
+                
+            }
+            let alert = UIAlertController.init(title: "提示", message:"关闭显示Log功能", preferredStyle: .alert)
+            alert.addAction(action1)
+            alert.addAction(action2)
+            self.rootViewController?.present(alert, animated: true, completion: nil)
         default:break
         }
     }
@@ -310,7 +325,7 @@ extension UIWindow:UIActionSheetDelegate {
         }//第三个功能完成
     }
 
-      #endif
+      
 }
 extension UIView{
     @objc  public func vcWillMoveToSuperview(_ subview:UIView?){
@@ -1187,68 +1202,3 @@ class ToastLable:UILabel {
     }
 }
 
-
-
-
-
-
-
-
-
-
-class BlockAlert:UIAlertView,UIAlertViewDelegate {
-    var completion:((_ buttonIndex:Int,_ alert:UIAlertView)->Void)?
-    var willDismissBlock:((_ buttonIndex:Int,_ alert:UIAlertView)->Void)?
-    var didDismissBlock:((_ buttonIndex:Int,_ alert:UIAlertView)->Void)?
-    var didPresentBlock:((_ alert:UIAlertView)->Void)?
-    var willPresentBlock:((_ alert:UIAlertView)->Void)?
-    var alertWithCalcelBlock:((_ alert:UIAlertView)->Void)?
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        self.delegate = self
-    }
-    
-    
-    func alertView(_ alertView: UIAlertView, clickedButtonAt buttonIndex: Int) {
-        if let block = completion{
-            block(buttonIndex, alertView)
-        }
-    }
-    
-    
-    func alertView(_ alertView: UIAlertView, didDismissWithButtonIndex buttonIndex: Int) {
-        if let block = didDismissBlock{
-            block(buttonIndex, alertView)
-        }
-    }
-    
-    func alertView(_ alertView: UIAlertView, willDismissWithButtonIndex buttonIndex: Int) {
-        if let block = willDismissBlock{
-            block(buttonIndex, alertView)
-        }
-        
-    }
-    
-    
-    func didPresent(_ alertView: UIAlertView) {
-        if let block = didPresentBlock{
-            block(alertView)
-        }
-    }
-    
-    func willPresent(_ alertView: UIAlertView) {
-        if let block = willPresentBlock{
-            block(alertView)
-        }
-    }
-    
-    func alertViewCancel(_ alertView: UIAlertView) {
-        if let block = alertWithCalcelBlock{
-            block(alertView)
-        }
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}

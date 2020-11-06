@@ -54,8 +54,8 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
     var arrSuperView:[ViewChaosObject]?
     var arrSubview:[ViewChaosObject]?
     var isTouch:Bool = false
-    var top:CGFloat = 0
-    var left:CGFloat = 0
+    var vwTop:CGFloat = 0
+    var vwLeft:CGFloat = 0
     var originFrame:CGRect?
     var arrTrace:[[String:AnyObject]]?
     var viewTrackBorderWith:CGFloat?
@@ -246,8 +246,12 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
             arrSubview?.removeAll()
             arrSuperView?.removeAll()
             arrConstrains?.removeAll()
-            let alert = UIAlertView(title: "ViewChecl", message: "\(Swift.type(of: view))RemoveFromSuperview", delegate: nil, cancelButtonTitle: "OK")
-            alert.show()
+            
+//            let alert = UIAlertView(title: "ViewChecl", message: "\(Swift.type(of: view))RemoveFromSuperview", delegate: nil, cancelButtonTitle: "OK")
+//            alert.show()
+            let alert = UIAlertController(title: "ViewCheck", message: "\(Swift.type(of: view))RemoveFromSuperview", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "好的", style: .cancel, handler: nil))
+            UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
             lblCurrentView.text = lblCurrentView.text! + "has removed"
         }
     }
@@ -305,8 +309,13 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
     func startTrace(){
         let btn = tbRight.tableHeaderView! as! UIButton
         if viewHit == nil{
-            let alert = UIAlertView(title: "ViewCheck", message: "View has removed and can't trace!", delegate: nil, cancelButtonTitle: "OK")
-            alert.show()
+//            let alert = UIAlertView(title: "ViewCheck", message: "View has removed and can't trace!", delegate: nil, cancelButtonTitle: "OK")
+//            alert.show()
+            
+            let alert = UIAlertController(title: "ViewCheck", message: "View has removed and can't trace!", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "好的", style: .cancel, handler: nil))
+            UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
+            
             return
         }
         isTrace =  true
@@ -382,8 +391,11 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
     
     @objc func hit(_ sender:UIButton){
         if viewHit == nil{
-            let alert = UIAlertView(title: "ViewChaos", message: "View has removed and can't hit!", delegate: self, cancelButtonTitle: "OK")
-            alert.show()
+            
+            let alert = UIAlertController(title: "ViewChaos", message: "View has removed and can't hit!", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "好的", style: .cancel, handler: nil))
+            UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
+
             return
         }
         NotificationCenter.default.post(name: Notification.Name(rawValue: "handleTraceView"), object: viewHit!)
@@ -392,8 +404,13 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
     
     @objc func control(_ sender:UIButton){
         if viewHit == nil{
-            let alert = UIAlertView(title: "ViewChaos", message: "View has removed and can't control!", delegate: self, cancelButtonTitle: "OK")
-            alert.show()
+//            let alert = UIAlertView(title: "ViewChaos", message: "View has removed and can't control!", delegate: self, cancelButtonTitle: "OK")
+//            alert.show()
+            
+            let alert = UIAlertController(title: "ViewChaos", message: "View has removed and can't control!", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "好的", style: .cancel, handler: nil))
+            UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
+
             return
         }
         NotificationCenter.default.post(name: Notification.Name(rawValue: controlTraceView), object: viewHit!)
@@ -413,28 +430,29 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         {
             for con in viewConstraint!.constraints{
                 var constant = con.constant
-                let viewFirst = con.firstItem as! UIView
+                let viewFirst = con.firstItem as? UIView
                 let viewSecond = con.secondItem as? UIView
+
                 if con.secondItem != nil{
-                    if con.firstItem as! UIView == viewHit! && con.firstAttribute == con.secondAttribute{
-                        if viewFirst.isDescendant(of: viewSecond!){
+                    if viewFirst == viewHit! && con.firstAttribute == con.secondAttribute{
+                        if viewFirst != nil && viewFirst!.isDescendant(of: viewSecond!){
                             constant = con.constant
                         }
-                        else if viewSecond!.isDescendant(of: viewFirst){
+                        else if viewSecond!.isDescendant(of: viewFirst!){
                             constant = -con.constant
                         }
                         else{
                             constant = con.constant
                         }
                     }
-                    else if con.firstItem as! UIView == viewHit! && con.firstAttribute != con.secondAttribute{
+                    else if viewFirst == viewHit! && con.firstAttribute != con.secondAttribute{
                         constant = con.constant
                     }
-                    else if(con.secondItem as! UIView == viewHit! && con.firstAttribute == con.secondAttribute){
-                        if viewFirst.isDescendant(of: viewSecond!){
+                    else if(viewSecond == viewHit! && con.firstAttribute == con.secondAttribute){
+                        if viewFirst != nil && viewFirst!.isDescendant(of: viewSecond!){
                             constant = -con.constant
                         }
-                        else if viewSecond!.isDescendant(of: viewFirst)
+                        else if viewSecond!.isDescendant(of: viewFirst!)
                         {
                             constant = con.constant
                         }
@@ -442,11 +460,11 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                             constant = con.constant
                         }
                     }
-                    else if con.secondItem as! UIView == viewHit! && con.firstAttribute != con.secondAttribute{
+                    else if viewSecond == viewHit! && con.firstAttribute != con.secondAttribute{
                         constant = con.constant
                     }
                 }
-                if con.firstItem as! UIView == viewHit! && (con.firstAttribute == NSLayoutConstraint.Attribute.leading || con.firstAttribute == NSLayoutConstraint.Attribute.left || con.firstAttribute == NSLayoutConstraint.Attribute.leadingMargin || con.firstAttribute == NSLayoutConstraint.Attribute.leftMargin){
+                if viewFirst == viewHit! && (con.firstAttribute == NSLayoutConstraint.Attribute.leading || con.firstAttribute == NSLayoutConstraint.Attribute.left || con.firstAttribute == NSLayoutConstraint.Attribute.leadingMargin || con.firstAttribute == NSLayoutConstraint.Attribute.leftMargin){
                     var dict = [String:AnyObject]()
                     dict["Type"] = "Left" as AnyObject?
                     dict["Value"] = con.description as AnyObject?
@@ -466,7 +484,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                     dict["Priority"] = con.priority as AnyObject?
                     arrConstrains?.append(dict)
                 }
-                else if con.firstItem as! UIView == viewHit! && (con.firstAttribute == NSLayoutConstraint.Attribute.top || con.firstAttribute == NSLayoutConstraint.Attribute.topMargin) {
+                else if viewFirst == viewHit! && (con.firstAttribute == NSLayoutConstraint.Attribute.top || con.firstAttribute == NSLayoutConstraint.Attribute.topMargin) {
                     var dict = [String:AnyObject]()
                     dict["Type"] = "Top" as AnyObject?
                     dict["Value"] = con.description as AnyObject?
@@ -487,7 +505,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                     dict["Priority"] = con.priority as AnyObject?
                     arrConstrains?.append(dict)
                 }
-                else if con.firstItem as! UIView == viewHit! && (con.firstAttribute == NSLayoutConstraint.Attribute.trailing || con.firstAttribute == NSLayoutConstraint.Attribute.trailingMargin || con.firstAttribute == NSLayoutConstraint.Attribute.right || con.firstAttribute == NSLayoutConstraint.Attribute.rightMargin){
+                else if viewFirst == viewHit! && (con.firstAttribute == NSLayoutConstraint.Attribute.trailing || con.firstAttribute == NSLayoutConstraint.Attribute.trailingMargin || con.firstAttribute == NSLayoutConstraint.Attribute.right || con.firstAttribute == NSLayoutConstraint.Attribute.rightMargin){
                     var dict = [String:AnyObject]()
                     dict["Type"] = "Right" as AnyObject?
                     dict["Value"] = con.description as AnyObject?
@@ -507,7 +525,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                     dict["Priority"] = con.priority as AnyObject?
                     arrConstrains?.append(dict)
                 }
-                else if con.firstItem as! UIView == viewHit! && (con.firstAttribute == NSLayoutConstraint.Attribute.bottom || con.firstAttribute == NSLayoutConstraint.Attribute.bottomMargin) {
+                else if viewFirst == viewHit! && (con.firstAttribute == NSLayoutConstraint.Attribute.bottom || con.firstAttribute == NSLayoutConstraint.Attribute.bottomMargin) {
                     var dict = [String:AnyObject]()
                     dict["Type"] = "Bottom" as AnyObject?
                     dict["Value"] = con.description as AnyObject?
@@ -527,7 +545,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                     dict["Priority"] = con.priority as AnyObject?
                     arrConstrains?.append(dict)
                 }
-                else if (con.firstItem as! UIView == viewHit! && con.firstAttribute == NSLayoutConstraint.Attribute.width) || (con.secondItem as? UIView == viewHit && con.secondAttribute == NSLayoutConstraint.Attribute.width){
+                else if (viewFirst == viewHit! && con.firstAttribute == NSLayoutConstraint.Attribute.width) || (con.secondItem as? UIView == viewHit && con.secondAttribute == NSLayoutConstraint.Attribute.width){
                     if con.isKind(of: NSClassFromString("NSContentSizeLayoutConstraint")!){
                         var dict = [String:AnyObject]()
                         dict["Type"] = "IntrinsicContent Width" as AnyObject?
@@ -546,7 +564,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                         arrConstrains?.append(dict)
                     }
                 }
-                else if (con.firstItem as! UIView == viewHit! && con.firstAttribute == NSLayoutConstraint.Attribute.height) || (con.secondItem as? UIView == viewHit && con.secondAttribute == NSLayoutConstraint.Attribute.height){
+                else if (viewFirst == viewHit! && con.firstAttribute == NSLayoutConstraint.Attribute.height) || (con.secondItem as? UIView == viewHit && con.secondAttribute == NSLayoutConstraint.Attribute.height){
                     if con.isKind(of: NSClassFromString("NSContentSizeLayoutConstraint")!){
                         var dict = [String:AnyObject]()
                         dict["Type"] = "IntrinsicContent Height" as AnyObject?
@@ -565,7 +583,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                         arrConstrains?.append(dict)
                     }
                 }
-                else if con.firstItem as! UIView == viewHit! && con.firstAttribute == NSLayoutConstraint.Attribute.centerX{
+                else if viewFirst == viewHit! && con.firstAttribute == NSLayoutConstraint.Attribute.centerX{
                     var dict = [String:AnyObject]()
                     dict["Type"] = "CenterX" as AnyObject?
                     dict["Value"] = con.description as AnyObject?
@@ -585,7 +603,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                     dict["Priority"] = con.priority as AnyObject?
                     arrConstrains?.append(dict)
                 }
-                else if con.firstItem as! UIView == viewHit! && con.firstAttribute == NSLayoutConstraint.Attribute.centerY{
+                else if viewFirst == viewHit! && con.firstAttribute == NSLayoutConstraint.Attribute.centerY{
                     var dict = [String:AnyObject]()
                     dict["Type"] = "CenterY" as AnyObject?
                     dict["Value"] = con.description as AnyObject?
@@ -605,7 +623,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                     dict["Priority"] = con.priority as AnyObject?
                     arrConstrains?.append(dict)
                 }
-                else if con.firstItem as! UIView == viewHit! && con.firstAttribute == NSLayoutConstraint.Attribute.lastBaseline{
+                else if viewFirst == viewHit! && con.firstAttribute == NSLayoutConstraint.Attribute.lastBaseline{
                     var dict = [String:AnyObject]()
                     dict["Type"] = "BaseLine" as AnyObject?
                     dict["Value"] = con.description as AnyObject?
@@ -663,8 +681,12 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
     
     func traceSuperAndSubView(){
         if viewHit == nil{
-            let alert = UIAlertView(title: "ViewChecK", message: "View has removed and can't trace!", delegate: nil, cancelButtonTitle: "OK")
-            alert.show()
+//            let alert = UIAlertView(title: "ViewChecK", message: "View has removed and can't trace!", delegate: nil, cancelButtonTitle: "OK")
+//            alert.show()
+            let alert = UIAlertController(title: "ViewChecK", message: "View has removed and can't trace!", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "好的", style: .cancel, handler: nil))
+            UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
+
             return
         }
         viewTrackBorderWith = viewHit!.layer.borderWidth
@@ -816,8 +838,8 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         isTouch = true
         if  let touch = touches.first{
             let p = touch.location(in: self)
-            left = p.x
-            top = p.y
+            vwLeft = p.x
+            vwTop = p.y
         }
     }
     
@@ -829,7 +851,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         if let touch = touches.first
         {
             let p = touch.location(in: self.window)
-            self.frame = CGRect(x: p.x - left, y: p.y - top, width: self.frame.size.width, height: self.frame.size.height)
+            self.frame = CGRect(x: p.x - vwLeft, y: p.y - vwTop, width: self.frame.size.width, height: self.frame.size.height)
         }
     }
     
