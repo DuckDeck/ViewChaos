@@ -12,7 +12,7 @@ enum ChaosFeature:Int{
 }
 
 public protocol SelfAware:class {
-    static func awake()
+    static func awake(defaultActive:Bool)
 }
 
 class NothingToSeeHere{
@@ -22,7 +22,7 @@ class NothingToSeeHere{
         let autoreleaseintTypes = AutoreleasingUnsafeMutablePointer<AnyClass>(types)
         objc_getClassList(autoreleaseintTypes, Int32(typeCount))
         for index in 0 ..< typeCount{
-            (types[index] as? SelfAware.Type)?.awake()
+            (types[index] as? SelfAware.Type)?.awake(defaultActive: true)
         }
         types.deallocate()
     }
@@ -40,13 +40,19 @@ extension UIApplication{
 }
 
 public class ViewChaosStart: SelfAware {
-    public static func awake() {
+    static var alreadyStart = false
+    public static func awake(defaultActive:Bool = false) {
           #if DEBUG
+            if  alreadyStart{
+                return
+            }
             print("启动ViewChaos")
             Chaos.hookMethod(UIWindow.self, originalSelector: #selector(UIWindow.makeKeyAndVisible), swizzleSelector: #selector(UIWindow.vcMakeKeyAndVisible))
             Chaos.hookMethod(UIView.self, originalSelector: #selector(UIView.willMove(toSuperview:)), swizzleSelector: #selector(UIView.vcWillMoveToSuperview(_:)))
             Chaos.hookMethod(UIView.self, originalSelector: #selector(UIView.willRemoveSubview(_:)), swizzleSelector: #selector(UIView.vcWillRemoveSubview(_:)))
             Chaos.hookMethod(UIView.self, originalSelector: #selector(UIView.didAddSubview(_:)), swizzleSelector: #selector(UIView.vcDidAddSubview(_:)))
+            Chaos.defaultActive = defaultActive
+            alreadyStart = true
          #endif
     }
 }
@@ -93,6 +99,7 @@ extension UIWindow:UIActionSheetDelegate {
             self.addSubview(viewChaos)
             self.addObserver(self, forKeyPath: "rootViewController", options: NSKeyValueObservingOptions.new, context: nil)
             viewChaos.addViewInfoView()
+            viewChaos.isHidden = !Chaos.defaultActive
             let def = UserDefaults.standard
             def.set(true, forKey: "ShakeEnable")
             def.synchronize()
@@ -777,6 +784,7 @@ class ViewChaosObject: NSObject {
 
 
 class Chaos {
+    static var defaultActive = false;
     fileprivate static let sharedInstance = Chaos()
     class var staredChaos:Chaos {
         return sharedInstance
