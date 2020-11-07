@@ -434,7 +434,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                 let viewSecond = con.secondItem as? UIView
 
                 if con.secondItem != nil{
-                    if viewFirst == viewHit! && con.firstAttribute == con.secondAttribute{
+                    if viewFirst == viewHit! && con.firstAttribute == con.secondAttribute && viewSecond != nil{
                         if viewFirst != nil && viewFirst!.isDescendant(of: viewSecond!){
                             constant = con.constant
                         }
@@ -448,7 +448,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
                     else if viewFirst == viewHit! && con.firstAttribute != con.secondAttribute{
                         constant = con.constant
                     }
-                    else if(viewSecond == viewHit! && con.firstAttribute == con.secondAttribute){
+                    else if(viewSecond == viewHit! && con.firstAttribute == con.secondAttribute && viewFirst != nil){
                         if viewFirst != nil && viewFirst!.isDescendant(of: viewSecond!){
                             constant = -con.constant
                         }

@@ -129,6 +129,22 @@ extension UIWindow:UIActionSheetDelegate {
         case ChaosFeature.none.rawValue:
             //这里放一个菜单 要在这打开摇一摇关了的功能 
             let alert = UIAlertController(title: "使用功能", message: nil, preferredStyle: .actionSheet)
+            var msg = "关闭小绿点"
+            var vChaos:UIView?
+            if let v = self.viewWithTag(-1000){
+                vChaos = v;
+                if v.isHidden{
+                    msg = "打开小绿点"
+                }
+            }
+            let action0 = UIAlertAction(title: msg, style: .default) { (action) in
+                if msg == "关闭小绿点"{
+                    vChaos?.isHidden = true
+                }
+                else{
+                    vChaos?.isHidden = false
+                }
+            }
             let action1 = UIAlertAction(title: "启用放大镜", style: .default, handler: { (action) in
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: setZoomViewWork), object: nil)
                 Chaos.toast("放大镜已经启用")
@@ -175,6 +191,7 @@ extension UIWindow:UIActionSheetDelegate {
                 self.enableShake()
             })
             let action6 = UIAlertAction(title: "取消", style: .cancel, handler: nil)
+            alert.addAction(action0)
             alert.addAction(action1)
             alert.addAction(action2)
             alert.addAction(action3)
