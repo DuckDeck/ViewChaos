@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -23,10 +20,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WbO-m6-G7j">
-                                <rect key="frame" x="96" y="100" width="183" height="128"/>
+                                <rect key="frame" x="96" y="80" width="183" height="128"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zCM-qO-jbG">
-                                        <rect key="frame" x="10" y="10" width="163" height="107"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zCM-qO-jbG">
+                                        <rect key="frame" x="10" y="10" width="163" height="108"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <state key="normal" title="Button">
                                             <color key="titleColor" red="0.96470588239999999" green="0.0" blue="0.43529411759999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -46,10 +43,10 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jkD-dA-i91">
-                                <rect key="frame" x="96" y="308" width="183" height="319"/>
+                                <rect key="frame" x="96" y="288" width="183" height="339"/>
                                 <subviews>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="l7p-1p-ye0">
-                                        <rect key="frame" x="10" y="10" width="163" height="299"/>
+                                        <rect key="frame" x="10" y="10" width="163" height="319"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -64,24 +61,28 @@
                                     <constraint firstItem="l7p-1p-ye0" firstAttribute="leading" secondItem="jkD-dA-i91" secondAttribute="leading" constant="10" id="sLv-uL-j0x"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5iI-E2-Ffn">
-                                <rect key="frame" x="20" y="255" width="73" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5iI-E2-Ffn">
+                                <rect key="frame" x="47" y="255" width="46" height="30"/>
                                 <color key="backgroundColor" red="0.0032130368053913116" green="0.18527421355247498" blue="0.9889366626739502" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="tintColor" red="1" green="0.21864606110000001" blue="0.11796609800000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="Button"/>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Storyboard 里的 UIButton不能改变大小" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vn6-p2-JbQ">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Storyboard 里的 UIButton不能改变大小" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vn6-p2-JbQ">
                                 <rect key="frame" x="112" y="255" width="361" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="361" id="d9L-bY-8aL"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="93x-jp-bPf">
-                                <rect key="frame" x="10" y="59" width="93" height="40"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="93x-jp-bPf">
+                                <rect key="frame" x="273" y="207" width="93" height="40"/>
                                 <color key="backgroundColor" red="0.88965868949890137" green="0.86416506767272949" blue="0.31355071067810059" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="93" id="OWW-jO-wd4"/>
+                                    <constraint firstAttribute="height" constant="40" id="SDD-sg-19E"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -89,10 +90,17 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="jkD-dA-i91" secondAttribute="trailing" constant="80" id="0M3-NF-3Ag"/>
+                            <constraint firstItem="vn6-p2-JbQ" firstAttribute="top" secondItem="5iI-E2-Ffn" secondAttribute="top" id="1SE-t9-i4D"/>
+                            <constraint firstItem="vn6-p2-JbQ" firstAttribute="leading" secondItem="5iI-E2-Ffn" secondAttribute="trailing" constant="19" id="2wz-NK-sxp"/>
                             <constraint firstAttribute="trailingMargin" secondItem="WbO-m6-G7j" secondAttribute="trailing" constant="80" id="7Ok-sA-EgG"/>
+                            <constraint firstItem="vn6-p2-JbQ" firstAttribute="top" secondItem="93x-jp-bPf" secondAttribute="bottom" constant="8" id="G3H-Yy-MSI"/>
+                            <constraint firstItem="93x-jp-bPf" firstAttribute="top" secondItem="lxf-Qg-lcb" secondAttribute="bottom" constant="207" id="Khi-3l-O3g"/>
                             <constraint firstItem="lsR-MD-gMQ" firstAttribute="top" secondItem="jkD-dA-i91" secondAttribute="bottom" constant="40" id="OOT-dH-QLx"/>
                             <constraint firstItem="WbO-m6-G7j" firstAttribute="leading" secondItem="SPh-M1-gM7" secondAttribute="leadingMargin" constant="80" id="RAM-tE-K65"/>
                             <constraint firstItem="WbO-m6-G7j" firstAttribute="centerX" secondItem="SPh-M1-gM7" secondAttribute="centerX" id="VBk-6z-La2"/>
+                            <constraint firstItem="vn6-p2-JbQ" firstAttribute="bottom" secondItem="5iI-E2-Ffn" secondAttribute="bottom" id="ZnH-1b-aJR"/>
+                            <constraint firstItem="vn6-p2-JbQ" firstAttribute="leading" secondItem="SPh-M1-gM7" secondAttribute="leading" constant="112" id="b12-dL-5aK"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="93x-jp-bPf" secondAttribute="trailing" constant="-7" id="cBz-Ud-0zf"/>
                             <constraint firstItem="WbO-m6-G7j" firstAttribute="top" secondItem="lxf-Qg-lcb" secondAttribute="bottom" constant="80" id="hES-aY-IaC"/>
                             <constraint firstItem="jkD-dA-i91" firstAttribute="top" secondItem="WbO-m6-G7j" secondAttribute="bottom" constant="80" id="nR3-lA-Ifa"/>
                             <constraint firstItem="jkD-dA-i91" firstAttribute="leading" secondItem="SPh-M1-gM7" secondAttribute="leadingMargin" constant="80" id="rmJ-Qp-VFE"/>

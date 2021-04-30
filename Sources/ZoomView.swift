@@ -63,11 +63,11 @@ class ZoomView: UIWindow {
         didSet{
             if let point = pointToZoom{
                 self.center = CGPoint(x: point.x, y: point.y)
-                let offset:Int = Int(4 * ((imgSize.width * round(point.y*2)) + round(point.x*2)))
-                let a =  UInt64(imgCaptureData![offset])
-                let r = UInt64(imgCaptureData![offset + 1])
-                let g = UInt64(imgCaptureData![offset + 2])
-                let b = UInt64(imgCaptureData![offset + 3])
+                let offset = 4 * ((imgSize.width * round(point.y*2)) + round(point.x*2))
+                let a =  UInt64(imgCaptureData![Int(offset)])
+                let r = UInt64(imgCaptureData![Int(offset) + 1])
+                let g = UInt64(imgCaptureData![Int(offset) + 2])
+                let b = UInt64(imgCaptureData![Int(offset) + 3])
                 currentColor = UIColor(red:CGFloat(r) / 255.0, green: CGFloat(g) / 255.0, blue: CGFloat(b) / 255.0, alpha: CGFloat(a) / 255.0)
                 print("point:\(point) the color is :\(String(describing: currentColor?.format("swift")))")
                 //大功基本告成,我再加个Lable来显示就行

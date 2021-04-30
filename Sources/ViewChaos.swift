@@ -11,7 +11,7 @@ enum ChaosFeature:Int{
     case none=0,zoom,border,alpha,mark,Log
 }
 
-public protocol SelfAware:class {
+public protocol SelfAware:AnyObject {
     static func awake(defaultActive:Bool)
 }
 
