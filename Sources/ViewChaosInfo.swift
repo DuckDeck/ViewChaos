@@ -1087,7 +1087,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
         cell?.textLabel?.numberOfLines = 0
         cell?.textLabel?.lineBreakMode = NSLineBreakMode.byCharWrapping
         cell?.textLabel?.frame = CGRect(x: 0, y: 0, width: cell!.textLabel!.frame.size.width, height: 40)
-        cell?.textLabel?.text = "\(dict["Type"]!)(Priority:\(dict["Priority"] == nil ? "" : dict["Priority"]! as! String))"
+        cell?.textLabel?.text = "\(dict["Type"]!)(Priority:\(dict["Priority"] == nil ? 0 : dict["Priority"]! as! Int))"
         cell?.textLabel?.sizeToFit()
         cell?.detailTextLabel?.numberOfLines = 0
         cell?.detailTextLabel?.lineBreakMode = NSLineBreakMode.byCharWrapping
@@ -1230,7 +1230,7 @@ class ViewChaosInfo: UIView,UITableViewDataSource,UITableViewDelegate {
     func heightForConstrainCell(_ index:IndexPath,width:CGFloat) -> CGFloat{
         var str,strDetail:String
         let dic = arrConstrains![(index as NSIndexPath).row]
-        str  = "\(dic["Type"]!)(Priority:\(dic["Priority"] == nil ? "" : dic["Priority"]! as! String))"
+        str  = "\(dic["Type"]!)(Priority:\(dic["Priority"] == nil ? 0 : dic["Priority"]! as! Int))"
         let arrTemp = (dic["Value"] as! NSString).components(separatedBy: " ")
         var arr = [String]()
         for t in arrTemp{
